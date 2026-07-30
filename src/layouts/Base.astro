@@ -140,8 +140,18 @@ const {
       // and re-animates every time it re-enters the viewport. Reduced-motion shows
       // everything instantly.
       function initReveal() {
+        // Tell the CSS it may hide things now. Until this lands, [data-reveal] is
+        // fully visible, so a failure anywhere above (the `lenis` import, a syntax
+        // error, JS disabled) leaves the content readable instead of invisible.
+        document.documentElement.classList.add('reveal-ready');
+
         const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
         if (reduce()) { els.forEach((el) => el.classList.add('is-in')); return; }
+
+        // init() can fire twice (readyState check + astro:page-load); one observer
+        // per element is enough.
+        const w0 = window as any;
+        if (w0.__revIO) w0.__revIO.disconnect();
 
         // Shared scroll-direction tracker, installed once (survives SPA nav).
         const w = window as any;
@@ -169,10 +179,16 @@ const {
           }
         }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
+        w0.__revIO = io;
         els.forEach((el) => { if (!el.dataset.dir) el.dataset.dir = 'down'; io.observe(el); });
       }
 
-      function init() { initLenis(); initReveal(); }
+      // Reveal first: it decides whether content is visible at all, so it must not
+      // depend on the scroll-jacking setup succeeding.
+      function init() {
+        initReveal();
+        try { initLenis(); } catch (e) { console.warn('Lenis init failed, native scroll', e); }
+      }
       document.addEventListener('astro:page-load', init);
       if (document.readyState !== 'loading') init();
       else document.addEventListener('DOMContentLoaded', init);

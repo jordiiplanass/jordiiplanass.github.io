@@ -122,18 +122,25 @@ section { position: relative; }
    .is-in via IntersectionObserver every time the element enters/leaves — so it
    re-animates on each return. Scroll down -> enters from the left; scroll up ->
    enters from the right. Staggered by --i. overflow-x:hidden on body hides the
-   off-screen offset. Reduced-motion shows content instantly (fade only). */
-[data-reveal] {
+   off-screen offset. Reduced-motion shows content instantly (fade only).
+
+   All of it is gated on .reveal-ready, which the script puts on <html> right
+   before it starts observing. This makes the effect an enhancement instead of a
+   requirement: if that script never runs — bundle fails to load, the `lenis`
+   import throws, JS off — the class is absent and the content simply shows.
+   Un-gated, a single broken script left screenshots and copy invisible with no
+   way for a visitor to tell. */
+.reveal-ready [data-reveal] {
   opacity: 0;
   transition: opacity 0.64s var(--ease-reveal),
               transform 0.64s var(--ease-reveal);
   transition-delay: calc(var(--i, 0) * 70ms);
   will-change: opacity, transform;
 }
-[data-reveal][data-dir="down"] { transform: translateX(-40px); }
-[data-reveal][data-dir="up"]   { transform: translateX(40px); }
-[data-reveal].is-in { opacity: 1; transform: none; }
+.reveal-ready [data-reveal][data-dir="down"] { transform: translateX(-40px); }
+.reveal-ready [data-reveal][data-dir="up"]   { transform: translateX(40px); }
+.reveal-ready [data-reveal].is-in { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .reveal-ready [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
