@@ -74,9 +74,13 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
 
 ## Contenido — bloqueantes para publicar
 
-- [ ] 🔴 **`public/cv.pdf` es un placeholder** (725 bytes, texto "CV placeholder - reemplaza este
-  archivo"). Está enlazado desde el Nav y dos veces en la home. Sustituir por el CV real antes de
-  compartir la URL.
+- [x] 🔴 **CV real puesto** en `public/cv.pdf` (1 pág., 78 KB) sustituyendo el placeholder de 725 bytes.
+  Los 3 enlaces (`Nav.astro`, `Home.astro` ×2) pasan de `download` a `download="Jordi_Planas_CV.pdf"`
+  para que el archivo guardado no se llame `cv.pdf`.
+- [ ] 🟡 **Cuadrar la experiencia del sitio con el CV.** El CV dice *XR Developer Intern · Respira ·
+  Sep 2025–Ene 2026*; la timeline de `Home.astro` dice *Respida, 2025, Lead Developer*. Además el CV
+  no incluye Espai Casa Sagnier, que sí sale en la web. Decidir cuál es la versión buena y alinear
+  (`src/i18n/ui.ts` → `ui.exp`).
 - [ ] 🟡 **`public/textures/*.jpg` no se referencian desde `src`** (7 archivos). Borrar o usar.
 
 ## Limpieza

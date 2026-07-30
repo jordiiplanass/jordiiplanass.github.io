@@ -26,7 +26,7 @@ const { pathname } = Astro.url;
           <a href={`${base}/games`} class:list={{ active: pathname.startsWith(`${base}/games`) }}>{t('nav.games')}</a>
           <a href={`${base}/projects`} class:list={{ active: pathname.startsWith(`${base}/projects`) }}>{t('nav.projects')}</a>
           <a href={`${base}/#experience`}>{t('nav.experience')}</a>
-          <a href="/cv.pdf" download class="cv">CV ↓</a>
+          <a href="/cv.pdf" download="Jordi_Planas_CV.pdf" class="cv">CV ↓</a>
         </nav>
       </details>
       <a href={altHref} class="lang-toggle">{lang === 'es' ? 'EN' : 'ES'}</a>
