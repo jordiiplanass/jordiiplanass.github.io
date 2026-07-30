@@ -82,9 +82,24 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
   oculta la barra cuando hay cover propio.
 - [ ] 🔵 **Iniciales de `nachito-el-nacho` dan "Ne"** (primeras letras de "Nachito el"), que se lee
   raro. Coger iniciales de palabras significativas, o saltarse artículos. `Carousel.astro`.
+- [x] 🔴 **Reveal deja de ser requisito y pasa a ser mejora.** `[data-reveal]{opacity:0}` sin gate
+  significaba que cualquier fallo del script (import de `lenis`, error de sintaxis, JS off) dejaba
+  capturas y copy **invisibles para siempre**. Ahora todo cuelga de `.reveal-ready`, que el script
+  pone en `<html>` justo antes de observar. Además: `initReveal()` va **antes** de `initLenis()` (que
+  ahora va en try/catch) y el observer se desconecta antes de recrearse, porque `init()` puede
+  dispararse dos veces. `global.css`, `Base.astro`. Verificadas las dos ramas: con gate opacidad 0,
+  sin gate opacidad 1.
+- [x] 🟡 **Ficha de Nachito con descripción real** en vez del panel de galería vacío: plataformas 2D,
+  condimentos como habilidades (guacamole = dash, queso = gancho), meta = volver a ser humano.
+  `summary`, `sub` y tags actualizados (eran placeholders que describían mal el juego). ES + EN.
+- [x] 🟡 **Imágenes de proyectos.** Llegaron en `media/proyectos/{liveOps,vr}/`, fuera de la
+  convención; movidas a `media/liveops-unity/gallery/` (3) y `media/primeros-auxilios-vr/gallery/` (4).
+  Las 4 llamadas a `<Gallery>` de las fichas de proyecto ya llevan `slug` + `label`.
 - [ ] 🔵 **Extender `coverFor()` a `ProjectList`** si los proyectos van a llevar cover 16:10. Es una
   línea, pero hoy `liveops-unity` y `primeros-auxilios-vr` no tienen `cover` y siguen dependiendo de
-  `meta` a mano (con el riesgo de ES/EN desalineados). Faltan también sus carpetas en `public/media/`.
+  `meta` a mano (con el riesgo de ES/EN desalineados). Salen con iniciales en `/projects`.
+- [ ] 🔵 **Vídeo de Nachito y de Primeros Auxilios VR:** las dos fichas siguen con el placeholder
+  "Vídeo próximamente". Poner el ID de YouTube o quitar el bloque.
 
 ## Deploy — GitHub Pages
 

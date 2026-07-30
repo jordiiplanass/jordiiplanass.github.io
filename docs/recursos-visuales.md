@@ -14,9 +14,14 @@ media/<slug>/
 
 ## Soltar los archivos y ya
 
-Para los **juegos** no hay que tocar código: metes los archivos en esas dos carpetas y aparecen en
-la card, en la home, en `/games` y en la ficha, **en español y en inglés a la vez**. Un solo archivo
-sirve para los dos idiomas.
+**La carpeta se llama igual que el slug de la ficha**, no como el juego. Los slugs son los nombres
+de archivo en `src/pages/`: `pipo-the-penguin`, `fragments-of-the-abyss`, `chrono-fish`,
+`nachito-el-nacho`, `liveops-unity`, `primeros-auxilios-vr`. Una carpeta con otro nombre
+(`proyectos/`, `vr/`, `liveOps/`) no la ve nadie.
+
+No hay que tocar código: metes los archivos en esas dos carpetas y aparecen en la card, en la home,
+en el listado y en la ficha, **en español y en inglés a la vez**. Un solo archivo sirve para los dos
+idiomas.
 
 **Cover** — un `cover/` con una imagen dentro. El nombre da igual (`pipo.png`, `chronofish.png`…);
 si hubiera varias se coge la primera por orden alfabético. También vale un archivo `cover.png`
@@ -38,8 +43,10 @@ Detalles:
   coge la nueva y no se queda con la vieja en caché.
 
 Lo resuelven `coverFor()` y `galleryFor()` en `src/lib/media.ts`, que leen las carpetas en tiempo de
-build; los aplican `Carousel.astro` y `Gallery.astro`. **Solo para juegos**: los proyectos
-(`ProjectList`) siguen leyendo el `cover` del `meta` a mano.
+build; los aplican `Carousel.astro` y `Gallery.astro`.
+
+Las **galerías** funcionan igual en juegos y en proyectos. El **cover automático** solo en juegos:
+en proyectos, `ProjectList` sigue leyendo el `cover` del `meta` a mano.
 
 ## Medidas
 
