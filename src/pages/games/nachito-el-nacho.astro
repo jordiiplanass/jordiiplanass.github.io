@@ -1,15 +1,15 @@
 ---
 import Base from '../../layouts/Base.astro';
 import VideoBlock from '../../components/VideoBlock.astro';
-import Gallery from '../../components/Gallery.astro';
 
+// Sin capturas todavía: la ficha se apoya en la descripción, no en una galería vacía.
 export const meta = {
   slug: 'nachito-el-nacho',
   title: 'Nachito el Nacho',
   year: 2023,
   accent: 'orange',
-  tags: ['Unity', 'C#', 'Arcade', 'Fun'],
-  summary: 'Un nacho con actitud. Proyecto arcade, gamberro y directo.',
+  tags: ['Unity', 'C#', '2D Platformer', 'Movimiento'],
+  summary: 'Plataformas 2D: Nachito se ha vuelto un nacho y se mueve con las habilidades de sus condimentos.',
 };
 ---
 
@@ -21,7 +21,7 @@ export const meta = {
       <!-- Bespoke layout: centered, minimal -->
       <header class="center" data-reveal>
         <h1>Nachito el Nacho</h1>
-        <p class="sub">Arcade gamberro · 2023</p>
+        <p class="sub">Plataformas 2D · 2023</p>
         <div class="tags">{meta.tags.map((t) => <span class="tag">{t}</span>)}</div>
       </header>
 
@@ -30,11 +30,25 @@ export const meta = {
       </div>
 
       <p class="lead" data-reveal>
-        Proyecto arcade con personalidad. Directo, divertido y sin pretensiones.
-        <!-- ponytail: cuenta de qué va de verdad -->
+        Plataformas 2D caricaturesco. Nachito se ha transformado en un nacho, y la única forma
+        de moverse por el nivel es usar las habilidades de los condimentos que lleva encima.
+        La meta es volver a ser humano.
       </p>
 
-      <Gallery slug="nachito-el-nacho" label="Captura de Nachito el Nacho" cols={2} />
+      <h2 class="sec" data-reveal>Los condimentos</h2>
+      <div class="abilities">
+        <div class="panel" data-reveal style="--i:0">
+          <h4>Guacamole</h4>
+          <p>Dash: un impulso seco para cruzar huecos y salir de un apuro.</p>
+        </div>
+        <div class="panel" data-reveal style="--i:1">
+          <h4>Queso</h4>
+          <p>Gancho: se engancha al escenario y te lanza donde no llegas de un salto.</p>
+        </div>
+      </div>
+      <p class="note" data-reveal>
+        Hay más condimentos, y cada uno cambia cómo te desplazas. Encadenarlos es el juego.
+      </p>
 
       <div class="next center" data-reveal>
         <a href="/games" class="btn">← Volver a Games</a>
@@ -53,5 +67,12 @@ export const meta = {
   .sub { color: var(--mute); margin: 12px 0 16px; }
   .tags { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
   .lead { font-size: clamp(18px, 2.6vw, 24px); text-align: center; max-width: 60ch; margin: 36px auto; color: var(--mute); }
+  .sec { font-size: clamp(24px, 3.6vw, 36px); text-align: center; margin: 44px 0 18px; }
+  .abilities { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .abilities .panel { padding: 22px; }
+  .abilities h4 { font-size: 18px; color: var(--orange); margin-bottom: 6px; }
+  .abilities p { color: var(--mute); font-size: 15px; }
+  .note { text-align: center; color: var(--mute); font-size: 15px; margin: 20px auto 0; max-width: 52ch; }
   .next { margin-top: 48px; }
+  @media (max-width: 640px) { .abilities { grid-template-columns: 1fr; } }
 </style>
