@@ -2,7 +2,8 @@
 // Pass `slug` and the screenshots in public/media/<slug>/gallery/ are picked up
 // in filename order — one folder feeds the ES and EN ficha. `label` is the
 // language-appropriate alt text, numbered per image. Pass `images` instead to
-// spell each one out with a real description.
+// spell each one out with a real description. `featuredFirst` lets a lead image
+// span the whole grid while the remaining shots stay in balanced pairs.
 import { galleryFor } from '../lib/media';
 
 interface Props {
@@ -10,13 +11,14 @@ interface Props {
   slug?: string;
   label?: string;
   cols?: number;
+  featuredFirst?: boolean;
 }
-const { images, slug, label, cols = 2 } = Astro.props;
+const { images, slug, label, cols = 2, featuredFirst = false } = Astro.props;
 const shots = images ?? (slug ? galleryFor(slug, label) : []);
 ---
 
 {shots.length > 0 ? (
-  <div class="gallery" style={`--cols:${cols}`}>
+  <div class:list={['gallery', { 'gallery--featured-first': featuredFirst }]} style={`--cols:${cols}`}>
     {shots.map((im, i) => <img src={im.src} alt={im.alt ?? ''} loading="lazy" data-reveal style={`--i:${i % 6}`} />)}
   </div>
 ) : (
@@ -43,6 +45,7 @@ const shots = images ?? (slug ? galleryFor(slug, label) : []);
     border: 1px solid var(--line);
     background: var(--panel);
   }
+  .gallery--featured-first img:first-child { grid-column: 1 / -1; }
   .gallery-empty { padding: 28px; text-align: center; color: var(--mute); font-size: 14px; }
   .gallery-empty code { color: var(--teal); }
   @media (max-width: 640px) { .gallery { grid-template-columns: 1fr; } }

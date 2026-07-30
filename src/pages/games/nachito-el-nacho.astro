@@ -1,8 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import VideoBlock from '../../components/VideoBlock.astro';
+import Gallery from '../../components/Gallery.astro';
 
-// Sin capturas todavía: la ficha se apoya en la descripción, no en una galería vacía.
 export const meta = {
   slug: 'nachito-el-nacho',
   title: 'Nachito el Nacho',
@@ -25,15 +24,19 @@ export const meta = {
         <div class="tags">{meta.tags.map((t) => <span class="tag">{t}</span>)}</div>
       </header>
 
-      <div data-reveal style="--i:1">
-        <VideoBlock title="Nachito el Nacho" />
-      </div>
-
       <p class="lead" data-reveal>
         Plataformas 2D caricaturesco. Nachito se ha transformado en un nacho, y la única forma
         de moverse por el nivel es usar las habilidades de los condimentos que lleva encima.
         La meta es volver a ser humano.
       </p>
+
+      <h2 class="sec" data-reveal>Capturas</h2>
+      <Gallery
+        slug="nachito-el-nacho"
+        label="Captura de Nachito el Nacho"
+        cols={2}
+        featuredFirst
+      />
 
       <h2 class="sec" data-reveal>Los condimentos</h2>
       <div class="abilities">

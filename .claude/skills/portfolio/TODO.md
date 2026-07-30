@@ -65,7 +65,7 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
   EN, sin tocar código ni las dos fichas. URL con `?v=<mtime>` para evitar caché rancia.
   Verificado con PNG reales y comprobado el fallback al borrarlos.
 - [x] 🟡 **Arte real puesto** (por Jordi): covers 3:4 exactos (2064×2752) en `cover/` y capturas en
-  `gallery/` para pipo (4), fragments (8) y chrono-fish (4). `nachito-el-nacho` sigue sin nada.
+  `gallery/` para pipo (4), fragments (8), chrono-fish (4) y nachito-el-nacho (5).
 - [x] 🔴 **`coverFor()` adaptado a la estructura real**: los covers llegaron como
   `media/<slug>/cover/<nombre>.png` (carpeta, nombre libre), no como `cover.png`. Ahora acepta las
   dos formas. Filtra por extensión para no servir un `.DS_Store` como `<img>`.
@@ -80,8 +80,8 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
 - [ ] 🔵 **Título duplicado en las cards.** Los covers de fragments y chrono-fish llevan el título
   rotulado en el arte, y la card superpone otra vez el título en la barra inferior. Decidir si se
   oculta la barra cuando hay cover propio.
-- [ ] 🔵 **Iniciales de `nachito-el-nacho` dan "Ne"** (primeras letras de "Nachito el"), que se lee
-  raro. Coger iniciales de palabras significativas, o saltarse artículos. `Carousel.astro`.
+- [x] 🔵 **Iniciales de `nachito-el-nacho` ya no aparecen.** El cover real 3:4 sustituye el fallback
+  "Ne" en el carrusel ES/EN sin tener que añadir una excepción a `Carousel.astro`.
 - [x] 🔴 **Reveal deja de ser requisito y pasa a ser mejora.** `[data-reveal]{opacity:0}` sin gate
   significaba que cualquier fallo del script (import de `lenis`, error de sintaxis, JS off) dejaba
   capturas y copy **invisibles para siempre**. Ahora todo cuelga de `.reveal-ready`, que el script
@@ -92,6 +92,9 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
 - [x] 🟡 **Ficha de Nachito con descripción real** en vez del panel de galería vacío: plataformas 2D,
   condimentos como habilidades (guacamole = dash, queso = gancho), meta = volver a ser humano.
   `summary`, `sub` y tags actualizados (eran placeholders que describían mal el juego). ES + EN.
+- [x] 🟡 **Integrados los nuevos recursos de Nachito.** El cover 3:4 alimenta el carrusel; la ficha
+  ES/EN muestra la captura de portada a ancho completo y las otras cuatro en 2×2. Retirado el
+  placeholder de vídeo para que la página arranque con contenido real.
 - [x] 🟡 **Imágenes de proyectos.** Llegaron en `media/proyectos/{liveOps,vr}/`, fuera de la
   convención; movidas a `media/liveops-unity/gallery/` (3) y `media/primeros-auxilios-vr/gallery/` (4).
   Las 4 llamadas a `<Gallery>` de las fichas de proyecto ya llevan `slug` + `label`.
@@ -111,8 +114,8 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
   salir arriba. Preguntar a Jordi y corregir en los dos idiomas.
 - [ ] 🔵 **Alt de las capturas de proyecto.** Van numerados (`Captura de LiveOps Unity 1`). Los PDFs
   describen qué es cada figura, así que se puede pasar `images` a mano con alt reales.
-- [ ] 🔵 **Vídeo de Nachito y de Primeros Auxilios VR:** las dos fichas siguen con el placeholder
-  "Vídeo próximamente". Poner el ID de YouTube o quitar el bloque.
+- [ ] 🔵 **Vídeo de Primeros Auxilios VR:** la ficha sigue con el placeholder "Vídeo próximamente".
+  Poner el ID de YouTube o quitar el bloque. En Nachito se retiró al incorporar las capturas.
 
 ## Deploy — GitHub Pages
 
