@@ -25,7 +25,8 @@ idiomas.
 
 **Cover** — un `cover/` con una imagen dentro. El nombre da igual (`pipo.png`, `chronofish.png`…);
 si hubiera varias se coge la primera por orden alfabético. También vale un archivo `cover.png`
-directamente en `media/<slug>/`, sin carpeta.
+directamente en `media/<slug>/`, sin carpeta. Y si no hay ninguna de las dos cosas, se usa la primera
+imagen de `gallery/`, que siempre queda mejor que las iniciales.
 
 **Galería** — todas las imágenes de `gallery/` salen en la rejilla, ordenadas por nombre de archivo.
 Los nombres con fecha (`2026-07-30---10-10-01-309.png`) ordenan de forma natural. Si quieres otro
@@ -45,8 +46,11 @@ Detalles:
 Lo resuelven `coverFor()` y `galleryFor()` en `src/lib/media.ts`, que leen las carpetas en tiempo de
 build; los aplican `Carousel.astro` y `Gallery.astro`.
 
-Las **galerías** funcionan igual en juegos y en proyectos. El **cover automático** solo en juegos:
-en proyectos, `ProjectList` sigue leyendo el `cover` del `meta` a mano.
+Funciona igual en juegos y en proyectos: `Carousel` para los juegos, `ProjectList` para los proyectos,
+los dos pasan por `coverFor()`.
+
+Si añades una lista con `<ul class="...">` en una ficha, acuérdate de ponerle `list-style: none`.
+El reset de `global.css` le quita el `padding` pero no el marcador, y si no saldrán dos viñetas.
 
 ## Medidas
 

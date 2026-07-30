@@ -8,8 +8,8 @@ export const meta = {
   title: 'Primeros Auxilios (VR)',
   year: 2024,
   accent: 'teal',
-  tags: ['VR', 'Unity', 'XR Interaction', 'Training'],
-  summary: 'Simulador de primeros auxilios en realidad virtual. Interacción y entrenamiento.',
+  tags: ['Unity 6', 'Meta Quest 3', 'C#', 'XR', 'ESP32'],
+  summary: 'Simulación en Meta Quest 3 para practicar un torniquete bajo estrés agudo. Prácticas en Proyecto Respira.',
 };
 ---
 
@@ -20,11 +20,13 @@ export const meta = {
 
       <!-- Bespoke: VR spec layout -->
       <header class="hero" data-reveal>
-        <p class="eyebrow">Realidad Virtual</p>
+        <p class="eyebrow">Prácticas · Proyecto Respira</p>
         <h1>Primeros Auxilios <span>VR</span></h1>
         <p class="lead">
-          Experiencia de entrenamiento en VR para practicar primeros auxilios de forma
-          inmersiva y segura. <!-- ponytail: describe el alcance real y el dispositivo objetivo -->
+          Proyecto Respira da formación presencial en primeros auxilios. Querían que sus alumnos
+          pudieran practicar la colocación de un torniquete con la presión de una urgencia de
+          verdad, así que montamos la escena en Meta Quest 3. Fue la primera vez que la empresa
+          se metía en XR.
         </p>
       </header>
 
@@ -33,10 +35,71 @@ export const meta = {
       </div>
 
       <div class="specs">
-        <div class="panel" data-reveal style="--i:0"><h4>Plataforma</h4><p>VR · Unity XR</p></div>
-        <div class="panel" data-reveal style="--i:1"><h4>Foco</h4><p>Interacción y entrenamiento</p></div>
-        <div class="panel" data-reveal style="--i:2"><h4>Rol</h4><p>Programación de sistemas</p></div>
+        <div class="panel" data-reveal style="--i:0"><h4>Dispositivo</h4><p>Meta Quest 3</p></div>
+        <div class="panel" data-reveal style="--i:1"><h4>Motor</h4><p>Unity 6 · SDK de Meta</p></div>
+        <div class="panel" data-reveal style="--i:2"><h4>Equipo</h4><p>2 programadores, 2 artistas</p></div>
+        <div class="panel" data-reveal style="--i:3"><h4>Dedicación</h4><p>300 h en remoto</p></div>
       </div>
+
+      <h2 class="sec" data-reveal>Qué pasa dentro</h2>
+      <p class="body" data-reveal>
+        Empiezas en una biblioteca de centro comercial recreada con arte original del equipo.
+        Nada te avisa. A los pocos segundos arrancan los estímulos.
+      </p>
+      <ul class="list" data-reveal>
+        <li>
+          Gente corriendo, luces parpadeando, humo. Un sistema de eventos temporizados suelta
+          cada estímulo en su momento, así la tensión sube de forma progresiva en vez de golpe.
+        </li>
+        <li>
+          Los NPC son agentes sobre una NavMesh ajustada a la geometría de la tienda. Cada uno
+          lleva un nivel de estrés que decide su velocidad: los alterados corren, los tranquilos
+          se quedan quietos o caminan despacio. Varían también de escala, con la velocidad
+          proporcional al tamaño y todo gestionado desde un control centralizado.
+        </li>
+        <li>
+          Las manos se resuelven con un modelo de cinemática inversa propio, para que el cuerpo
+          cuadre tanto al mirar hacia abajo como al manipular el torniquete.
+        </li>
+        <li>
+          El detector de input distingue mover el mando de mover el brazo. No es el mismo gesto
+          cuando lo que estás evaluando es una maniobra médica.
+        </li>
+        <li>
+          Al recibir el ataque del asaltante, las gafas pasan a passthrough unos segundos y
+          después entra una viñeta que va oscureciendo la visión, imitando el desvanecimiento
+          por pérdida de sangre.
+        </li>
+        <li>
+          La Quest 3 va justa de cómputo, así que el wifi y el Bluetooth viven en hilos
+          secundarios. El hilo de render no se toca.
+        </li>
+      </ul>
+
+      <h2 class="sec" data-reveal>Mi parte</h2>
+      <p class="body" data-reveal>
+        La aplicación de monitorización la programé yo solo, y también me encargué del manager
+        general de eventos del aplicativo, que es lo que ejecuta esas órdenes del lado de las gafas.
+      </p>
+      <ul class="list" data-reveal>
+        <li>Se conecta por wifi al puerto de comunicación de las gafas y muestra en tiempo real lo que está viendo el alumno.</li>
+        <li>El instructor pausa, reanuda o reinicia la simulación desde su panel, sin tocar el visor.</li>
+        <li>Registro de eventos para depurar durante las sesiones.</li>
+      </ul>
+
+      <h2 class="sec" data-reveal>El prototipo háptico</h2>
+      <p class="body" data-reveal>
+        Un ESP32-C6 hace de receptor, conectado a las gafas por BLE, y reparte la señal por
+        ESP-NOW a varios ESP32-C3 repartidos por las extremidades. La idea era que el golpe se
+        notara físicamente en el brazo correspondiente. La comunicación entre nodos quedó
+        funcionando; la respuesta háptica en la extremidad se dejó para la siguiente iteración.
+      </p>
+
+      <p class="note" data-reveal>
+        El resultado fue un prototipo ejecutable que cumplía los objetivos formativos, pero no
+        llegó a versión final dentro del periodo de prácticas. La empresa siguió el desarrollo
+        después.
+      </p>
 
       <h2 class="sec" data-reveal>Galería</h2>
       <Gallery slug="primeros-auxilios-vr" label="Captura de Primeros Auxilios VR" cols={2} />
@@ -52,10 +115,16 @@ export const meta = {
   .hero h1 { font-size: clamp(40px, 8vw, 92px); }
   .hero h1 span { color: var(--teal); }
   .lead { max-width: 56ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
-  .specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 34px 0; }
+  .specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 34px 0; }
   .specs .panel { padding: 20px; }
   .specs h4 { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
   .specs p { color: var(--mute); }
   .sec { font-size: clamp(26px, 4vw, 40px); margin: 40px 0 18px; }
-  @media (max-width: 640px) { .specs { grid-template-columns: 1fr; } }
+  .body { max-width: 68ch; color: var(--mute); font-size: 17px; line-height: 1.6; }
+  .list { max-width: 68ch; list-style: none; margin-top: 16px; display: grid; gap: 12px; }
+  .list li { color: var(--mute); font-size: 16px; line-height: 1.6; padding-left: 18px; position: relative; }
+  .list li::before { content: ''; position: absolute; left: 0; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
+  .note { max-width: 68ch; margin-top: 28px; padding-left: 16px; border-left: 2px solid var(--line); color: var(--mute); font-size: 15px; line-height: 1.6; }
+  @media (max-width: 860px) { .specs { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .specs { grid-template-columns: 1fr; } }
 </style>

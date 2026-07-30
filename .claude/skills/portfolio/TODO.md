@@ -95,9 +95,22 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
 - [x] 🟡 **Imágenes de proyectos.** Llegaron en `media/proyectos/{liveOps,vr}/`, fuera de la
   convención; movidas a `media/liveops-unity/gallery/` (3) y `media/primeros-auxilios-vr/gallery/` (4).
   Las 4 llamadas a `<Gallery>` de las fichas de proyecto ya llevan `slug` + `label`.
-- [ ] 🔵 **Extender `coverFor()` a `ProjectList`** si los proyectos van a llevar cover 16:10. Es una
-  línea, pero hoy `liveops-unity` y `primeros-auxilios-vr` no tienen `cover` y siguen dependiendo de
-  `meta` a mano (con el riesgo de ES/EN desalineados). Salen con iniciales en `/projects`.
+- [x] 🔵 **`coverFor()` extendido a `ProjectList`**, con un fallback nuevo: si no hay `cover/` ni
+  `cover.*`, coge la primera imagen de `gallery/`. Los dos proyectos ya salen con arte en `/projects`
+  y en la home en vez de iniciales. Los juegos no cambian (los tres tienen `cover/`).
+- [x] 🔴 **Fichas de proyecto redactadas** desde los PDFs (`AA3_Martinez_Planas_Jordi.pdf` para
+  LiveOps, `Memoria Practicas` para VR): arquitectura, qué se configura en caliente, decisiones
+  técnicas con su porqué, lo que costó, y los números del test de usabilidad (5 participantes, 100 %
+  de éxito, SEQ 5,88/7, cuello de botella en T4 con 4,87x de desviación). ES + EN. Sin guiones em
+  en el cuerpo, por petición de Jordi.
+- [x] 🔵 **Doble viñeta en las listas nuevas.** `global.css` quita el `padding` de `ul[class]` pero no
+  el `list-style`, así que salía el marcador nativo además del `::before` propio. `list-style: none`
+  en `.list` de las 4 fichas. Si se añaden más listas con clase, ojo con esto.
+- [ ] 🔴 **Año de LiveOps por confirmar.** El PDF es "Projecte Aplicat de Videojoc, Curs 2025-2026",
+  pero `meta.year` dice **2024** en ES y EN. Como los listados ordenan por `year`, si son 2026 debería
+  salir arriba. Preguntar a Jordi y corregir en los dos idiomas.
+- [ ] 🔵 **Alt de las capturas de proyecto.** Van numerados (`Captura de LiveOps Unity 1`). Los PDFs
+  describen qué es cada figura, así que se puede pasar `images` a mano con alt reales.
 - [ ] 🔵 **Vídeo de Nachito y de Primeros Auxilios VR:** las dos fichas siguen con el placeholder
   "Vídeo próximamente". Poner el ID de YouTube o quitar el bloque.
 

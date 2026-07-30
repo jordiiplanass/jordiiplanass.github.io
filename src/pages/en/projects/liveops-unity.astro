@@ -7,8 +7,8 @@ export const meta = {
   title: 'LiveOps Unity',
   year: 2024,
   accent: 'orange',
-  tags: ['Unity', 'C#', 'LiveOps', 'Backend', 'Tooling'],
-  summary: 'A LiveOps system for Unity: remote content, events and configuration.',
+  tags: ['React 19', 'TypeScript', 'Firebase', 'Unity 6', 'C#', 'LiveOps'],
+  summary: 'A LiveOps tool for small projects: a React panel, Firebase Realtime Database and a Unity client that picks up changes without recompiling.',
 };
 ---
 
@@ -21,17 +21,84 @@ export const meta = {
       <header class="hero" data-reveal>
         <h1>LiveOps <span>Unity</span></h1>
         <p class="lead">
-          A live-ops system for Unity: update content, launch events and tweak
-          configuration without re-publishing the build. <!-- ponytail: detail the real architecture -->
+          Off-the-shelf LiveOps tools either give you far more than you need or lock you into a
+          closed platform, and on a small project you pay for that in integration work and in
+          invoices. This one goes the other way: a panel I own, Firebase Realtime Database as the
+          data layer, and a Unity client that picks up changes while the game is running.
         </p>
       </header>
 
-      <h2 class="sec" data-reveal>What it solves</h2>
+      <h2 class="sec" data-reveal>How it's put together</h2>
       <div class="features">
-        <div class="panel" data-reveal style="--i:0"><span class="num">01</span><h4>Remote content</h4><p>Configuration served from the backend, applied on the client.</p></div>
-        <div class="panel" data-reveal style="--i:1"><span class="num">02</span><h4>Events</h4><p>Toggle timed events on and off without a new build.</p></div>
-        <div class="panel" data-reveal style="--i:2"><span class="num">03</span><h4>Tooling</h4><p>Internal tools to operate the live game.</p></div>
+        <div class="panel" data-reveal style="--i:0">
+          <span class="num">01</span><h4>Web panel</h4>
+          <p>React 19 with TypeScript and Vite, shadcn/ui over Tailwind. Five sections: economies, flags, Battle Pass, Daily Reward and players.</p>
+        </div>
+        <div class="panel" data-reveal style="--i:1">
+          <span class="num">02</span><h4>Firebase</h4>
+          <p>A JSON tree with three branches. The panel writes the configuration, Unity writes player state, and neither touches the other's branch.</p>
+        </div>
+        <div class="panel" data-reveal style="--i:2">
+          <span class="num">03</span><h4>Unity client</h4>
+          <p>Unity 6 with the Firebase SDK. It reads the configuration on sign-in and keeps listening over WebSocket. No polling.</p>
+        </div>
       </div>
+
+      <h2 class="sec" data-reveal>What you change without recompiling</h2>
+      <ul class="list" data-reveal>
+        <li>Currencies: balance cap, display format, whether it's seasonal, and a bitfield of properties (soft, hard, premium, tradable, earned through ads).</li>
+        <li>The item catalogue, with type, rarity, stack size and whether it's consumable or tradable.</li>
+        <li>Experience types and their multiplier.</li>
+        <li>Battle Pass: how many tiers, how much XP each one costs, the reward per tier on the free and premium tracks, and the season dates.</li>
+        <li>Daily Reward: the reward table per streak day, and what happens past the last day, reset or hold.</li>
+        <li>Feature flags to switch functionality on and off remotely.</li>
+      </ul>
+      <p class="body" data-reveal>
+        Any of those changes reaches live sessions the moment it's saved.
+      </p>
+
+      <h2 class="sec" data-reveal>Decisions</h2>
+      <ul class="list" data-reveal>
+        <li>
+          <strong>Realtime Database over Firestore.</strong> Firestore queries better, but what
+          mattered here was propagation latency, and Realtime Database handles it with a persistent
+          WebSocket connection.
+        </li>
+        <li>
+          <strong>No backend of my own.</strong> Building one competed for time with the game itself,
+          which is exactly what this tool is meant not to steal.
+        </li>
+        <li>
+          <strong>No global state manager in React.</strong> Each section's state is local and syncs
+          with Firebase on its own. Redux or Zustand would have added complexity for nothing.
+        </li>
+        <li>
+          <strong>Config and players on separate branches.</strong> I didn't plan this one. It came
+          out of the fact that, sharing a structure, Firebase's security rules became impossible to
+          reason about. Splitting who writes what simplified the rules and the client logic at once.
+        </li>
+      </ul>
+
+      <h2 class="sec" data-reveal>The hardest part</h2>
+      <p class="body" data-reveal>
+        Listener lifetimes. Leaning on them to propagate any change sounds simple, right up until you
+        leave one alive on a Unity object that's already been destroyed and exceptions start firing on
+        the engine's main thread with no obvious origin. Cancelling subscriptions in OnDestroy is one
+        of those things the tutorials skip, and it's what separates a prototype from something that
+        holds up.
+      </p>
+
+      <h2 class="sec" data-reveal>Usability test</h2>
+      <ul class="list" data-reveal>
+        <li>Five participants working as game developers or designers, and five tasks covering the whole flow: configure the event in the panel, then verify its effect in Unity.</li>
+        <li>All five finished all five tasks unaided, with a mean perceived difficulty of 5.88 out of 7.</li>
+        <li>The weak spot came through clearly: finding the inspection tools inside Unity. That task racked up 4.87 times more steps than the optimal path and the worst difficulty score, 4.4. The problem is where the menu lives, not what it does.</li>
+      </ul>
+      <p class="note" data-reveal>
+        Participants coming from PlayFab or Unity Gaming Services said this takes fewer steps to
+        configure a simple event, in exchange for covering considerably less ground. With five people
+        that's a pointer, not a benchmark.
+      </p>
 
       <h2 class="sec" data-reveal>Stack</h2>
       <div class="tags" data-reveal>{meta.tags.map((t) => <span class="tag">{t}</span>)}</div>
@@ -49,13 +116,19 @@ export const meta = {
   .hero { margin: 26px 0 30px; }
   .hero h1 { font-size: clamp(40px, 8vw, 96px); }
   .hero h1 span { color: var(--orange); }
-  .lead { max-width: 58ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
+  .lead { max-width: 62ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
   .sec { font-size: clamp(24px, 3.6vw, 36px); margin: 44px 0 18px; }
   .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .features .panel { padding: 22px; }
   .features .num { font-family: var(--font-display); font-weight: 800; color: var(--orange); font-size: 22px; }
   .features h4 { font-size: 18px; margin: 8px 0 6px; }
-  .features p { color: var(--mute); font-size: 14px; }
+  .features p { color: var(--mute); font-size: 14px; line-height: 1.55; }
+  .body { max-width: 68ch; color: var(--mute); font-size: 17px; line-height: 1.6; margin-top: 16px; }
+  .list { max-width: 68ch; list-style: none; display: grid; gap: 12px; }
+  .list li { color: var(--mute); font-size: 16px; line-height: 1.6; padding-left: 18px; position: relative; }
+  .list li::before { content: ''; position: absolute; left: 0; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); }
+  .list strong { color: var(--head); font-weight: 600; }
+  .note { max-width: 68ch; margin-top: 24px; padding-left: 16px; border-left: 2px solid var(--line); color: var(--mute); font-size: 15px; line-height: 1.6; }
   .tags { display: flex; flex-wrap: wrap; gap: 8px; }
   @media (max-width: 640px) { .features { grid-template-columns: 1fr; } }
 </style>

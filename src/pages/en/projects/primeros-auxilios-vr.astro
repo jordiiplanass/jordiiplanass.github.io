@@ -3,14 +3,13 @@ import Base from '../../../layouts/Base.astro';
 import VideoBlock from '../../../components/VideoBlock.astro';
 import Gallery from '../../../components/Gallery.astro';
 
-// slug mirrors the ES page so the language toggle resolves; title is the EN label.
 export const meta = {
   slug: 'primeros-auxilios-vr',
   title: 'First Aid (VR)',
   year: 2024,
   accent: 'teal',
-  tags: ['VR', 'Unity', 'XR Interaction', 'Training'],
-  summary: 'A virtual-reality first-aid simulator. Interaction and training.',
+  tags: ['Unity 6', 'Meta Quest 3', 'C#', 'XR', 'ESP32'],
+  summary: 'A Meta Quest 3 simulation for practising a tourniquet under acute stress. Internship at Proyecto Respira.',
 };
 ---
 
@@ -21,11 +20,12 @@ export const meta = {
 
       <!-- Bespoke: VR spec layout -->
       <header class="hero" data-reveal>
-        <p class="eyebrow">Virtual Reality</p>
+        <p class="eyebrow">Internship · Proyecto Respira</p>
         <h1>First Aid <span>VR</span></h1>
         <p class="lead">
-          A VR training experience to practice first aid in an immersive and safe way.
-          <!-- ponytail: describe the real scope and target device -->
+          Proyecto Respira runs in-person first aid training. They wanted their students to be able
+          to practise applying a tourniquet with the pressure of a real emergency, so we built the
+          scene on Meta Quest 3. It was the company's first move into XR.
         </p>
       </header>
 
@@ -34,13 +34,71 @@ export const meta = {
       </div>
 
       <div class="specs">
-        <div class="panel" data-reveal style="--i:0"><h4>Platform</h4><p>VR · Unity XR</p></div>
-        <div class="panel" data-reveal style="--i:1"><h4>Focus</h4><p>Interaction and training</p></div>
-        <div class="panel" data-reveal style="--i:2"><h4>Role</h4><p>Systems programming</p></div>
+        <div class="panel" data-reveal style="--i:0"><h4>Device</h4><p>Meta Quest 3</p></div>
+        <div class="panel" data-reveal style="--i:1"><h4>Engine</h4><p>Unity 6 · Meta SDK</p></div>
+        <div class="panel" data-reveal style="--i:2"><h4>Team</h4><p>2 programmers, 2 artists</p></div>
+        <div class="panel" data-reveal style="--i:3"><h4>Time</h4><p>300 h, remote</p></div>
       </div>
 
+      <h2 class="sec" data-reveal>What happens inside</h2>
+      <p class="body" data-reveal>
+        You start in a shopping centre library, rebuilt with original art by the team. Nothing warns
+        you. A few seconds in, the stimuli kick off.
+      </p>
+      <ul class="list" data-reveal>
+        <li>
+          People running, lights flickering, smoke. A timed event system releases each stimulus at
+          its own moment, so the tension climbs gradually instead of all at once.
+        </li>
+        <li>
+          The NPCs are agents on a NavMesh fitted to the shop geometry. Each carries a stress level
+          that sets its speed: the agitated ones run, the calm ones stand still or walk slowly. They
+          vary in scale too, with speed proportional to size, all driven from one central controller.
+        </li>
+        <li>
+          Hands run on a custom inverse kinematics model, so the body lines up both when you look
+          down and when you handle the tourniquet.
+        </li>
+        <li>
+          The input detector tells moving the controller apart from moving your arm. Those aren't the
+          same gesture when what you're assessing is a medical manoeuvre.
+        </li>
+        <li>
+          When the assailant strikes, the headset cuts to passthrough for a few seconds and then a
+          vignette closes in, mimicking fainting from blood loss.
+        </li>
+        <li>
+          The Quest 3 is tight on compute, so wifi and Bluetooth live on secondary threads. The
+          render thread stays untouched.
+        </li>
+      </ul>
+
+      <h2 class="sec" data-reveal>My part</h2>
+      <p class="body" data-reveal>
+        I wrote the monitoring application on my own, and I also owned the app's general event
+        manager, which is what carries out those commands on the headset side.
+      </p>
+      <ul class="list" data-reveal>
+        <li>It connects over wifi to the headset's communication port and shows in real time what the student is seeing.</li>
+        <li>The instructor pauses, resumes or restarts the simulation from their panel, without touching the headset.</li>
+        <li>An event log for debugging during sessions.</li>
+      </ul>
+
+      <h2 class="sec" data-reveal>The haptic prototype</h2>
+      <p class="body" data-reveal>
+        An ESP32-C6 acts as the receiver, connected to the headset over BLE, and forwards the signal
+        via ESP-NOW to several ESP32-C3 modules placed on the limbs. The idea was for the hit to
+        register physically on the matching arm. Communication between nodes ended up working; the
+        haptic response on the limb was left for the next iteration.
+      </p>
+
+      <p class="note" data-reveal>
+        The outcome was a working prototype that met the training goals, though it didn't reach a
+        final version within the internship. The company carried the development on afterwards.
+      </p>
+
       <h2 class="sec" data-reveal>Gallery</h2>
-      <Gallery slug="primeros-auxilios-vr" label="Primeros Auxilios VR screenshot" cols={2} />
+      <Gallery slug="primeros-auxilios-vr" label="First Aid VR screenshot" cols={2} />
     </div>
   </article>
 </Base>
@@ -53,10 +111,16 @@ export const meta = {
   .hero h1 { font-size: clamp(40px, 8vw, 92px); }
   .hero h1 span { color: var(--teal); }
   .lead { max-width: 56ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
-  .specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 34px 0; }
+  .specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 34px 0; }
   .specs .panel { padding: 20px; }
   .specs h4 { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
   .specs p { color: var(--mute); }
   .sec { font-size: clamp(26px, 4vw, 40px); margin: 40px 0 18px; }
-  @media (max-width: 640px) { .specs { grid-template-columns: 1fr; } }
+  .body { max-width: 68ch; color: var(--mute); font-size: 17px; line-height: 1.6; }
+  .list { max-width: 68ch; list-style: none; margin-top: 16px; display: grid; gap: 12px; }
+  .list li { color: var(--mute); font-size: 16px; line-height: 1.6; padding-left: 18px; position: relative; }
+  .list li::before { content: ''; position: absolute; left: 0; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
+  .note { max-width: 68ch; margin-top: 28px; padding-left: 16px; border-left: 2px solid var(--line); color: var(--mute); font-size: 15px; line-height: 1.6; }
+  @media (max-width: 860px) { .specs { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .specs { grid-template-columns: 1fr; } }
 </style>

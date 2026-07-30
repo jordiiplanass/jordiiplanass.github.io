@@ -7,8 +7,8 @@ export const meta = {
   title: 'LiveOps Unity',
   year: 2024,
   accent: 'orange',
-  tags: ['Unity', 'C#', 'LiveOps', 'Backend', 'Tooling'],
-  summary: 'Sistema de LiveOps para Unity: contenido en remoto, eventos y configuración.',
+  tags: ['React 19', 'TypeScript', 'Firebase', 'Unity 6', 'C#', 'LiveOps'],
+  summary: 'Herramienta de LiveOps para proyectos pequeños: panel en React, Firebase Realtime Database y un cliente de Unity que aplica los cambios sin recompilar.',
 };
 ---
 
@@ -21,17 +21,86 @@ export const meta = {
       <header class="hero" data-reveal>
         <h1>LiveOps <span>Unity</span></h1>
         <p class="lead">
-          Sistema de operaciones en vivo para Unity: actualizar contenido, lanzar eventos y
-          ajustar configuración sin re-publicar el build. <!-- ponytail: detalla la arquitectura real -->
+          Las herramientas de LiveOps del mercado te sobran de funciones o te atan a una plataforma
+          cerrada, y en un proyecto pequeño eso se paga en integración y en factura. Esto va al
+          revés: un panel web propio, Firebase Realtime Database como capa de datos y un cliente de
+          Unity que recoge los cambios en caliente.
         </p>
       </header>
 
-      <h2 class="sec" data-reveal>Qué resuelve</h2>
+      <h2 class="sec" data-reveal>Cómo está montado</h2>
       <div class="features">
-        <div class="panel" data-reveal style="--i:0"><span class="num">01</span><h4>Contenido remoto</h4><p>Configuración servida desde backend, aplicada en cliente.</p></div>
-        <div class="panel" data-reveal style="--i:1"><span class="num">02</span><h4>Eventos</h4><p>Activar/desactivar eventos temporales sin nuevo build.</p></div>
-        <div class="panel" data-reveal style="--i:2"><span class="num">03</span><h4>Tooling</h4><p>Herramientas internas para operar el live.</p></div>
+        <div class="panel" data-reveal style="--i:0">
+          <span class="num">01</span><h4>Panel web</h4>
+          <p>React 19 con TypeScript y Vite, shadcn/ui sobre Tailwind. Cinco secciones: economías, flags, Battle Pass, Daily Reward y jugadores.</p>
+        </div>
+        <div class="panel" data-reveal style="--i:1">
+          <span class="num">02</span><h4>Firebase</h4>
+          <p>Un árbol JSON con tres ramas. El panel escribe la configuración, Unity escribe el estado del jugador, y ninguno toca la rama del otro.</p>
+        </div>
+        <div class="panel" data-reveal style="--i:2">
+          <span class="num">03</span><h4>Cliente Unity</h4>
+          <p>Unity 6 con el SDK de Firebase. Lee la configuración al iniciar sesión y se queda escuchando por WebSocket. Sin polling.</p>
+        </div>
       </div>
+
+      <h2 class="sec" data-reveal>Lo que se toca sin recompilar</h2>
+      <ul class="list" data-reveal>
+        <li>Monedas: límite de saldo, formato de visualización, si es estacional, y un bitfield de propiedades (blanda, dura, premium, intercambiable, ganada por anuncios).</li>
+        <li>Catálogo de objetos, con tipo, rareza, tamaño de pila y si es consumible o intercambiable.</li>
+        <li>Tipos de experiencia y su multiplicador.</li>
+        <li>Battle Pass: cuántos niveles, cuánta XP cuesta cada uno, la recompensa por nivel en vía gratuita y premium, y las fechas de la temporada.</li>
+        <li>Daily Reward: la tabla de recompensas por día de racha y qué ocurre al pasar del último día, reiniciar o mantener.</li>
+        <li>Feature flags para encender y apagar funcionalidades en remoto.</li>
+      </ul>
+      <p class="body" data-reveal>
+        Cualquiera de esos cambios llega a las sesiones activas en el momento en que se guarda.
+      </p>
+
+      <h2 class="sec" data-reveal>Decisiones</h2>
+      <ul class="list" data-reveal>
+        <li>
+          <strong>Realtime Database antes que Firestore.</strong> Firestore consulta mejor, pero
+          aquí lo que pesaba era la latencia de propagación, y Realtime Database la resuelve con una
+          conexión WebSocket persistente.
+        </li>
+        <li>
+          <strong>Sin backend propio.</strong> Montarlo competía en tiempo con el desarrollo del
+          juego, que es justo lo que esta herramienta pretende no robar.
+        </li>
+        <li>
+          <strong>Sin gestor de estado global en React.</strong> El estado de cada sección es local
+          y se sincroniza con Firebase por su cuenta. Redux o Zustand habrían sumado complejidad sin
+          ganar nada.
+        </li>
+        <li>
+          <strong>Configuración y jugadores en ramas separadas.</strong> Esta no la planifiqué:
+          salió de que, compartiendo estructura, las reglas de seguridad de Firebase se volvían
+          imposibles de razonar. Separar quién escribe qué simplificó las reglas y la lógica del
+          cliente a la vez.
+        </li>
+      </ul>
+
+      <h2 class="sec" data-reveal>Lo que más me costó</h2>
+      <p class="body" data-reveal>
+        El ciclo de vida de los listeners. Apoyarse en ellos para propagar cualquier cambio suena
+        sencillo, hasta que dejas uno vivo sobre un objeto de Unity ya destruido y empiezan a saltar
+        excepciones en el hilo principal del motor que no es evidente de dónde vienen. Cancelar las
+        suscripciones en OnDestroy es de esas cosas que no salen en los tutoriales y que separan un
+        prototipo de algo que aguanta.
+      </p>
+
+      <h2 class="sec" data-reveal>Test de usabilidad</h2>
+      <ul class="list" data-reveal>
+        <li>Cinco participantes con perfil de desarrollador o diseñador de videojuegos, y cinco tareas que recorren el flujo completo: configurar el evento en el panel y verificar su efecto en Unity.</li>
+        <li>Los cinco completaron las cinco tareas sin ayuda, con una dificultad percibida media de 5,88 sobre 7.</li>
+        <li>El punto flojo salió señalado: localizar las herramientas de consulta dentro de Unity. Esa tarea acumuló 4,87 veces más pasos que el camino óptimo y la peor nota de dificultad, 4,4. El problema es dónde vive el menú, no lo que hace.</li>
+      </ul>
+      <p class="note" data-reveal>
+        Los participantes que venían de PlayFab o Unity Gaming Services comentaron que aquí hacen
+        falta menos pasos para configurar un evento simple, a cambio de cubrir bastante menos
+        terreno. Con cinco personas eso es una orientación, no un benchmark.
+      </p>
 
       <h2 class="sec" data-reveal>Stack</h2>
       <div class="tags" data-reveal>{meta.tags.map((t) => <span class="tag">{t}</span>)}</div>
@@ -49,13 +118,19 @@ export const meta = {
   .hero { margin: 26px 0 30px; }
   .hero h1 { font-size: clamp(40px, 8vw, 96px); }
   .hero h1 span { color: var(--orange); }
-  .lead { max-width: 58ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
+  .lead { max-width: 62ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
   .sec { font-size: clamp(24px, 3.6vw, 36px); margin: 44px 0 18px; }
   .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .features .panel { padding: 22px; }
   .features .num { font-family: var(--font-display); font-weight: 800; color: var(--orange); font-size: 22px; }
   .features h4 { font-size: 18px; margin: 8px 0 6px; }
-  .features p { color: var(--mute); font-size: 14px; }
+  .features p { color: var(--mute); font-size: 14px; line-height: 1.55; }
+  .body { max-width: 68ch; color: var(--mute); font-size: 17px; line-height: 1.6; margin-top: 16px; }
+  .list { max-width: 68ch; list-style: none; display: grid; gap: 12px; }
+  .list li { color: var(--mute); font-size: 16px; line-height: 1.6; padding-left: 18px; position: relative; }
+  .list li::before { content: ''; position: absolute; left: 0; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); }
+  .list strong { color: var(--head); font-weight: 600; }
+  .note { max-width: 68ch; margin-top: 24px; padding-left: 16px; border-left: 2px solid var(--line); color: var(--mute); font-size: 15px; line-height: 1.6; }
   .tags { display: flex; flex-wrap: wrap; gap: 8px; }
   @media (max-width: 640px) { .features { grid-template-columns: 1fr; } }
 </style>
