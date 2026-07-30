@@ -1,0 +1,28 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Carousel from '../../../components/Carousel.astro';
+import { useTranslations } from '../../../i18n/utils';
+
+const t = useTranslations('en');
+const games = Object.values(import.meta.glob('./*.astro', { eager: true }))
+  .map((m: any) => m.meta).filter(Boolean).sort((a, b) => b.year - a.year);
+---
+
+<Base title={t('title.games')} lang="en">
+  <section class="page">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <h2 class="sec-title">My <em>Games</em></h2>
+      </div>
+      <p class="intro" data-reveal style="--i:1">{t('gamespage.intro')}</p>
+    </div>
+    <div data-reveal style="--i:2">
+      <Carousel items={games} base="/en/games" centerSlug="pipo-the-penguin" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 110px 0 70px; }
+  .intro { color: var(--mute); max-width: 52ch; margin: -16px 0 44px; font-size: 16px; line-height: 1.6; }
+</style>

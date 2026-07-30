@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+*.log
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Local Claude Code settings (machine-specific)
+.claude/settings.local.json
+
+# Design sources and scratch files, not part of the site
+J-Icon-2.af
+font-preview.html

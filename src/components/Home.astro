@@ -1,0 +1,530 @@
+---
+import Carousel from './Carousel.astro';
+import ProjectList from './ProjectList.astro';
+import { useTranslations } from '../i18n/utils';
+
+interface Props { lang: 'es' | 'en'; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const L = lang === 'en' ? '/en' : ''; // prefix for listing pages
+
+// Tools/languages shown in the About "Stack" block. Brand-color SVG logos live in
+// public/icons/. Names are proper nouns, identical in both languages.
+const stack = [
+  { name: 'Unity',          icon: '/icons/unity.svg',         dark: true  },
+  { name: 'C#',             icon: '/icons/csharp.svg',        dark: false },
+  { name: 'C++',            icon: '/icons/cplusplus.svg',     dark: false },
+  { name: 'Unreal Engine',  icon: '/icons/unreal.svg',        dark: true  },
+  { name: 'Android Studio', icon: '/icons/androidstudio.svg', dark: false },
+  { name: 'Git',            icon: '/icons/git.svg',           dark: false },
+];
+
+// Cards read from the detail pages' `export const meta`. Glob both languages (paths must be
+// static) and pick the set matching the current lang so /en shows EN summaries + links.
+const pick = (mods: Record<string, any>) =>
+  Object.values(mods).map((m: any) => m.meta).filter(Boolean).sort((a, b) => b.year - a.year);
+const games = lang === 'en'
+  ? pick(import.meta.glob('../pages/en/games/*.astro', { eager: true }))
+  : pick(import.meta.glob('../pages/games/*.astro', { eager: true }));
+const projects = lang === 'en'
+  ? pick(import.meta.glob('../pages/en/projects/*.astro', { eager: true }))
+  : pick(import.meta.glob('../pages/projects/*.astro', { eager: true }));
+
+// Line icons for the "What I do" cards. Stroke = currentColor (accent), set via CSS.
+const ICONS: Record<string, string> = {
+  systems: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 21 8 12 13 3 8 12 3Z"/><path d="M3 13 12 18 21 13"/></svg>',
+  tools: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 4 12 8 16"/><path d="M16 8 20 12 16 16"/><path d="M13 6 11 18"/></svg>',
+  lead: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21 5 4"/><path d="M5 5 16 5 14 8.5 16 12 5 12"/></svg>',
+};
+
+// Section titles, same "My Games" treatment (display type + accent word) per language.
+const ui = lang === 'en'
+  ? {
+      eyebrow: 'Game Programmer',
+      about: 'About <em>me</em>',
+      games: 'My <em>Games</em>',
+      projects: 'Other <em>Projects</em>',
+      experience: '<em>Experience</em>',
+      cv: 'My <em>CV</em>',
+      viewProject: 'View project',
+      focusLabel: 'What I do',
+      focus: [
+        { ic: 'systems', h: 'Systems & gameplay', d: 'Mechanics, architecture and the code that holds the experience together.' },
+        { ic: 'tools', h: 'Tools & pipeline', d: 'Tooling and flows that speed the whole team up.' },
+        { ic: 'lead', h: 'Technical production', d: 'I take initiative and carry the project to the finish.' },
+      ],
+      stackLabel: 'Tools',
+      stack,
+      stats: [{ n: '4', l: 'Games' }, { n: '2', l: 'Projects' }, { n: '5', l: 'Years' }],
+      // Work experience. Add an entry = add an object (newest first). `points` allow <strong>.
+      exp: [
+        {
+          year: '2026–now', title: 'Espai Casa Sagnier', role: 'Unity Instructor',
+          points: [
+            'Run an <strong>after-school Unity workshop</strong> for students aged 12 to 17.',
+            'Teach game development <strong>from scratch</strong> assets, programming and the full production cycle.',
+            'Guide each student to design and ship their own <strong>playable game</strong>.',
+          ],
+          tags: ['Unity', 'C#', 'Teaching', 'Game Design'],
+        },
+        {
+          year: '2025', title: 'Proyecto Respida', role: 'Lead Developer',
+          points: [
+            'Led development as <strong>lead dev</strong> alongside another programmer.',
+            'Designed and implemented the <strong>interconnection</strong> between the different project systems.',
+            'Defined the <strong>architecture</strong> of the main modules and their integration.',
+            'Ensured the <strong>closure and delivery</strong> of the project meeting all deadlines.',
+          ],
+          tags: ['Architecture', 'Systems', 'Unity', 'C#'],
+        },
+        {
+          year: '2021–22', title: 'Alioth', role: 'Web Developer',
+          points: [
+            'Built web interfaces on a custom framework based on <strong>Three.js</strong>.',
+            'Implemented interactive <strong>3D / WebGL</strong> experiences in the browser.',
+            'Optimised real-time <strong>render performance</strong>.',
+          ],
+          tags: ['Three.js', 'WebGL', '3D', 'Performance'],
+        },
+      ],
+    }
+  : {
+      eyebrow: 'Game Programmer',
+      about: 'Sobre <em>mí</em>',
+      games: 'Mis <em>juegos</em>',
+      projects: 'Otros <em>proyectos</em>',
+      experience: '<em>Experiencia</em>',
+      cv: 'Mi <em>CV</em>',
+      viewProject: 'Ver proyecto',
+      focusLabel: 'Lo que hago',
+      focus: [
+        { ic: 'systems', h: 'Sistemas y gameplay', d: 'Mecánicas, arquitectura y el código que sostiene la experiencia.' },
+        { ic: 'tools', h: 'Herramientas y pipeline', d: 'Tooling y flujos que aceleran a todo el equipo.' },
+        { ic: 'lead', h: 'Producción técnica', d: 'Tomo la iniciativa y llevo el proyecto al final.' },
+      ],
+      stackLabel: 'Herramientas',
+      stack,
+      stats: [{ n: '4', l: 'Juegos' }, { n: '2', l: 'Proyectos' }, { n: '5', l: 'Años' }],
+      // Experiencia laboral. Añadir una entrada = añadir un objeto (más reciente primero). `points` admiten <strong>.
+      exp: [
+        {
+          year: '2026–act.', title: 'Espai Casa Sagnier', role: 'Profesor de Unity',
+          points: [
+            'Imparto un <strong>taller extraescolar de Unity</strong> a alumnos de 12 a 17 años.',
+            'Enseño el desarrollo de videojuegos <strong>desde cero</strong>: assets, programación y ciclo completo de producción.',
+            'Guío a cada alumno a diseñar y publicar su propio <strong>juego jugable</strong>.',
+          ],
+          tags: ['Unity', 'C#', 'Docencia', 'Game Design'],
+        },
+        {
+          year: '2025', title: 'Proyecto Respida', role: 'Desarrollador principal',
+          points: [
+            'Lideré el desarrollo como <strong>dev principal</strong> junto a otro programador.',
+            'Diseñé e implementé la <strong>interconexión</strong> entre los distintos sistemas del proyecto.',
+            'Definí la <strong>arquitectura</strong> de los módulos principales y su integración.',
+            'Aseguré el <strong>cierre y entrega</strong> del proyecto cumpliendo los plazos.',
+          ],
+          tags: ['Arquitectura', 'Sistemas', 'Unity', 'C#'],
+        },
+        {
+          year: '2021–22', title: 'Alioth', role: 'Web Developer',
+          points: [
+            'Desarrollé interfaces web sobre un framework propio basado en <strong>Three.js</strong>.',
+            'Implementé experiencias <strong>3D / WebGL</strong> interactivas en el navegador.',
+            'Optimicé el <strong>rendimiento</strong> de render en tiempo real.',
+          ],
+          tags: ['Three.js', 'WebGL', '3D', 'Rendimiento'],
+        },
+      ],
+    };
+const leadText = t('hero.lead');
+---
+
+<!-- HERO -->
+<section class="hero" data-snap>
+  <div class="wrap hero-grid">
+    <div class="hero-left">
+      <p class="eyebrow" data-reveal>{ui.eyebrow}</p>
+      <h1 class="type" aria-label="Jordi Planas">
+        <span class="typed" data-text="Jordi\nPlanas"></span><span class="caret name-caret" aria-hidden="true"></span>
+      </h1>
+    </div>
+    <div class="hero-right" data-speed="-0.05">
+      <p class="lead" aria-label={leadText}>
+        <span class="lead-ghost" aria-hidden="true">{leadText}</span>
+        <span class="lead-live">
+          <span class="typed-lead" data-text={leadText}></span><span class="caret lead-caret is-off" aria-hidden="true"></span>
+        </span>
+      </p>
+      <div class="cta">
+        <a href={`${L}/games`} class="btn btn-accent">{t('hero.cta.games')}</a>
+        <a href="/cv.pdf" download class="btn">{t('hero.cta.cv')}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="block" data-snap>
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <h2 class="sec-title" set:html={ui.about}></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-lead" data-reveal style="--i:1">
+        <h3 class="about-headline">{t('about.headline')}</h3>
+        <div class="about-body">
+          <p>{t('about.p1')}</p>
+          <ul class="stats">
+            {ui.stats.map((s) => (
+              <li><span class="stat-n">{s.n}</span><span class="stat-l">{s.l}</span></li>
+            ))}
+          </ul>
+        </div>
+        <div class="about-illu">
+          <img src="/illustrations/hamster.svg" alt="" onerror="this.parentElement.classList.add('about-illu--empty');this.remove()" />
+        </div>
+      </div>
+      <div class="about-side" data-reveal style="--i:2">
+        <p class="side-label">{ui.focusLabel}</p>
+        <ul class="focus-cards">
+          {ui.focus.map((f) => (
+            <li class="fcard">
+              <span class="fcard-ic" set:html={ICONS[f.ic]} />
+              <div>
+                <span class="fcard-h">{f.h}</span>
+                <span class="fcard-d">{f.d}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="side-label">{ui.stackLabel}</p>
+        <ul class="tool-cards">
+          {ui.stack.map((s) => (
+            <li class="tcard">
+              <img src={s.icon} alt={s.name} width="26" height="26" loading="lazy" />
+              <span>{s.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMES -->
+<section id="games" class="block games-block" data-snap>
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <h2 class="sec-title" set:html={ui.games}></h2>
+      <a href={`${L}/games`} class="more">{t('games.all')}</a>
+    </div>
+  </div>
+  <div data-reveal style="--i:1">
+    <Carousel items={games} base={`${L}/games`} centerSlug="pipo-the-penguin" />
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="block" data-snap>
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <h2 class="sec-title" set:html={ui.projects}></h2>
+      <a href={`${L}/projects`} class="more">{t('projects.all')}</a>
+    </div>
+    <ProjectList items={projects} viewLabel={ui.viewProject} base={`${L}/projects`} />
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="block" data-snap>
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <h2 class="sec-title" set:html={ui.experience}></h2>
+    </div>
+    <ol class="timeline">
+      {ui.exp.map((e, i) => (
+        <li class="tl-item" data-reveal style={`--i:${i}`}>
+          <div class="tl-year">{e.year}</div>
+          <div class="tl-body panel">
+            <div class="tl-top">
+              <h3>{e.title}</h3>
+              <p class="role">{e.role}</p>
+            </div>
+            <ul class="achievements">
+              {e.points.map((p) => <li set:html={p} />)}
+            </ul>
+            <ul class="tl-tags">
+              {e.tags.map((x) => <li class="tag">{x}</li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- CV -->
+<section id="cv" class="block cv-block" data-snap>
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <h2 class="sec-title" set:html={ui.cv}></h2>
+    </div>
+    <div class="cv-card panel" data-reveal style="--i:1">
+      <span class="cv-ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3 6 3 6 21 18 21 18 7 14 3Z"/><path d="M14 3 14 7 18 7"/><path d="M12 10 12 16"/><path d="M9 13 12 16 15 13"/></svg>
+      </span>
+      <div class="cv-main">
+        <h3>{t('cv.headline')}</h3>
+        <p>{t('cv.body')}</p>
+      </div>
+      <a href="/cv.pdf" download class="btn btn-accent">{t('cv.btn')}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { min-height: 100svh; display: flex; align-items: center; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: start; /* name top-anchored, independent of right column height */
+    gap: clamp(32px, 6vw, 88px);
+    padding-top: clamp(0px, 4vh, 56px); /* small offset for the fixed nav, otherwise centered */
+    width: 100%;
+  }
+  .hero-left { position: relative; }
+  .hero h1 {
+    font-size: clamp(52px, 9vw, 116px);
+    margin: 12px 0 0;
+    min-height: 2.04em; /* reserve 2 lines so typing never shifts the name */
+  }
+  .type { display: block; }
+  .caret {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.82em;
+    background: var(--accent);
+    margin-left: 0.12em;
+    vertical-align: -0.08em;
+    animation: caret-blink 1.05s steps(1) infinite;
+  }
+  .caret.is-off { display: none; }
+  .lead .caret { height: 1.05em; width: 2px; vertical-align: -0.18em; }
+  @keyframes caret-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+
+  .hero-right { align-self: start; padding-top: 0.6em; }
+  /* Ghost reserves the full phrase height so the CTA (and the whole hero) never
+     reflows while typing -> the name stays perfectly still. */
+  .lead {
+    position: relative;
+    max-width: 42ch;
+    font-size: clamp(17px, 1.7vw, 22px);
+    line-height: 1.5;
+    color: var(--mute);
+  }
+  .lead-ghost { visibility: hidden; }
+  /* Live text overlays the ghost, anchored to its top-left so lines fill
+     downward in place — never starts high and drops. */
+  .lead-live { position: absolute; top: 0; left: 0; right: 0; }
+  .cta { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.6s ease, transform 0.6s ease; }
+  .cta.show { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 22px; padding-top: 64px; }
+    .hero h1 { font-size: clamp(48px, 16vw, 96px); }
+    .cta { opacity: 1; transform: none; }
+  }
+
+  /* Each section fills the viewport and centers, so a scroll lands on a whole,
+     centered section. */
+  .block {
+    min-height: 100svh;
+    display: flex; flex-direction: column; justify-content: center;
+    /* Top padding must clear the 64px fixed nav: sections taller than the viewport
+       snap their top to y=0, so a smaller pad would hide the title behind the header. */
+    padding: clamp(88px, 8vh, 104px) 0 clamp(40px, 6vh, 88px);
+  }
+
+  /* Home teaser only: section-jacking packs a full 100vh, so two 16:10 editorial
+     rows + the huge title overflow and read cramped. Cap the art panels here so
+     both rows fit with negative space; the /projects page keeps the tall panels. */
+  @media (min-width: 860px) {
+    #projects :global(.proj-art) { aspect-ratio: auto; height: clamp(150px, 23vh, 220px); }
+
+    /* Experience in two columns on wide screens: a single vertical spine overflows
+       the 100vh snap past ~2 entries. A grid keeps every card full-size, fits one
+       screen (rows wrap), and scales as the list grows. Spine/nodes drop here. */
+    #experience .timeline { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; padding-left: 0; align-content: center; }
+    #experience .timeline::before { display: none; }
+    #experience .tl-item { grid-template-columns: 1fr; gap: 6px; }
+    #experience .tl-item::before { display: none; }
+    #experience .tl-year { padding-top: 0; }
+    /* Denser cards so both rows + title clear one snap screen with air. */
+    #experience .tl-body { padding: 16px 20px; }
+    #experience .tl-top { margin-bottom: 8px; }
+    #experience .achievements { gap: 6px; }
+    #experience .achievements li { font-size: 13.5px; line-height: 1.42; }
+    #experience .tl-tags { margin-top: 10px; }
+    #experience.block { padding-top: 72px; padding-bottom: clamp(32px, 5vh, 60px); }
+  }
+
+  .about-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+
+  /* Headline full-width; body (paragraph + stats) and the line-art sit on one row,
+     line-art bottom-aligned to the stats so it reads grounded, not floating. */
+  .about-lead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(118px, 13vw, 158px);
+    grid-template-areas: "head head" "body illu";
+    column-gap: clamp(20px, 3vw, 44px); row-gap: 20px; align-items: start;
+  }
+  .about-headline { grid-area: head; }
+  .about-body { grid-area: body; }
+  .about-illu { grid-area: illu; align-self: end; }
+  .about-illu img { width: 100%; height: auto; display: block; }
+  .about-illu--empty {
+    width: 100%; aspect-ratio: 3 / 4;
+    border: 1.5px dashed color-mix(in srgb, var(--ink) 26%, transparent);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    text-align: center; color: var(--mute); font-family: var(--font-mono);
+    font-size: 11px; line-height: 1.5; padding: 8px; white-space: pre-line;
+  }
+  .about-illu--empty::after { content: 'line-art\Ahámster\A(ink #232323)'; }
+
+  .about-headline {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(26px, 3.4vw, 46px); line-height: 1.04; letter-spacing: -0.02em;
+    margin-bottom: 18px; max-width: 18ch;
+  }
+  .about-lead p { color: var(--mute); font-size: 16px; line-height: 1.6; max-width: 46ch; }
+
+  /* Stats: big coral numerals + uppercase label. */
+  .stats { list-style: none; display: flex; gap: clamp(24px, 4vw, 40px); margin-top: 22px; }
+  .stats li { display: flex; flex-direction: column; gap: 4px; }
+  .stat-n { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 3.4vw, 38px); line-height: 1; color: var(--accent); letter-spacing: -0.02em; }
+  .stat-l { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+
+  .side-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--mute); margin-bottom: 10px;
+  }
+
+  /* "What I do": line icon + title + desc cards. */
+  .focus-cards { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+  .fcard {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 15px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .fcard-ic { flex: none; color: var(--accent); line-height: 0; }
+  .fcard-ic :global(svg) { width: 22px; height: 22px; display: block; }
+  .fcard-h { display: block; font-weight: 600; color: var(--ink); font-size: 15px; margin-bottom: 2px; }
+  .fcard-d { display: block; color: var(--mute); font-size: 13.5px; line-height: 1.5; }
+
+  /* Tools: brand logo + name, gridded cards. */
+  .tool-cards { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tcard {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 11px 8px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--ink);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .tcard img { width: 26px; height: 26px; display: block; flex: none; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .fcard:hover, .tcard:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); transform: translateY(-2px); }
+  }
+
+  /* Experience: vertical spine with a coral node per entry + tech chips. */
+  .timeline { list-style: none; display: flex; flex-direction: column; gap: 22px; position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+  .tl-item { position: relative; display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: start; }
+  .tl-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--accent); }
+  .tl-year { font-family: var(--font-display); font-weight: 800; font-size: 17px; color: var(--accent); padding-top: 2px; }
+  .tl-body { padding: 22px 24px; }
+  .tl-top { margin-bottom: 12px; }
+  .tl-top h3 { font-size: 21px; }
+  .tl-top .role { color: var(--accent); font-weight: 600; font-size: 14px; margin-top: 2px; }
+  .achievements { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .achievements li { position: relative; padding-left: 20px; color: var(--mute); font-size: 14.5px; line-height: 1.5; }
+  .achievements li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+  .achievements :global(strong) { color: var(--ink); font-weight: 600; }
+  .tl-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+
+  /* CV: line icon + copy + "what's inside" mini-list + button. */
+  .cv-card { display: flex; align-items: center; gap: 28px; padding: 32px 36px; }
+  .cv-ic { flex: none; color: var(--accent); line-height: 0; }
+  .cv-ic :global(svg) { width: 42px; height: 42px; display: block; }
+  .cv-main { flex: 1; }
+  .cv-card h3 { font-family: var(--font-display); font-size: clamp(22px, 3vw, 32px); margin-bottom: 6px; }
+  .cv-card p { color: var(--mute); max-width: 52ch; }
+
+  @media (max-width: 760px) {
+    .about-grid { grid-template-columns: 1fr; gap: 28px; }
+    .about-lead { grid-template-columns: 1fr; grid-template-areas: "head" "body"; row-gap: 22px; }
+    .about-illu { display: none; } /* hámster fuera en mobile */
+    /* Timeline: año arriba, sin spine ni nodo, card a todo el ancho -> respira. */
+    .timeline { padding-left: 0; gap: 28px; }
+    .timeline::before { display: none; }
+    .tl-item { grid-template-columns: 1fr; gap: 8px; }
+    .tl-item::before { display: none; }
+    .tl-year { padding-top: 0; }
+    .cv-card { flex-direction: column; align-items: flex-start; gap: 18px; }
+  }
+</style>
+
+<script>
+  // Hero types like an editor: name first, then the caret jumps to the phrase on
+  // the right and types it; CTA fades in when done.
+  function typeHero() {
+    const name = document.querySelector<HTMLElement>('.typed');
+    const lead = document.querySelector<HTMLElement>('.typed-lead');
+    if (!name || name.dataset.run) return;
+    name.dataset.run = '1';
+    const nameCaret = document.querySelector<HTMLElement>('.name-caret');
+    const leadCaret = document.querySelector<HTMLElement>('.lead-caret');
+    const cta = document.querySelector<HTMLElement>('.cta');
+    const nameText = (name.dataset.text || '').replace(/\\n/g, '\n');
+    const leadText = lead?.dataset.text || '';
+    const showCta = () => cta?.classList.add('show');
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      name.innerHTML = nameText.replace(/\n/g, '<br>');
+      if (lead) lead.textContent = leadText;
+      nameCaret?.classList.add('is-off');
+      showCta();
+      return;
+    }
+
+    const typeInto = (el: HTMLElement, text: string, done: () => void) => {
+      let i = 0;
+      const step = () => {
+        if (i >= text.length) { done(); return; }
+        const ch = text[i++];
+        if (ch === '\n') el.appendChild(document.createElement('br'));
+        else el.appendChild(document.createTextNode(ch));
+        // Name types deliberate; phrase types fast so it never lingers.
+        const speed = el === name ? 70 + Math.random() * 50 : 14 + Math.random() * 14;
+        setTimeout(step, speed);
+      };
+      step();
+    };
+
+    name.textContent = '';
+    if (lead) lead.textContent = '';
+    setTimeout(() => {
+      typeInto(name, nameText, () => {
+        nameCaret?.classList.add('is-off');
+        leadCaret?.classList.remove('is-off');
+        setTimeout(() => { if (lead) typeInto(lead, leadText, showCta); else showCta(); }, 140);
+      });
+    }, 260);
+  }
+  document.addEventListener('astro:page-load', typeHero);
+  if (document.readyState !== 'loading') typeHero();
+  else document.addEventListener('DOMContentLoaded', typeHero);
+</script>

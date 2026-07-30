@@ -1,0 +1,34 @@
+---
+// GitHub Pages serves the built /404.html for any path it can't resolve, so a single
+// bilingual page covers both /... and /en/... . No lang prefix logic: the request that
+// lands here has no valid route to read a locale from.
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — Jordi Planas" lang="es">
+  <section class="nf wrap">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="sec-title">Esta página no <em>existe</em></h1>
+    <p class="lead">
+      El enlace está roto o la página se movió. <span lang="en">This page doesn't exist.</span>
+    </p>
+    <div class="acts">
+      <a href="/" class="btn btn-accent">Ir al inicio</a>
+      <a href="/games" class="btn">Games</a>
+      <a href="/projects" class="btn">Projects</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding-top: 96px;
+  }
+  .lead { color: var(--mute); max-width: 46ch; }
+  .acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+</style>

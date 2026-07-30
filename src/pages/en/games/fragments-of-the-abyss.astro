@@ -1,0 +1,73 @@
+---
+import Base from '../../../layouts/Base.astro';
+import VideoBlock from '../../../components/VideoBlock.astro';
+import Gallery from '../../../components/Gallery.astro';
+
+export const meta = {
+  slug: 'fragments-of-the-abyss',
+  title: 'Fragments of the Abyss',
+  year: 2024,
+  accent: 'orange',
+  tags: ['Unity', 'C#', 'Atmospheric', 'Systems'],
+  summary: 'Atmospheric deep-sea exploration. Systems and a dark mood.',
+  cover: 'https://img.youtube.com/vi/Xc5Z1nYzrCE/hqdefault.jpg',
+};
+---
+
+<Base title={`${meta.title} — Jordi Planas`} lang="en">
+  <article class="detail">
+    <div class="wrap">
+      <a href="/en/games" class="back">← Games</a>
+
+      <!-- Bespoke layout: video leads, text follows -->
+      <p class="eyebrow" style="margin-top:26px" data-reveal>2024 · Game</p>
+      <h1 data-reveal style="--i:1">Fragments of the Abyss</h1>
+
+      <div data-reveal style="--i:2">
+        <VideoBlock youtube="Xc5Z1nYzrCE" title="Fragments of the Abyss trailer" />
+      </div>
+
+      <div class="cols" data-reveal>
+        <div>
+          <h2>About the game</h2>
+          <p>
+            An atmospheric exploration adventure into the deep. The focus was on the
+            mood and the systems that sustain the feeling of descending into the abyss.
+            <!-- ponytail: expand with the real description -->
+          </p>
+        </div>
+        <div>
+          <h2>What I did</h2>
+          <ul>
+            <li>Gameplay systems</li>
+            <li>Mechanics integration</li>
+            <li>Experience tuning</li>
+          </ul>
+          <div class="tags">{meta.tags.map((t) => <span class="tag">{t}</span>)}</div>
+        </div>
+      </div>
+
+      <h2 class="sec" data-reveal>Gallery</h2>
+      <Gallery cols={3} />
+
+      <div class="next" data-reveal>
+        <a href="/en/games/chrono-fish" class="btn">Next: Chrono Fish →</a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .detail { padding: 110px 0 40px; }
+  .back { color: var(--mute); font-size: 14px; }
+  .back:hover { color: var(--orange); }
+  h1 { font-size: clamp(40px, 8vw, 96px); color: var(--orange); margin: 8px 0 28px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin: 44px 0; }
+  .cols h2 { font-size: 22px; margin-bottom: 12px; }
+  .cols p, .cols li { color: var(--mute); }
+  .cols ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+  .sec { font-size: clamp(26px, 4vw, 40px); margin: 40px 0 18px; }
+  .next { margin-top: 56px; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import VideoBlock from '../../components/VideoBlock.astro';
+
+export const meta = {
+  slug: 'chrono-fish',
+  title: 'Chrono Fish',
+  year: 2023,
+  accent: 'teal',
+  tags: ['Unity', 'C#', 'Time Mechanic', 'Puzzle'],
+  summary: 'Un pez y el tiempo. Mecánica temporal como eje del puzzle.',
+  cover: 'https://img.youtube.com/vi/g6t-Ix3g1V0/hqdefault.jpg',
+};
+---
+
+<Base title={`${meta.title} — Jordi Planas`}>
+  <article class="detail">
+    <div class="wrap">
+      <a href="/games" class="back">← Games</a>
+
+      <!-- Bespoke layout: stat sidebar + content -->
+      <div class="layout">
+        <aside class="panel stats" data-reveal>
+          <h1>Chrono<br />Fish</h1>
+          <dl>
+            <dt>Año</dt><dd>2023</dd>
+            <dt>Motor</dt><dd>Unity</dd>
+            <dt>Género</dt><dd>Puzzle temporal</dd>
+            <dt>Rol</dt><dd>Programación</dd>
+          </dl>
+        </aside>
+
+        <div class="content" data-reveal style="--i:1">
+          <p class="big">
+            Puzzle construido alrededor de una mecánica de tiempo: el jugador manipula el
+            flujo temporal para avanzar. <!-- ponytail: describe la mecánica real -->
+          </p>
+          <VideoBlock youtube="g6t-Ix3g1V0" title="Chrono Fish — gameplay" />
+          <div class="tags">{meta.tags.map((t) => <span class="tag">{t}</span>)}</div>
+        </div>
+      </div>
+
+      <div class="next" data-reveal>
+        <a href="/games/nachito-el-nacho" class="btn">Siguiente: Nachito el Nacho →</a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .detail { padding: 110px 0 40px; }
+  .back { color: var(--mute); font-size: 14px; }
+  .back:hover { color: var(--teal); }
+  .layout { display: grid; grid-template-columns: 300px 1fr; gap: 32px; margin: 26px 0; align-items: start; }
+  .stats { padding: 28px; position: sticky; top: 90px; }
+  .stats h1 { font-size: clamp(34px, 5vw, 52px); color: var(--teal); margin-bottom: 22px; }
+  .stats dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; }
+  .stats dt { color: var(--mute); font-size: 13px; }
+  .stats dd { font-weight: 600; font-size: 14px; }
+  .content .big { font-size: clamp(20px, 3vw, 26px); line-height: 1.4; margin-bottom: 26px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 22px; }
+  .next { margin-top: 56px; }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    .stats { position: static; }
+  }
+</style>

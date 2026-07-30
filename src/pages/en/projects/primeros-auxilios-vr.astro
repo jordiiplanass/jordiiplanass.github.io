@@ -1,0 +1,62 @@
+---
+import Base from '../../../layouts/Base.astro';
+import VideoBlock from '../../../components/VideoBlock.astro';
+import Gallery from '../../../components/Gallery.astro';
+
+// slug mirrors the ES page so the language toggle resolves; title is the EN label.
+export const meta = {
+  slug: 'primeros-auxilios-vr',
+  title: 'First Aid (VR)',
+  year: 2024,
+  accent: 'teal',
+  tags: ['VR', 'Unity', 'XR Interaction', 'Training'],
+  summary: 'A virtual-reality first-aid simulator. Interaction and training.',
+};
+---
+
+<Base title={`${meta.title} — Jordi Planas`} lang="en">
+  <article class="detail">
+    <div class="wrap">
+      <a href="/en/projects" class="back">← Projects</a>
+
+      <!-- Bespoke: VR spec layout -->
+      <header class="hero" data-reveal>
+        <p class="eyebrow">Virtual Reality</p>
+        <h1>First Aid <span>VR</span></h1>
+        <p class="lead">
+          A VR training experience to practice first aid in an immersive and safe way.
+          <!-- ponytail: describe the real scope and target device -->
+        </p>
+      </header>
+
+      <div data-reveal style="--i:1">
+        <VideoBlock title="First Aid VR demo" />
+      </div>
+
+      <div class="specs">
+        <div class="panel" data-reveal style="--i:0"><h4>Platform</h4><p>VR · Unity XR</p></div>
+        <div class="panel" data-reveal style="--i:1"><h4>Focus</h4><p>Interaction and training</p></div>
+        <div class="panel" data-reveal style="--i:2"><h4>Role</h4><p>Systems programming</p></div>
+      </div>
+
+      <h2 class="sec" data-reveal>Gallery</h2>
+      <Gallery cols={2} />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .detail { padding: 110px 0 40px; }
+  .back { color: var(--mute); font-size: 14px; }
+  .back:hover { color: var(--teal); }
+  .hero { margin: 26px 0 34px; }
+  .hero h1 { font-size: clamp(40px, 8vw, 92px); }
+  .hero h1 span { color: var(--teal); }
+  .lead { max-width: 56ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
+  .specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 34px 0; }
+  .specs .panel { padding: 20px; }
+  .specs h4 { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .specs p { color: var(--mute); }
+  .sec { font-size: clamp(26px, 4vw, 40px); margin: 40px 0 18px; }
+  @media (max-width: 640px) { .specs { grid-template-columns: 1fr; } }
+</style>

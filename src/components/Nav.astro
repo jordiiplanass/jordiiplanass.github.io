@@ -1,0 +1,134 @@
+---
+import { getLangFromUrl, toggleLangHref, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const altHref = toggleLangHref(Astro.url);
+const base = lang === 'en' ? '/en' : '';
+const { pathname } = Astro.url;
+---
+
+<header class="nav">
+  <div class="wrap navin">
+    <a href={`${base}/`} class="brand">Jordi&nbsp;Planas</a>
+    <div class="navright">
+      <!-- ponytail: native <details> disclosure = responsive menu with 0 JS. Inline links on
+           desktop, collapses to a ☰ dropdown <=720px. Lang toggle lives OUTSIDE the menu so it
+           stays visible in the bar at every size. -->
+      <details class="menu">
+        <summary class="burger" aria-label="Menú">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path class="ico-open" d="M4 7h16M4 12h16M4 17h16" />
+            <path class="ico-close" d="M6 6 18 18M18 6 6 18" />
+          </svg>
+        </summary>
+        <nav class="links">
+          <a href={`${base}/games`} class:list={{ active: pathname.startsWith(`${base}/games`) }}>{t('nav.games')}</a>
+          <a href={`${base}/projects`} class:list={{ active: pathname.startsWith(`${base}/projects`) }}>{t('nav.projects')}</a>
+          <a href={`${base}/#experience`}>{t('nav.experience')}</a>
+          <a href="/cv.pdf" download class="cv">CV ↓</a>
+        </nav>
+      </details>
+      <a href={altHref} class="lang-toggle">{lang === 'es' ? 'EN' : 'ES'}</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // <details> no se cierra solo al pulsar un link (anclas in-page no recargan).
+  // ponytail: un listener delegado, instalado una vez.
+  if (!(window as any).__navClose) {
+    (window as any).__navClose = true;
+    document.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest('details.menu .links a');
+      if (a) (a.closest('details') as HTMLDetailsElement).open = false;
+    });
+  }
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    background: rgb(254,239,232);
+    /* ponytail: promote to own GPU layer. Sin esto, position:fixed se desincroniza al
+       scrollear tras un repaint (p.ej. abrir/cerrar el menú) en móvil/emulación. */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  .navin {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .navright { display: flex; align-items: center; gap: 18px; }
+  .menu { display: flex; align-items: center; }
+  /* Chrome 131+ wraps a closed <details>'s content in ::details-content with
+     content-visibility:hidden, which hid the inline links on desktop. Reveal it.
+     Mobile still collapses: there .links is display:none until [open] (display wins). */
+  .menu::details-content { content-visibility: visible; }
+  /* Burger hidden on desktop; marker killed cross-browser. */
+  .burger { display: none; list-style: none; }
+  .burger::-webkit-details-marker { display: none; }
+  .burger .ico { width: 24px; height: 24px; display: block; }
+  .ico-close { display: none; }
+  .menu[open] .ico-open { display: none; }
+  .menu[open] .ico-close { display: block; }
+  .links { display: flex; align-items: center; gap: 22px; }
+  .links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mute);
+    transition: color 0.18s;
+  }
+  .links a:hover, .links a.active { color: var(--ink); }
+  .links .cv {
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  .links .cv:hover { background: var(--orange); color: var(--black); }
+  /* Lang toggle: always-visible pill in the bar. */
+  .lang-toggle {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--mute);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: border-color 0.18s, color 0.18s;
+  }
+  .lang-toggle:hover { border-color: var(--ink); color: var(--ink); }
+
+  @media (max-width: 720px) {
+    .brand { font-size: 16px; }
+    /* ☰ toggle: 40px tap target, no negative margins (no clipping). */
+    .burger {
+      display: grid; place-items: center;
+      width: 40px; height: 40px;
+      cursor: pointer; color: var(--ink);
+    }
+    /* Links: solid full-width panel dropping below the bar. */
+    .links {
+      display: none;
+      position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 2px;
+      background: rgb(254,239,232); border-top: 1px solid var(--line);
+      box-shadow: 0 14px 26px -14px rgba(0,0,0,0.3);
+      padding: 8px 24px 16px;
+    }
+    .menu[open] .links { display: flex; }
+    .links a { font-size: 16px; padding: 10px 0; }
+    .links .cv { align-self: flex-start; margin-top: 6px; padding: 7px 14px; }
+  }
+</style>

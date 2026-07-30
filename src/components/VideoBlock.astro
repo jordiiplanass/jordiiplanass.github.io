@@ -1,0 +1,85 @@
+---
+// Three modes:
+//  youtube="VIDEO_ID"  -> click-to-load facade (no YT scripts until clicked)
+//  src="/media/clip.mp4" -> native <video>, no autoplay, poster optional
+//  neither -> styled placeholder
+interface Props {
+  youtube?: string;
+  src?: string;
+  poster?: string;
+  title?: string;
+}
+const { youtube, src, poster, title } = Astro.props;
+---
+
+{youtube ? (
+  <button
+    class="vfacade"
+    data-id={youtube}
+    style={`background-image:url(https://img.youtube.com/vi/${youtube}/hqdefault.jpg)`}
+    aria-label={`Reproducir ${title ?? 'vídeo'}`}
+  >
+    <span class="play">▶</span>
+  </button>
+) : src ? (
+  <video class="vfile" controls preload="none" poster={poster}>
+    <source src={src} />
+  </video>
+) : (
+  <div class="vplaceholder panel">
+    <span class="play dim">▶</span>
+    <span>Vídeo próximamente{title ? ` — ${title}` : ''}</span>
+  </div>
+)}
+
+<style>
+  .vfacade, .vfile, .vplaceholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+  }
+  .vfacade {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .vfacade::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.35);
+    border-radius: 13px;
+    transition: background 0.2s;
+  }
+  .vfacade:hover::after { background: rgba(0,0,0,0.15); }
+  .play {
+    position: relative; z-index: 1;
+    width: 64px; height: 64px;
+    display: grid; place-items: center;
+    border-radius: 999px;
+    background: var(--orange); color: #000;
+    font-size: 22px; padding-left: 4px;
+  }
+  .vfile { background: #000; display: block; }
+  .vplaceholder { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; color: var(--mute); }
+  .play.dim { background: var(--line); color: var(--mute); }
+</style>
+
+<script>
+  // One global handler; swaps any clicked facade for the real iframe.
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.vfacade') as HTMLElement | null;
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+    iframe.title = btn.getAttribute('aria-label') || 'video';
+    iframe.allow = 'autoplay; encrypted-media; fullscreen';
+    iframe.allowFullscreen = true;
+    iframe.style.cssText = 'width:100%;aspect-ratio:16/9;border:1px solid var(--line);border-radius:14px;';
+    btn.replaceWith(iframe);
+  });
+</script>

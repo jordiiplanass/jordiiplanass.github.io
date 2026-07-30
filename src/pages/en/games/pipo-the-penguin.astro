@@ -1,0 +1,74 @@
+---
+import Base from '../../../layouts/Base.astro';
+import VideoBlock from '../../../components/VideoBlock.astro';
+import Gallery from '../../../components/Gallery.astro';
+
+// Card metadata read by the index pages. Keep `slug` = filename (mirrors the ES page).
+export const meta = {
+  slug: 'pipo-the-penguin',
+  title: 'Pipo the Penguin',
+  year: 2026,
+  accent: 'teal',
+  tags: ['Unity', 'C#', 'Gameplay', '3D Platformer'],
+  summary: 'A penguin, ice and slippery physics. A 3D platformer focused on movement.',
+  cover: 'https://img.youtube.com/vi/HsIRSft30w8/hqdefault.jpg',
+};
+---
+
+<Base title={`${meta.title} — Jordi Planas`} lang="en">
+  <article class="detail">
+    <div class="wrap">
+      <a href="/en/games" class="back">← Games</a>
+
+      <!-- Bespoke layout: big title hero, then split intro -->
+      <header class="hero" data-reveal>
+        <h1>Pipo the Penguin</h1>
+        <div class="meta-row">
+          <span class="year">2026</span>
+          {meta.tags.map((t) => <span class="tag">{t}</span>)}
+        </div>
+      </header>
+
+      <div class="split" data-reveal>
+        <p class="big">
+          A 3D platformer starring Pipo, a penguin who slides across the ice.
+          The challenge was a movement system that felt slippery yet controllable.
+        </p>
+        <div class="role panel">
+          <h4>My role</h4>
+          <p>Gameplay programming and movement systems.</p>
+          <!-- ponytail: edit role, team, tools, dates -->
+        </div>
+      </div>
+
+      <div data-reveal>
+        <VideoBlock youtube="HsIRSft30w8" title="Pipo the Penguin gameplay" />
+      </div>
+
+      <h2 class="sec" data-reveal>Screenshots</h2>
+      <Gallery cols={2} />
+
+      <div class="next" data-reveal>
+        <a href="/en/games/fragments-of-the-abyss" class="btn">Next: Fragments of the Abyss →</a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .detail { padding: 110px 0 40px; }
+  .back { color: var(--mute); font-size: 14px; }
+  .back:hover { color: var(--teal); }
+  .hero { margin: 26px 0 36px; }
+  .hero h1 { font-size: clamp(44px, 9vw, 110px); color: var(--teal); }
+  .meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; }
+  .meta-row .year { color: var(--mute); font-family: var(--font-display); font-weight: 800; font-size: 20px; }
+  .split { display: grid; grid-template-columns: 1.6fr 1fr; gap: 28px; margin: 10px 0 40px; }
+  .big { font-size: clamp(20px, 3vw, 28px); line-height: 1.4; }
+  .role { padding: 22px; }
+  .role h4 { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+  .role p { color: var(--mute); }
+  .sec { font-size: clamp(26px, 4vw, 40px); margin: 48px 0 18px; }
+  .next { margin-top: 56px; }
+  @media (max-width: 760px) { .split { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,29 @@
+---
+interface Props {
+  images?: { src: string; alt?: string }[];
+  cols?: number;
+}
+const { images = [], cols = 2 } = Astro.props;
+---
+
+{images.length > 0 ? (
+  <div class="gallery" style={`--cols:${cols}`}>
+    {images.map((im, i) => <img src={im.src} alt={im.alt ?? ''} loading="lazy" data-reveal style={`--i:${i % 6}`} />)}
+  </div>
+) : (
+  <div class="gallery-empty panel">
+    <span>Galería — añade imágenes a <code>/public/media</code> y pásalas en <code>images</code>.</span>
+  </div>
+)}
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    gap: 12px;
+  }
+  .gallery img { width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+  .gallery-empty { padding: 28px; text-align: center; color: var(--mute); font-size: 14px; }
+  .gallery-empty code { color: var(--teal); }
+  @media (max-width: 640px) { .gallery { grid-template-columns: 1fr; } }
+</style>

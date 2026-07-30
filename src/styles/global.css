@@ -1,0 +1,139 @@
+:root {
+  /* Flat light palette. One accent (coral); teal/orange kept as aliases so existing
+     markup still resolves, both point at the same tone. */
+  --accent: #f45d48;
+  --accent-dim: #d94a36;
+  --teal: var(--accent);
+  --orange: var(--accent);
+  --bg: #feefe8;
+  --head: #232323;
+  --black: #feefe8; /* "on-accent" contrast: filled buttons flip text to bg color */
+  --ink: #222525;
+  --mute: #6c6f6f;
+  --line: #e7d6cc;
+  --panel: #fffffe;
+  --maxw: 1100px;
+  --font-display: 'Cabinet Grotesk', system-ui, sans-serif;
+  --font-body: 'General Sans', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', monospace;
+  /* Scroll-reveal easing — Curva C (iOS drawer). */
+  --ease-reveal: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* { margin: 0; box-sizing: border-box; }
+
+/* Listas con clase (las del diseño) sin el padding-left por defecto del navegador.
+   :where() = specificity 0, cualquier regla con clase lo sobreescribe (p.ej. .timeline).
+   [class] deja intactas las listas de prosa sin clase (que sí quieren marcadores). */
+:where(ul[class], ol[class]) { padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+/* Lenis smooth-scroll base styles. When Lenis is active it disables native smooth. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--head);
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+  border: 1px solid var(--line);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+/* Flat panel: faint fill + hairline, no blur. */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.16s ease-out;
+}
+.btn:active { transform: scale(0.97); }
+.btn:hover { background: var(--ink); color: var(--black); }
+.btn-accent { border-color: var(--orange); color: var(--orange); }
+.btn-accent:hover { background: var(--orange); color: var(--black); }
+
+section { position: relative; }
+
+/* Pro section header: large display title in the name typeface + accent word. */
+.sec-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; margin-bottom: clamp(20px, 4vh, 44px);
+}
+.sec-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(34px, 6vw, 76px); line-height: 0.95; letter-spacing: -0.025em;
+}
+.sec-title em { font-style: normal; color: var(--accent); }
+.more {
+  color: var(--mute); font-weight: 600; font-size: 14px;
+  white-space: nowrap; transition: color 0.2s ease;
+}
+.more:hover { color: var(--accent); }
+
+/* Scroll-entry: fade + horizontal slide, direction-aware and re-triggering.
+   JS (Base.astro) sets data-dir to the current scroll direction and toggles
+   .is-in via IntersectionObserver every time the element enters/leaves — so it
+   re-animates on each return. Scroll down -> enters from the left; scroll up ->
+   enters from the right. Staggered by --i. overflow-x:hidden on body hides the
+   off-screen offset. Reduced-motion shows content instantly (fade only). */
+[data-reveal] {
+  opacity: 0;
+  transition: opacity 0.64s var(--ease-reveal),
+              transform 0.64s var(--ease-reveal);
+  transition-delay: calc(var(--i, 0) * 70ms);
+  will-change: opacity, transform;
+}
+[data-reveal][data-dir="down"] { transform: translateX(-40px); }
+[data-reveal][data-dir="up"]   { transform: translateX(40px); }
+[data-reveal].is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}

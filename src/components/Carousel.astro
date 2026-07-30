@@ -1,0 +1,222 @@
+---
+// Infinite horizontal carousel of vertical (portrait) preview cards.
+// Items are rendered 3x; we keep the scroll inside the middle copy and jump by
+// one sequence-width when it drifts, so it loops seamlessly in both directions.
+// Cards scale + fade by distance from the carousel center. Starts centered on
+// `centerSlug` (newest game), older to the left, newer to the right.
+interface Item {
+  slug: string;
+  title: string;
+  year?: number;
+  tags?: string[];
+  cover?: string;
+}
+interface Props { items: Item[]; base: string; centerSlug?: string; }
+const { items, base, centerSlug } = Astro.props;
+const loop = [...items, ...items, ...items]; // 3 sequences
+const seqLen = items.length;
+---
+
+<div class="carousel-wrap" data-seqlen={seqLen} data-center={centerSlug ?? items[0]?.slug}>
+  <div class="carousel" data-lenis-prevent>
+    <div class="track">
+      {loop.map((g, n) => {
+        const initials = g.title.split(' ').slice(0, 2).map((w) => w[0]).join('');
+        return (
+          <a class="slide" href={`${base}/${g.slug}`} data-slug={g.slug} data-n={n}>
+            <div class="card">
+              <div class="thumb">
+                {g.cover
+                  ? <img src={g.cover} alt={g.title} loading="lazy" draggable={false} />
+                  : <span class="mono">{initials}</span>}
+                <div class="shade" aria-hidden="true"></div>
+                <div class="capt">
+                  <div class="row"><h3>{g.title}</h3><span class="year">{g.year}</span></div>
+                  {g.tags && g.tags.length > 0 && (
+                    <ul class="tags">{g.tags.slice(0, 3).map((tname) => <li>{tname}</li>)}</ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+
+  <div class="ctrls">
+    <button class="nav" data-dir="-1" aria-label="Anterior">←</button>
+    <button class="nav" data-dir="1" aria-label="Siguiente">→</button>
+  </div>
+</div>
+
+<style>
+  .carousel-wrap { position: relative; }
+  .carousel {
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding: 18px max(16px, calc(50% - 150px));
+    cursor: grab;
+  }
+  .carousel.dragging { cursor: grabbing; }
+  .carousel::-webkit-scrollbar { display: none; }
+
+  .track { display: flex; gap: clamp(16px, 2.4vw, 28px); width: max-content; }
+
+  .slide { flex: 0 0 auto; width: clamp(220px, 25vw, 300px); }
+  .card {
+    transform: scale(var(--s, 0.86));
+    opacity: var(--o, 0.5);
+    transition: transform 0.16s linear, opacity 0.16s linear;
+    transform-origin: center bottom;
+    will-change: transform, opacity;
+  }
+
+  .thumb {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(120% 100% at 30% 10%, color-mix(in srgb, var(--accent) 22%, #1d2023), #15171a);
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; user-select: none; }
+  .mono {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(44px, 7vw, 68px); letter-spacing: -0.03em;
+    color: color-mix(in srgb, var(--accent) 70%, #7a7d7a);
+  }
+  .shade {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,17,19,0.55) 0%, transparent 42%);
+  }
+  /* Solid lower-third bar so title + tags stay legible over any cover art. */
+  .capt {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 26px 16px 14px;
+    background: linear-gradient(to top, rgba(13,15,17,0.94) 0%, rgba(13,15,17,0.9) 55%, rgba(13,15,17,0) 100%);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  /* Light text on the dark bar (h3 would otherwise inherit dark --head). */
+  .row h3 { font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.04; color: #fff; }
+  .year { color: var(--accent); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  .tags li {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.82); background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.16); border-radius: 5px; padding: 2px 6px;
+  }
+
+  .ctrls { display: flex; gap: 10px; justify-content: center; margin-top: 22px; }
+  .nav {
+    width: 46px; height: 46px; border-radius: 999px;
+    border: 1px solid var(--line); background: transparent; color: var(--ink);
+    font-size: 18px; cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  }
+  .nav:hover { border-color: var(--accent); color: var(--accent); }
+  .nav:active { transform: scale(0.92); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { transform: none; opacity: 1; transition: none; }
+  }
+  @media (max-width: 760px) {
+    .carousel { padding-left: 16px; padding-right: 16px; }
+    .slide { width: 70vw; }
+  }
+</style>
+
+<script>
+  function initCarousel(root: HTMLElement) {
+    if ((root as any).__init) return;
+    (root as any).__init = true;
+    const carousel = root.querySelector<HTMLElement>('.carousel')!;
+    const slides = [...root.querySelectorAll<HTMLElement>('.slide')];
+    if (!slides.length) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const seqLen = Number(root.dataset.seqlen) || slides.length / 3;
+    const centerSlug = root.dataset.center;
+
+    const slideStep = () => slides[0].offsetWidth + parseFloat(getComputedStyle(root.querySelector('.track')!).columnGap || '24');
+    const seqWidth = () => slideStep() * seqLen;
+
+    // Center a given slide element in the viewport.
+    const centerOn = (el: HTMLElement, smooth = false) => {
+      const target = el.offsetLeft - (carousel.clientWidth - el.offsetWidth) / 2;
+      carousel.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
+    };
+
+    // Scale + fade by distance from carousel center.
+    function update() {
+      if (reduce) return;
+      const c = carousel.getBoundingClientRect();
+      const cx = c.left + c.width / 2;
+      for (const s of slides) {
+        const card = s.firstElementChild as HTMLElement;
+        const r = s.getBoundingClientRect();
+        const d = Math.min(Math.abs(cx - (r.left + r.width / 2)) / (c.width / 2), 1);
+        card.style.setProperty('--s', String(1 - d * 0.16));
+        card.style.setProperty('--o', String(1 - d * 0.55));
+      }
+    }
+
+    // Keep the scroll within the middle sequence (seamless infinite loop).
+    function normalize() {
+      const w = seqWidth();
+      if (carousel.scrollLeft < w * 0.5) carousel.scrollLeft += w;
+      else if (carousel.scrollLeft > w * 1.5) carousel.scrollLeft -= w;
+    }
+
+    let ticking = false;
+    carousel.addEventListener('scroll', () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => { normalize(); update(); ticking = false; });
+    }, { passive: true });
+
+    // Initial: center the middle copy of the chosen slide.
+    requestAnimationFrame(() => {
+      const mid = slides.find((s) => Number(s.dataset.n) >= seqLen && Number(s.dataset.n) < seqLen * 2 && s.dataset.slug === centerSlug)
+        || slides[seqLen];
+      centerOn(mid);
+      update();
+    });
+    window.addEventListener('resize', () => requestAnimationFrame(() => { update(); }));
+
+    // Arrow buttons: advance one slide, centered.
+    root.querySelectorAll<HTMLButtonElement>('.nav').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        carousel.scrollBy({ left: Number(btn.dataset.dir) * slideStep(), behavior: 'smooth' });
+      });
+    });
+
+    // Pointer drag.
+    let down = false, startX = 0, startScroll = 0, moved = false;
+    carousel.addEventListener('pointerdown', (e) => {
+      down = true; moved = false; startX = e.clientX; startScroll = carousel.scrollLeft;
+      carousel.classList.add('dragging');
+    });
+    carousel.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      carousel.scrollLeft = startScroll - dx;
+    });
+    const end = () => { down = false; carousel.classList.remove('dragging'); };
+    carousel.addEventListener('pointerup', end);
+    carousel.addEventListener('pointerleave', end);
+    carousel.addEventListener('click', (e) => { if (moved) e.preventDefault(); }, true);
+  }
+
+  function initAll() {
+    document.querySelectorAll<HTMLElement>('.carousel-wrap').forEach(initCarousel);
+  }
+  document.addEventListener('astro:page-load', initAll);
+  if (document.readyState !== 'loading') initAll();
+  else document.addEventListener('DOMContentLoaded', initAll);
+</script>

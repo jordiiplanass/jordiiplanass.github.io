@@ -1,0 +1,61 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Gallery from '../../../components/Gallery.astro';
+
+export const meta = {
+  slug: 'liveops-unity',
+  title: 'LiveOps Unity',
+  year: 2024,
+  accent: 'orange',
+  tags: ['Unity', 'C#', 'LiveOps', 'Backend', 'Tooling'],
+  summary: 'A LiveOps system for Unity: remote content, events and configuration.',
+};
+---
+
+<Base title={`${meta.title} — Jordi Planas`} lang="en">
+  <article class="detail">
+    <div class="wrap">
+      <a href="/en/projects" class="back">← Projects</a>
+
+      <!-- Bespoke: technical layout -->
+      <header class="hero" data-reveal>
+        <h1>LiveOps <span>Unity</span></h1>
+        <p class="lead">
+          A live-ops system for Unity: update content, launch events and tweak
+          configuration without re-publishing the build. <!-- ponytail: detail the real architecture -->
+        </p>
+      </header>
+
+      <h2 class="sec" data-reveal>What it solves</h2>
+      <div class="features">
+        <div class="panel" data-reveal style="--i:0"><span class="num">01</span><h4>Remote content</h4><p>Configuration served from the backend, applied on the client.</p></div>
+        <div class="panel" data-reveal style="--i:1"><span class="num">02</span><h4>Events</h4><p>Toggle timed events on and off without a new build.</p></div>
+        <div class="panel" data-reveal style="--i:2"><span class="num">03</span><h4>Tooling</h4><p>Internal tools to operate the live game.</p></div>
+      </div>
+
+      <h2 class="sec" data-reveal>Stack</h2>
+      <div class="tags" data-reveal>{meta.tags.map((t) => <span class="tag">{t}</span>)}</div>
+
+      <h2 class="sec" data-reveal>Screenshots</h2>
+      <Gallery cols={2} />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .detail { padding: 110px 0 40px; }
+  .back { color: var(--mute); font-size: 14px; }
+  .back:hover { color: var(--orange); }
+  .hero { margin: 26px 0 30px; }
+  .hero h1 { font-size: clamp(40px, 8vw, 96px); }
+  .hero h1 span { color: var(--orange); }
+  .lead { max-width: 58ch; color: var(--mute); font-size: clamp(17px, 2.4vw, 21px); margin-top: 18px; }
+  .sec { font-size: clamp(24px, 3.6vw, 36px); margin: 44px 0 18px; }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .features .panel { padding: 22px; }
+  .features .num { font-family: var(--font-display); font-weight: 800; color: var(--orange); font-size: 22px; }
+  .features h4 { font-size: 18px; margin: 8px 0 6px; }
+  .features p { color: var(--mute); font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  @media (max-width: 640px) { .features { grid-template-columns: 1fr; } }
+</style>

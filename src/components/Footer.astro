@@ -1,0 +1,22 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="ft">
+  <div class="wrap ftin">
+    <span>© {year} Jordi Planas</span>
+    <div class="social">
+      <a href="https://github.com/jordiiplanass" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jordi-planas-martinez-9b390232b/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:jordiiplanass@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft { padding: 48px 0 64px; margin-top: 80px; border-top: 1px solid var(--line); }
+  .ftin { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--mute); font-size: 14px; }
+  .social { display: flex; gap: 20px; }
+  .social a { transition: color 0.18s ease; }
+  .social a:hover { color: var(--teal); }
+</style>
