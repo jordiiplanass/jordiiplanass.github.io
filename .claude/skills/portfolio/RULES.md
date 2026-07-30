@@ -10,13 +10,15 @@ Reglas claras para no romper la coherencia del proyecto.
   `lang="en"`, links `/en/...`) o el toggle dará 404. Igual para proyectos.
 - `cover` puede ser URL (p.ej. thumb de YouTube) o ruta en `public/`. Sin `cover` se muestran iniciales.
 - Vídeo en ficha: `<VideoBlock youtube="ID" title="..." />`. Capturas: `<Gallery cols={2} />`.
-- **Recursos visuales**: una carpeta por slug en `public/media/<slug>/` (`cover.*` + `gallery/`).
-  **Cover de juego = convención, no config**: `coverFor()` (`src/lib/media.ts`) busca
-  `cover.{png,jpg,jpeg,webp}` en la carpeta y `Carousel.astro` lo antepone a `meta.cover`; un solo
-  archivo sirve ES y EN. Los proyectos (`ProjectList`) siguen a mano vía `meta`.
-  Ratios: cover de juego **3:4**, cover de proyecto **16:10**. Detalle en `docs/recursos-visuales.md`
-  (fuera de `public/`, que se publica entero tal cual).
-  `Gallery` no globea la carpeta: hay que listar las imágenes en `images`, con `alt` descriptivo.
+- **Recursos visuales**: una carpeta por slug en `public/media/<slug>/` con `cover/` y `gallery/`.
+  **Convención, no config**: `coverFor()` y `galleryFor()` (`src/lib/media.ts`) leen esas carpetas en
+  build; los aplican `Carousel.astro` y `Gallery.astro`. Soltar los archivos basta y un solo archivo
+  sirve ES y EN. El cover se antepone a `meta.cover`. Los proyectos (`ProjectList`) siguen a mano.
+  Ratios: cover de juego **3:4**, cover de proyecto **16:10**, capturas **16:9** (la rejilla fija ese
+  ratio para no saltar al cargar). Detalle en `docs/recursos-visuales.md` (fuera de `public/`, que se
+  publica entero tal cual).
+- `<Gallery slug=... label=... />` genera `alt` numerados. Para `alt` que describan la captura de
+  verdad, pasar `images` a mano en la ficha ES y en la EN.
 
 ## i18n
 

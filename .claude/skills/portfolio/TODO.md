@@ -64,9 +64,24 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
   `Carousel.astro` lo antepone a `meta.cover`. Soltar el archivo basta: sirve home + `/games`, ES y
   EN, sin tocar código ni las dos fichas. URL con `?v=<mtime>` para evitar caché rancia.
   Verificado con PNG reales y comprobado el fallback al borrarlos.
-- [ ] 🟡 **Meter el arte de verdad.** Carpetas vacías. Los 3 covers actuales son thumbs de YouTube
-  16:9 recortados a 3:4 por el Carousel → un cover vertical propio se ve mejor.
-  `nachito-el-nacho` no tiene ninguno (sale con iniciales).
+- [x] 🟡 **Arte real puesto** (por Jordi): covers 3:4 exactos (2064×2752) en `cover/` y capturas en
+  `gallery/` para pipo (4), fragments (8) y chrono-fish (4). `nachito-el-nacho` sigue sin nada.
+- [x] 🔴 **`coverFor()` adaptado a la estructura real**: los covers llegaron como
+  `media/<slug>/cover/<nombre>.png` (carpeta, nombre libre), no como `cover.png`. Ahora acepta las
+  dos formas. Filtra por extensión para no servir un `.DS_Store` como `<img>`.
+- [x] 🟡 **Galerías auto-enganchadas**: `galleryFor()` + `<Gallery slug label>`. Las 6 llamadas que
+  estaban vacías ya tiran de carpeta, y se añadió la sección Galería a `chrono-fish` ES/EN, que tenía
+  4 capturas y ninguna sección donde salir.
+- [x] 🔴 **Rejilla de galería a `aspect-ratio: 16/9`.** Sin tamaño intrínseco las imágenes lazy
+  colapsaban a **2px de alto** hasta cargar y la página saltaba. `Gallery.astro`.
+- [ ] 🟡 **Comprimir los assets.** `public/media` pesa **17 MB**: covers PNG de 1,2–1,6 MB para
+  pintarse a 300px, y capturas PNG de hasta 1,9 MB. La home se lleva ~4 MB solo en covers. Pasar las
+  capturas a JPG 80% y bajar los covers a ~1200px de ancho. Decisión de Jordi, son sus fuentes.
+- [ ] 🔵 **Título duplicado en las cards.** Los covers de fragments y chrono-fish llevan el título
+  rotulado en el arte, y la card superpone otra vez el título en la barra inferior. Decidir si se
+  oculta la barra cuando hay cover propio.
+- [ ] 🔵 **Iniciales de `nachito-el-nacho` dan "Ne"** (primeras letras de "Nachito el"), que se lee
+  raro. Coger iniciales de palabras significativas, o saltarse artículos. `Carousel.astro`.
 - [ ] 🔵 **Extender `coverFor()` a `ProjectList`** si los proyectos van a llevar cover 16:10. Es una
   línea, pero hoy `liveops-unity` y `primeros-auxilios-vr` no tienen `cover` y siguen dependiendo de
   `meta` a mano (con el riesgo de ES/EN desalineados). Faltan también sus carpetas en `public/media/`.

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import VideoBlock from '../../components/VideoBlock.astro';
+import Gallery from '../../components/Gallery.astro';
 
 export const meta = {
   slug: 'chrono-fish',
@@ -40,6 +41,9 @@ export const meta = {
         </div>
       </div>
 
+      <h2 class="sec" data-reveal>Galería</h2>
+      <Gallery slug="chrono-fish" label="Captura de Chrono Fish" cols={2} />
+
       <div class="next" data-reveal>
         <a href="/games/nachito-el-nacho" class="btn">Siguiente: Nachito el Nacho →</a>
       </div>
@@ -49,6 +53,7 @@ export const meta = {
 
 <style>
   .detail { padding: 110px 0 40px; }
+  .sec { font-size: clamp(26px, 4vw, 40px); margin: 40px 0 18px; }
   .back { color: var(--mute); font-size: 14px; }
   .back:hover { color: var(--teal); }
   .layout { display: grid; grid-template-columns: 300px 1fr; gap: 32px; margin: 26px 0; align-items: start; }

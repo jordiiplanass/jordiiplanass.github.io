@@ -1,18 +1,27 @@
 ---
+// Pass `slug` and the screenshots in public/media/<slug>/gallery/ are picked up
+// in filename order — one folder feeds the ES and EN ficha. `label` is the
+// language-appropriate alt text, numbered per image. Pass `images` instead to
+// spell each one out with a real description.
+import { galleryFor } from '../lib/media';
+
 interface Props {
   images?: { src: string; alt?: string }[];
+  slug?: string;
+  label?: string;
   cols?: number;
 }
-const { images = [], cols = 2 } = Astro.props;
+const { images, slug, label, cols = 2 } = Astro.props;
+const shots = images ?? (slug ? galleryFor(slug, label) : []);
 ---
 
-{images.length > 0 ? (
+{shots.length > 0 ? (
   <div class="gallery" style={`--cols:${cols}`}>
-    {images.map((im, i) => <img src={im.src} alt={im.alt ?? ''} loading="lazy" data-reveal style={`--i:${i % 6}`} />)}
+    {shots.map((im, i) => <img src={im.src} alt={im.alt ?? ''} loading="lazy" data-reveal style={`--i:${i % 6}`} />)}
   </div>
 ) : (
   <div class="gallery-empty panel">
-    <span>Galería — añade imágenes a <code>/public/media</code> y pásalas en <code>images</code>.</span>
+    <span>Galería — añade imágenes a <code>/public/media/{slug ?? '<slug>'}/gallery</code>.</span>
   </div>
 )}
 
@@ -22,7 +31,18 @@ const { images = [], cols = 2 } = Astro.props;
     grid-template-columns: repeat(var(--cols), 1fr);
     gap: 12px;
   }
-  .gallery img { width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+  /* Fixed ratio so the grid holds its shape before the (lazy) images arrive —
+     without it each <img> collapses to ~2px and the page jumps on load. Also
+     keeps rows even when a screenshot isn't exactly 16:9. */
+  .gallery img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
   .gallery-empty { padding: 28px; text-align: center; color: var(--mute); font-size: 14px; }
   .gallery-empty code { color: var(--teal); }
   @media (max-width: 640px) { .gallery { grid-template-columns: 1fr; } }

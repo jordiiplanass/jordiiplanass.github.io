@@ -6,30 +6,56 @@ import { fileURLToPath } from 'node:url';
 // time (and per request in dev), never in the browser.
 const MEDIA_DIR = fileURLToPath(new URL('../../public/media/', import.meta.url));
 
-// PNG first: dropping a cover.png is the documented way to override whatever the
-// ficha's `meta.cover` points at (today, a YouTube thumbnail).
-const EXTS = ['png', 'jpg', 'jpeg', 'webp'];
+const IMG = /\.(png|jpe?g|webp|avif)$/i;
+
+/** Image files in a directory, sorted by name. Empty if it doesn't exist. */
+function imagesIn(dir: string): string[] {
+  if (!existsSync(dir)) return [];
+  // Filter by extension so .DS_Store and friends never become an <img src>.
+  return readdirSync(dir).filter((f) => IMG.test(f)).sort();
+}
+
+/** `?v=` stamp of the file's mtime, so replacing an image busts cached copies. */
+function stamp(diskPath: string, url: string): string {
+  return `${url}?v=${Math.round(statSync(diskPath).mtimeMs)}`;
+}
 
 /**
- * URL of the cover art dropped into `public/media/<slug>/`, or undefined if there
- * is none. Carries a `?v=` stamp of the file's mtime so replacing the image busts
- * any cached copy instead of leaving the old one on screen.
+ * Cover art for a game, or undefined if there is none. Two layouts work:
  *
- * The directory is read on every call rather than cached at module scope, so a
- * file added while `astro dev` is running shows up without restarting it.
+ *   media/<slug>/cover/whatever.png   a cover/ folder holding one image
+ *   media/<slug>/cover.png            a file named cover.<ext>
+ *
+ * The folder form wins, and inside it the first image by name — so the export
+ * keeps whatever filename it came out with. Directories are read on every call
+ * rather than cached, so a file added while `astro dev` is running shows up on
+ * reload.
  */
 export function coverFor(slug: string): string | undefined {
-  const dir = MEDIA_DIR + slug;
-  if (!existsSync(dir)) return undefined;
+  const base = MEDIA_DIR + slug;
 
-  const files = readdirSync(dir);
-  for (const ext of EXTS) {
-    // Case-insensitive: exports often land as Cover.PNG.
-    const name = files.find((f) => f.toLowerCase() === `cover.${ext}`);
-    if (name) {
-      const v = Math.round(statSync(`${dir}/${name}`).mtimeMs);
-      return `/media/${slug}/${name}?v=${v}`;
-    }
+  const inFolder = imagesIn(`${base}/cover`);
+  if (inFolder.length > 0) {
+    return stamp(`${base}/cover/${inFolder[0]}`, `/media/${slug}/cover/${inFolder[0]}`);
   }
+
+  // PNG first: a cover.png is meant to override whatever meta.cover points at.
+  const flat = imagesIn(base).filter((f) => /^cover\.[a-z0-9]+$/i.test(f));
+  const pick = flat.find((f) => f.toLowerCase().endsWith('.png')) ?? flat[0];
+  if (pick) return stamp(`${base}/${pick}`, `/media/${slug}/${pick}`);
+
   return undefined;
+}
+
+/**
+ * Screenshots in `media/<slug>/gallery/`, in filename order. `label` is the
+ * caller's language-appropriate description ("Captura de Chrono Fish"), which
+ * gets an index appended so each alt is distinct.
+ */
+export function galleryFor(slug: string, label = ''): { src: string; alt: string }[] {
+  const dir = `${MEDIA_DIR}${slug}/gallery`;
+  return imagesIn(dir).map((f, i) => ({
+    src: stamp(`${dir}/${f}`, `/media/${slug}/gallery/${f}`),
+    alt: label ? `${label} ${i + 1}` : '',
+  }));
 }
