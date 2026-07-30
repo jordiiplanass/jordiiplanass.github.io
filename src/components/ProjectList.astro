@@ -1,6 +1,11 @@
 ---
 // Editorial project rows: big art panel + body, sides alternate. Shared by the
 // home teaser and the /projects listing page.
+//
+// Art comes from public/media/<slug>/ the same way the game carousel gets it:
+// a cover/ folder wins, otherwise the first screenshot in gallery/.
+import { coverFor } from '../lib/media';
+
 interface Item {
   slug: string;
   title: string;
@@ -16,13 +21,14 @@ const { items, viewLabel, base = '/projects' } = Astro.props;
 <ol class="proj-list">
   {items.map((p, i) => {
     const initials = p.title.replace(/[^A-Za-zÀ-ÿ ]/g, '').split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('');
+    const cover = coverFor(p.slug) ?? p.cover;
     return (
       <li class="proj" data-reveal style={`--i:${i}`}>
         <a class="proj-in" href={`${base}/${p.slug}`}>
           <div class="proj-art" aria-hidden="true">
             <span class="proj-idx">{String(i + 1).padStart(2, '0')}</span>
-            {p.cover
-              ? <img src={p.cover} alt="" loading="lazy" />
+            {cover
+              ? <img src={cover} alt="" loading="lazy" />
               : <span class="proj-mono">{initials}</span>}
           </div>
           <div class="proj-body">

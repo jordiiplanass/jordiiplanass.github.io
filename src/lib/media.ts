@@ -44,6 +44,11 @@ export function coverFor(slug: string): string | undefined {
   const pick = flat.find((f) => f.toLowerCase().endsWith('.png')) ?? flat[0];
   if (pick) return stamp(`${base}/${pick}`, `/media/${slug}/${pick}`);
 
+  // Nothing dedicated: fall back to the first screenshot, which beats the
+  // initials placeholder. Drop a cover/ folder in to override it.
+  const shot = imagesIn(`${base}/gallery`)[0];
+  if (shot) return stamp(`${base}/gallery/${shot}`, `/media/${slug}/gallery/${shot}`);
+
   return undefined;
 }
 
