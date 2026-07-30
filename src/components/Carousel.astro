@@ -4,6 +4,12 @@
 // one sequence-width when it drifts, so it loops seamlessly in both directions.
 // Cards scale + fade by distance from the carousel center. Starts centered on
 // `centerSlug` (newest game), older to the left, newer to the right.
+//
+// Cover art: a file dropped into public/media/<slug>/ wins over the ficha's
+// `meta.cover`. Resolving it here rather than in `meta` means one file covers
+// both the ES and EN fichas, and no code has to change to add art.
+import { coverFor } from '../lib/media';
+
 interface Item {
   slug: string;
   title: string;
@@ -22,12 +28,13 @@ const seqLen = items.length;
     <div class="track">
       {loop.map((g, n) => {
         const initials = g.title.split(' ').slice(0, 2).map((w) => w[0]).join('');
+        const cover = coverFor(g.slug) ?? g.cover;
         return (
           <a class="slide" href={`${base}/${g.slug}`} data-slug={g.slug} data-n={n}>
             <div class="card">
               <div class="thumb">
-                {g.cover
-                  ? <img src={g.cover} alt={g.title} loading="lazy" draggable={false} />
+                {cover
+                  ? <img src={cover} alt={g.title} loading="lazy" draggable={false} />
                   : <span class="mono">{initials}</span>}
                 <div class="shade" aria-hidden="true"></div>
                 <div class="capt">

@@ -9,9 +9,30 @@ Todo lo que hay bajo `public/` se sirve tal cual, sin procesar: `public/media/ch
 
 ```
 media/<slug>/
-  cover.jpg        portada de la card
+  cover.png        portada de la card — se coge sola, no hay que tocar código
   gallery/         capturas de la ficha
 ```
+
+## Cover de un juego: soltar el archivo y ya
+
+Metes `cover.png` en `public/media/<slug>/` y esa imagen aparece en la card, en la home y en
+`/games`, en español y en inglés. **No hay que editar ninguna ficha.**
+
+- Vale `.png`, `.jpg`, `.jpeg` o `.webp`. Si hubiera varios gana el PNG.
+- Da igual mayúsculas: `Cover.PNG` también sirve.
+- El nombre tiene que ser exactamente `cover`. `portada.png` o `cover-final.png` no los ve.
+- Manda sobre el `cover` que tenga la ficha en su `meta`, así que sustituye a la miniatura de
+  YouTube sin borrar nada.
+- Para quitarlo, borra el archivo: la card vuelve a lo que diga `meta`, y si no hay nada, a las
+  iniciales.
+- En `astro dev` basta con recargar; no hace falta reiniciar el servidor.
+
+Si reemplazas la imagen por otra, la URL lleva un `?v=` con la fecha del archivo, así que el
+navegador coge la nueva y no se queda con la vieja en caché.
+
+Lo resuelve `coverFor()` en `src/lib/media.ts`, que mira la carpeta en tiempo de build, y lo aplica
+`Carousel.astro`. **Solo funciona para juegos**: los proyectos (`ProjectList`) siguen leyendo el
+`cover` del `meta` a mano.
 
 ## Medidas
 
@@ -25,22 +46,23 @@ Los covers llevan `object-fit: cover`: lo que no cuadre con el ratio se recorta 
 así que no pongas nada importante pegado al borde. En el carrusel el tercio inferior queda tapado
 por la barra oscura del título.
 
-Formato: JPG para capturas y arte, PNG solo si hace falta transparencia. Comprime antes de
-commitear — el repo es la fuente del deploy y todo esto viaja en cada clone.
+Comprime antes de commitear — el repo es la fuente del deploy y todo esto viaja en cada clone.
+Los PNG de arte plano pesan poco; para capturas con mucho detalle, JPG suele quedar más ligero.
 
-## Enchufarlo
+## Cover de un proyecto
 
-**Cover** — en el `export const meta` de la ficha, en la versión ES **y** en la EN:
+Los proyectos no tienen el atajo de arriba: hay que ponerlo en el `export const meta` de la ficha,
+en la versión ES **y** en la EN, o el toggle de idioma enseñará cosas distintas:
 
 ```js
-export const meta = { slug: 'chrono-fish', /* … */ cover: '/media/chrono-fish/cover.jpg' };
+export const meta = { slug: 'liveops-unity', /* … */ cover: '/media/liveops-unity/cover.png' };
 ```
 
-Sin `cover` la card muestra las iniciales. Ahora mismo Pipo, Fragments y ChronoFish usan la
-miniatura de YouTube (`https://img.youtube.com/vi/<id>/hqdefault.jpg`), que es 16:9 y el carrusel
-la recorta a 3:4. Un cover propio en vertical se ve bastante mejor.
+Ninguno de los dos proyectos tiene `cover` ahora mismo, así que salen con iniciales.
 
-**Galería** — en el cuerpo de la ficha:
+## Galería
+
+En el cuerpo de la ficha:
 
 ```astro
 <Gallery cols={2} images={[

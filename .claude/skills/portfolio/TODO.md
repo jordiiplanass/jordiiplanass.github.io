@@ -59,11 +59,17 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
   los 4 juegos, con `.gitkeep` (git no versiona carpetas vacías) y `docs/recursos-visuales.md` con
   ratios y ejemplos de uso. La guía va en `docs/`, no en `public/`: todo `public/` se copia al build
   y se publicaría en `/media/README.md`.
-- [ ] 🟡 **Meter los recursos y enchufarlos.** Carpetas vacías; falta el arte. Al poner `cover`,
-  actualizar la ficha ES **y** la EN. Los 3 covers actuales son thumbs de YouTube 16:9 recortados
-  a 3:4 por el Carousel → un cover vertical propio se ve mejor. `nachito-el-nacho` no tiene ninguno.
-- [ ] 🔵 **Carpetas de `public/media/` para los 2 proyectos** (`liveops-unity`, `primeros-auxilios-vr`)
-  si se les va a poner cover 16:10. Ninguno tiene `cover` ahora mismo.
+- [x] 🟡 **Override de cover por convención.** `coverFor()` en `src/lib/media.ts` lee
+  `public/media/<slug>/cover.{png,jpg,jpeg,webp}` (PNG primero, case-insensitive) en tiempo de build;
+  `Carousel.astro` lo antepone a `meta.cover`. Soltar el archivo basta: sirve home + `/games`, ES y
+  EN, sin tocar código ni las dos fichas. URL con `?v=<mtime>` para evitar caché rancia.
+  Verificado con PNG reales y comprobado el fallback al borrarlos.
+- [ ] 🟡 **Meter el arte de verdad.** Carpetas vacías. Los 3 covers actuales son thumbs de YouTube
+  16:9 recortados a 3:4 por el Carousel → un cover vertical propio se ve mejor.
+  `nachito-el-nacho` no tiene ninguno (sale con iniciales).
+- [ ] 🔵 **Extender `coverFor()` a `ProjectList`** si los proyectos van a llevar cover 16:10. Es una
+  línea, pero hoy `liveops-unity` y `primeros-auxilios-vr` no tienen `cover` y siguen dependiendo de
+  `meta` a mano (con el riesgo de ES/EN desalineados). Faltan también sus carpetas en `public/media/`.
 
 ## Deploy — GitHub Pages
 
