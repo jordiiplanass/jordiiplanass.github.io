@@ -47,7 +47,8 @@ public/
 
 - **Juegos** (`pages/games/`): pipo-the-penguin (2026), fragments-of-the-abyss, chrono-fish (2023), nachito-el-nacho.
 - **Proyectos** (`pages/projects/`): liveops-unity (2024), primeros-auxilios-vr.
-- **Experiencia** (hardcoded en `Home.astro`): Respida (2025, Lead Developer), Alioth (2021–22, Web Developer).
+- **Experiencia** (array `exp` por idioma en `Home.astro`): Espai Casa Sagnier (2026–act., Unity
+  Instructor), Respira (2025, Lead Developer), Alioth (2021–22, Web Developer).
 
 ## Convención clave: cards autogeneradas
 

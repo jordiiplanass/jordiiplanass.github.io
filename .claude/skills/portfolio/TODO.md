@@ -77,10 +77,11 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
 - [x] 🔴 **CV real puesto** en `public/cv.pdf` (1 pág., 78 KB) sustituyendo el placeholder de 725 bytes.
   Los 3 enlaces (`Nav.astro`, `Home.astro` ×2) pasan de `download` a `download="Jordi_Planas_CV.pdf"`
   para que el archivo guardado no se llame `cv.pdf`.
-- [ ] 🟡 **Cuadrar la experiencia del sitio con el CV.** El CV dice *XR Developer Intern · Respira ·
-  Sep 2025–Ene 2026*; la timeline de `Home.astro` dice *Respida, 2025, Lead Developer*. Además el CV
-  no incluye Espai Casa Sagnier, que sí sale en la web. Decidir cuál es la versión buena y alinear
-  (`src/i18n/ui.ts` → `ui.exp`).
+- [x] 🔴 **Typo "Respida" → "Respira"** en el array `exp` de `Home.astro` (ES y EN). De paso, el
+  bloque EN decía "Proyecto Respida" con "Proyecto" sin traducir → ahora "Respira Project".
+- [ ] 🟡 **Cuadrar rol y fechas de Respira con el CV.** El CV dice *XR Developer Intern ·
+  Sep 2025–Ene 2026*; la timeline dice *2025 · Lead Developer / Desarrollador principal*. Además el
+  CV no incluye Espai Casa Sagnier, que sí sale en la web. Decidir qué versión manda. `Home.astro`.
 - [ ] 🟡 **`public/textures/*.jpg` no se referencian desde `src`** (7 archivos). Borrar o usar.
 
 ## Limpieza
