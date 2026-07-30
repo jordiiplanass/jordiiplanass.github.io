@@ -55,6 +55,15 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
 - [ ] 🟡 **Rellenar el contenido real de las fichas** (copy, rol, equipo, fechas, capturas; solo Pipo
   tiene vídeo). Recordar: editar la ficha ES **y su espejo EN**. Marcado `ponytail:` en cada ficha.
   `src/pages/games|projects/<slug>.astro` + `src/pages/en/...`
+- [x] 🟡 **Carpetas de recursos visuales creadas**: `public/media/<slug>/{cover.jpg,gallery/}` para
+  los 4 juegos, con `.gitkeep` (git no versiona carpetas vacías) y `docs/recursos-visuales.md` con
+  ratios y ejemplos de uso. La guía va en `docs/`, no en `public/`: todo `public/` se copia al build
+  y se publicaría en `/media/README.md`.
+- [ ] 🟡 **Meter los recursos y enchufarlos.** Carpetas vacías; falta el arte. Al poner `cover`,
+  actualizar la ficha ES **y** la EN. Los 3 covers actuales son thumbs de YouTube 16:9 recortados
+  a 3:4 por el Carousel → un cover vertical propio se ve mejor. `nachito-el-nacho` no tiene ninguno.
+- [ ] 🔵 **Carpetas de `public/media/` para los 2 proyectos** (`liveops-unity`, `primeros-auxilios-vr`)
+  si se les va a poner cover 16:10. Ninguno tiene `cover` ahora mismo.
 
 ## Deploy — GitHub Pages
 

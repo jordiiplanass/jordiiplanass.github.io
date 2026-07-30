@@ -36,7 +36,12 @@ src/
   i18n/                   diccionario es/en + helpers de idioma
   styles/global.css       variables de paleta, reset, utilidades
 public/                   cv.pdf, icon.png, icons/, illustrations/, textures/
+  media/<slug>/           recursos visuales por ficha: cover.jpg + gallery/
+docs/recursos-visuales.md ratios, tamaños y cómo enchufar covers y galerías
 ```
+
+Ojo: **todo lo que hay en `public/` se copia al build y queda público**. La documentación va en
+`docs/`, no ahí dentro.
 
 ### Añadir un juego o proyecto
 
