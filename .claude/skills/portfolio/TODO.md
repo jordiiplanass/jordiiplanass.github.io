@@ -109,9 +109,8 @@ Prioridad: 🔴 alta · 🟡 media · 🔵 baja/limpieza.
 - [x] 🔵 **Doble viñeta en las listas nuevas.** `global.css` quita el `padding` de `ul[class]` pero no
   el `list-style`, así que salía el marcador nativo además del `::before` propio. `list-style: none`
   en `.list` de las 4 fichas. Si se añaden más listas con clase, ojo con esto.
-- [ ] 🔴 **Año de LiveOps por confirmar.** El PDF es "Projecte Aplicat de Videojoc, Curs 2025-2026",
-  pero `meta.year` dice **2024** en ES y EN. Como los listados ordenan por `year`, si son 2026 debería
-  salir arriba. Preguntar a Jordi y corregir en los dos idiomas.
+- [x] 🔴 **LiveOps confirmado como proyecto de 2026.** `meta.year` corregido en ES y EN, por lo que
+  ahora sale primero en los listados; el año también aparece en el encabezado de ambas fichas.
 - [ ] 🔵 **Alt de las capturas de proyecto.** Van numerados (`Captura de LiveOps Unity 1`). Los PDFs
   describen qué es cada figura, así que se puede pasar `images` a mano con alt reales.
 - [ ] 🔵 **Vídeo de Primeros Auxilios VR:** la ficha sigue con el placeholder "Vídeo próximamente".
