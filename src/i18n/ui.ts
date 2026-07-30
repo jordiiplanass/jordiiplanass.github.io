@@ -12,7 +12,7 @@ export const ui = {
     'hero.cta.cv': 'Descargar CV ↓',
     // About
     'about.headline': 'Diseño y programo los sistemas que dan forma a las experiencias, cuidando toda la pipeline de desarrollo.',
-    'about.p1': 'Desarrollador con foco en videojuegos. Del gameplay y los sistemas a las herramientas y la pipeline que sostienen el proyecto: me muevo por todo el desarrollo y empujo hasta el final.',
+    'about.p1': 'Desarrollador con foco en videojuegos. Me implico en cada proyecto en el que entro y me meto donde haga falta: gameplay, sistemas, herramientas internas o lo que toque para sacarlo adelante.',
     'about.p2': 'Me implico a fondo: me importa terminar lo que empiezo, que el resultado salga bien y que el equipo trabaje en buen ambiente. Disfruto programando, pero también coordinando y desbloqueando a los demás.',
     // Games teaser
     'games.all': 'Todos →',
@@ -45,7 +45,7 @@ export const ui = {
     'hero.cta.cv': 'Download CV ↓',
     // About
     'about.headline': 'I design and build the systems that give experiences their shape, owning the whole development pipeline.',
-    'about.p1': 'Developer with a focus on games. From gameplay and systems to the tools and pipeline that hold a project together. I move across the whole thing and push it to the finish.',
+    'about.p1': "Developer with a focus on games. I get properly involved in every project I join and dig in wherever I'm needed: gameplay, systems, internal tools, or whatever it takes to get the thing shipped.",
     'about.p2': "I'm fully invested: I care about finishing what I start, shipping something good, and keeping the team in a good place. I enjoy coding, but also coordinating and unblocking people.",
     // Games teaser
     'games.all': 'All →',
