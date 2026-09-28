@@ -1,0 +1,47 @@
+.frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+
+.facade {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.facade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 13px;
+  transition: background 0.2s;
+}
+.facade:hover::after { background: rgba(0, 0, 0, 0.15); }
+
+.play {
+  position: relative;
+  z-index: 1;
+  width: 64px; height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--ink);
+  font-size: 22px;
+  padding-left: 4px;
+}
+.dim { background: var(--line); color: var(--mute); }
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  color: var(--mute);
+}

@@ -1,0 +1,32 @@
+/* Vertical spine with a coral node per entry. */
+.timeline { display: flex; flex-direction: column; gap: 22px; position: relative; padding-left: 28px; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+
+.item { position: relative; display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: start; }
+.item::before {
+  content: '';
+  position: absolute;
+  left: -28px; top: 6px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid var(--accent);
+}
+.year { font-family: var(--font-display); font-weight: 800; font-size: 17px; color: var(--accent); padding-top: 2px; }
+
+.card { padding: 22px 24px; }
+.card h3 { font-size: 21px; }
+.role { color: var(--accent); font-weight: 600; font-size: 14px; margin: 2px 0 12px; }
+.points { display: flex; flex-direction: column; gap: 8px; }
+.points li { position: relative; padding-left: 20px; color: var(--mute); font-size: 14.5px; line-height: 1.5; }
+.points li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+.points strong { color: var(--ink); font-weight: 600; }
+.tags { margin-top: 16px; }
+
+@media (max-width: 760px) {
+  /* Year on top, no spine or node: the card gets the full width. */
+  .timeline { padding-left: 0; gap: 28px; }
+  .timeline::before, .item::before { display: none; }
+  .item { grid-template-columns: 1fr; gap: 8px; }
+  .year { padding-top: 0; }
+}

@@ -1,0 +1,16 @@
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(20px, 4vh, 44px);
+}
+
+.more {
+  color: var(--mute);
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.more:hover { color: var(--accent); }

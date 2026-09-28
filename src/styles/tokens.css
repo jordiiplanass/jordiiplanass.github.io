@@ -1,0 +1,15 @@
+:root {
+  --accent: #f45d48;
+  --bg: #feefe8;
+  --head: #232323;
+  --on-accent: #feefe8;
+  --ink: #222525;
+  --mute: #6c6f6f;
+  --line: #e7d6cc;
+  --panel: #fffffe;
+  --maxw: 1100px;
+  --nav-h: 64px;
+  --font-display: 'Cabinet Grotesk', system-ui, sans-serif;
+  --font-body: 'General Sans', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', monospace;
+}

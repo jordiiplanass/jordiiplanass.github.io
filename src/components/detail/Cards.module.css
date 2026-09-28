@@ -1,0 +1,24 @@
+.cards { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 14px; }
+.card { padding: 22px; }
+.card h4 { font-size: 18px; color: var(--accent); margin-bottom: 6px; }
+.card p { color: var(--mute); font-size: 15px; line-height: 1.55; }
+
+/* Small uppercase label above a value (specs). */
+.label .card { padding: 20px; }
+.label h4 { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+.label p { font-size: 16px; line-height: 1.55; }
+
+/* Numbered steps: neutral title under a big accent number. */
+.numbered h4 { color: var(--head); margin: 8px 0 6px; }
+.numbered p { font-size: 14px; }
+.num { font-family: var(--font-display); font-weight: 800; color: var(--accent); font-size: 22px; }
+
+@media (max-width: 860px) {
+  .label { grid-template-columns: repeat(min(var(--cols), 2), 1fr); }
+}
+@media (max-width: 640px) {
+  .cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .label { grid-template-columns: 1fr; }
+}

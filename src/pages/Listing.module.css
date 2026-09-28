@@ -1,0 +1,2 @@
+.page { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 110px 0 70px; }
+.intro { color: var(--mute); max-width: 52ch; margin: -16px 0 44px; font-size: 16px; line-height: 1.6; }

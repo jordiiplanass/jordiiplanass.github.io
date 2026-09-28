@@ -1,57 +1,41 @@
 # Estructura
 
-Astro 5, output estático. i18n nativo (`astro.config.mjs`): `es` por defecto (sin prefijo),
-`en` bajo `/en`. Scroll = Lenis con "section-jacking" (un gesto = una sección) en `Base.astro`.
-
-## Mapa
+Vite + React 19 + TypeScript. Rutas con React Router (`App.tsx`): `/en?` hace el prefijo opcional,
+un solo árbol sirve ES y EN.
 
 ```
 src/
-  layouts/
-    Base.astro          # html/head, fuentes Fontshare, Nav+Footer, ClientRouter (View Transitions),
-                        # script global: Lenis section-jacking + reveal-on-scroll (IntersectionObserver)
-  components/
-    Nav.astro           # barra fija, links + toggle de idioma (toggleLangHref)
-    Footer.astro        # copyright + redes (placeholders)
-    Home.astro          # TODA la home one-page: hero, about, games, projects, experience, cv.
-                        #   Strings UI por idioma en objeto `ui` inline + i18n/ui.ts
-    Carousel.astro      # carrusel infinito de juegos (cards portrait, scale/fade por distancia)
-    ProjectList.astro   # filas editoriales de proyectos (art panel + body, lados alternan)
-    VideoBlock.astro    # embed YouTube para fichas
-    Gallery.astro       # grid de capturas para fichas
-  pages/
-    index.astro                 # home ES -> <Home lang="es">
-    games/
-      index.astro               # listado juegos ES (glob de *.astro)
-      <slug>.astro              # ficha bespoke por juego, exporta `meta`
-    projects/
-      index.astro               # listado proyectos ES
-      <slug>.astro              # ficha bespoke por proyecto, exporta `meta`
-    en/                         # espejo EN completo (mismo slug que ES, copy traducido)
-      index.astro               # home EN -> <Home lang="en">
-      games/index.astro + <slug>.astro     # listado + fichas juegos EN
-      projects/index.astro + <slug>.astro  # listado + fichas proyectos EN
+  main.tsx App.tsx           # entrada; rutas, <html lang>, scroll al cambiar de página
+  content/
+    types.ts                 # Section, Ficha, Entry
+    index.ts                 # games, projects: glob de games/*.ts y projects/*.ts, orden por año desc
+    home.ts                  # stack, focus, experience
+    games/*.ts projects/*.ts # una ficha por archivo; el nombre del archivo es el slug
   i18n/
-    ui.ts               # diccionario es/en (claves planas) + tipos
-    utils.ts            # getLangFromUrl, useTranslations, toggleLangHref
-  styles/
-    global.css          # variables CSS (paleta), reset, .btn .panel .tag .sec-* .eyebrow, reveal
-public/
-  cv.pdf, icon.png
-  icons/                # logos de stack (unity, csharp, cplusplus, unreal, androidstudio, git)
-  illustrations/        # hamster.svg
-  textures/             # jpgs (no referenciados desde src actualmente)
+    types.ts                 # Lang, L, T, tr(es, en)
+    ui.ts                    # strings de UI, todas con tr()
+    useI18n.ts               # lang, l(), t(), to(), alt (el idioma sale de la URL)
+  components/                # Nav Footer Btn Panel TagList SectionHead Block Carousel ProjectList
+                             # Gallery VideoBlock Icon Rich; cada uno con su .module.css
+    detail/                  # Detail, Section (switch por tipo), List, Cards
+  pages/
+    home/                    # Home, Hero, About, GamesSection, ProjectsSection, Experience, Cv
+    Listing.tsx              # /games y /projects
+    DetailPage.tsx           # /games/:slug y /projects/:slug
+    NotFound.tsx
+  hooks/useTyping.ts
+  lib/                       # media.ts (covers y galerías), cx.ts, motion.ts
+  media/<slug>/cover|gallery # recursos visuales
+  styles/                    # tokens.css (variables), base.css (reset y utilidades globales)
+public/                      # cv.pdf, icon.png, icons/, illustrations/
 ```
 
-## Inventario de contenido
+## Convención clave: fichas y cards autogeneradas
 
-- **Juegos** (`pages/games/`): pipo-the-penguin (2026), fragments-of-the-abyss, chrono-fish (2023), nachito-el-nacho.
-- **Proyectos** (`pages/projects/`): liveops-unity (2026), primeros-auxilios-vr.
-- **Experiencia** (array `exp` por idioma en `Home.astro`): Espai Casa Sagnier (2026–act., Unity
-  Instructor), Respira (2025, Lead Developer), Alioth (2021–22, Web Developer).
+Cada ficha exporta por defecto un `Ficha` (`title, year, tags, summary, eyebrow?, lead?, sections[]`).
+`content/index.ts` las carga con `import.meta.glob`. Añadir una = crear el archivo: aparecen la card en
+la home y el listado, y la ficha en `/games/<slug>` y `/en/games/<slug>`. El botón "siguiente" de cada
+ficha es la siguiente del listado.
 
-## Convención clave: cards autogeneradas
-
-Cada ficha `<slug>.astro` exporta `export const meta = { slug, title, year, tags, summary, cover }`.
-Los índices y la home hacen `import.meta.glob('.../*.astro', { eager:true })`, leen `m.meta`,
-filtran y ordenan por `year` desc. Añadir una ficha = crear el archivo; la card aparece sola.
+Tipos de sección: `text`, `list`, `cards` (`label` para specs, `numbered` para pasos), `note`,
+`video` (sin `youtube` muestra el placeholder), `gallery`.

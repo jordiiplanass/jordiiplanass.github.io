@@ -1,51 +1,37 @@
 # Normas
 
-Reglas claras para no romper la coherencia del proyecto.
-
 ## Contenido
 
-- **Añadir un juego**: crear `src/pages/games/<slug>.astro` con `export const meta = { slug, title,
-  year, tags, summary, cover }`. `slug` = nombre del archivo. La card aparece sola en home + listado.
-  **Crear también el espejo EN** `src/pages/en/games/<slug>.astro` (mismo `slug`, copy traducido,
-  `lang="en"`, links `/en/...`) o el toggle dará 404. Igual para proyectos.
-- `cover` puede ser URL (p.ej. thumb de YouTube) o ruta en `public/`. Sin `cover` se muestran iniciales.
-- Vídeo en ficha: `<VideoBlock youtube="ID" title="..." />`. Capturas: `<Gallery cols={2} />`.
-- **Recursos visuales**: una carpeta por slug en `public/media/<slug>/` con `cover/` y `gallery/`.
-  **Convención, no config**: `coverFor()` y `galleryFor()` (`src/lib/media.ts`) leen esas carpetas en
-  build; los aplican `Carousel.astro` y `Gallery.astro`. Soltar los archivos basta y un solo archivo
-  sirve ES y EN. El cover se antepone a `meta.cover`. Los proyectos (`ProjectList`) siguen a mano.
-  Ratios: cover de juego **3:4**, cover de proyecto **16:10**, capturas **16:9** (la rejilla fija ese
-  ratio para no saltar al cargar). Detalle en `docs/recursos-visuales.md` (fuera de `public/`, que se
-  publica entero tal cual).
-- `<Gallery slug=... label=... />` genera `alt` numerados. Para `alt` que describan la captura de
-  verdad, pasar `images` a mano en la ficha ES y en la EN.
+- **Añadir un juego/proyecto**: `src/content/games/<slug>.ts` (o `projects/`), `export default {...} satisfies Ficha`.
+  Un solo archivo sirve ES y EN. Sin espejo ni rutas que tocar.
+- Todo texto que cambia de idioma va con `tr('español', 'english')`. Un string suelto es un nombre propio
+  (Unity, Three.js, títulos de juego). El tipado impide olvidar un idioma.
+- HTML inline (`<strong>`, `<em>`) permitido en `tr()` de listas, puntos de experiencia y títulos: se
+  renderiza con `Rich`. Solo contenido propio, nunca entrada de usuario.
+- **Recursos visuales**: `src/media/<slug>/cover/` y `gallery/`. Convención, no config (ver `docs/recursos-visuales.md`).
+  Ratios: cover de juego 3:4, cover de proyecto 16:10, capturas 16:9.
 
 ## i18n
 
-- Todo string visible va por idioma. Strings cortos de UI → `src/i18n/ui.ts` (claves `es` y `en`
-  en paralelo; si falta una, cae al `es`). Bloques largos por idioma → objeto `ui` inline en el componente.
-- **Nombres propios no se traducen** (Unity, Three.js, títulos de juego).
-- `es` no lleva prefijo de ruta; `en` va bajo `/en`. Enlaces internos usan el prefijo `L`/`base`
-  según idioma — al crear links nuevos, respetarlo (no hardcodear `/games`).
-- Si una página existe en un idioma pero no en el otro, **no dejar el toggle apuntando a un 404**.
+- Strings cortos de UI → `src/i18n/ui.ts`. Contenido de la home → `src/content/home.ts`.
+- Enlaces internos siempre con `to('/ruta')` de `useI18n()` para llevar el prefijo `/en`. No hardcodear `/games`.
+- `es` sin prefijo, `en` bajo `/en`.
 
 ## Diseño / CSS
 
-- Usar **siempre variables CSS** de `global.css` (`--accent`, `--ink`, `--mute`, `--line`,
-  `--panel`, `--bg`, `--head`). No hardcodear hex. No introducir un color nuevo sin justificarlo aquí.
-- Un solo acento. `--teal`/`--orange` son alias → no tratarlos como colores distintos.
-- Toda animación bajo `@media (prefers-reduced-motion: reduce)` debe degradar a estático.
-- Breakpoints en uso: `860px` (section-jacking off, hero a 1 col) y `760px` (grids a 1 col).
-  Mantener esos cortes; el mobile real es `<=560px` para el Nav.
-- Polish de micro-interacciones: seguir `emil-design-eng`.
+- CSS Modules junto a cada componente. Globales solo `tokens.css` y `base.css` (`.wrap`, `.eyebrow`, `.sec-title`).
+- **Siempre variables CSS** de `tokens.css` (`--accent`, `--ink`, `--mute`, `--line`, `--panel`, `--bg`,
+  `--head`, `--on-accent`). No hardcodear hex. Un solo acento.
+- Sin efectos de scroll. `prefers-reduced-motion` ya lo cubre `base.css`; no hace falta media query por componente.
+- Breakpoints en uso: `860px` (hero a 1 col) y `760px` (grids a 1 col); el Nav colapsa a `720px`.
 
 ## Dependencias
 
-- Stack mínimo: `astro`, `lenis`. **No añadir dependencias** para lo que resuelven unas líneas
-  o una feature nativa de plataforma (ponytail). Quitar las que no se importen.
+- Stack mínimo: `react`, `react-dom`, `react-router`. **No añadir dependencias** para lo que resuelven
+  unas líneas o una feature nativa de la plataforma.
 
-## Convenciones de código
+## Código
 
-- Atajos deliberados se marcan con comentario `ponytail:` (qué es y cuándo mejorarlo).
-- Astro estático, sin frameworks de UI. Scripts vanilla en `<script>` con guardas de
-  `astro:page-load` (View Transitions) para no doble-inicializar.
+- TypeScript estricto. `npm run build` incluye `tsc --noEmit`: tiene que pasar.
+- Un componente por archivo, con su `.module.css`. Lo que se reutiliza entre páginas vive en `components/`.
+- Sin comentarios que expliquen lo obvio. Los atajos con techo conocido se marcan `ponytail:` (qué es y cuándo mejorarlo).

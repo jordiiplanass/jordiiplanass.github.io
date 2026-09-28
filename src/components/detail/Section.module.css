@@ -1,0 +1,11 @@
+.title { font-size: clamp(24px, 3.6vw, 36px); margin-top: 24px; }
+.body { max-width: 68ch; color: var(--mute); font-size: 17px; line-height: 1.6; }
+.note {
+  max-width: 68ch;
+  margin-top: 12px;
+  padding-left: 16px;
+  border-left: 2px solid var(--line);
+  color: var(--mute);
+  font-size: 15px;
+  line-height: 1.6;
+}

@@ -1,0 +1,13 @@
+.footer { padding: 48px 0 64px; margin-top: 80px; border-top: 1px solid var(--line); }
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--mute);
+  font-size: 14px;
+}
+.social { display: flex; gap: 20px; }
+.social a { transition: color 0.18s ease; }
+.social a:hover { color: var(--accent); }

@@ -1,0 +1,18 @@
+.list { max-width: 68ch; display: grid; gap: 12px; }
+
+.list li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--mute);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 10px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.list strong { color: var(--head); font-weight: 600; }
