@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ui } from '../i18n.js'
+import Arrow from './Arrow.jsx'
 
 // items: [{ slug, title, year, cover, href }]. Swipeable deck: drag the top card past 30% of its width
 // (or use the buttons) to send it to the back. Key it by its list so the order resets when the list changes.
@@ -59,9 +60,9 @@ export default function Deck({ items, lang }) {
       </ul>
       {items.length > 1 && (
         <div className="deck-ctl">
-          <button type="button" onClick={prev} aria-label={t.prev}>←</button>
+          <button type="button" onClick={prev} aria-label={t.prev}><Arrow dir="left" chevron /></button>
           <span aria-live="polite">{order[0] + 1} / {items.length}</span>
-          <button type="button" onClick={next} aria-label={t.next}>→</button>
+          <button type="button" onClick={next} aria-label={t.next}><Arrow chevron /></button>
         </div>
       )}
     </div>

@@ -7,7 +7,8 @@ import { useLang, useTitle, localePath, ui } from '../i18n.js'
 import SectionTitle from '../components/SectionTitle.jsx'
 import Carousel from '../components/Carousel.jsx'
 import Deck from '../components/Deck.jsx'
-import ProjectList from '../components/ProjectList.jsx'
+import Arrow from '../components/Arrow.jsx'
+import AppRail from '../components/AppRail.jsx'
 import { bold } from '../lib/bold.jsx'
 
 const Icon = ({ paths, width = 1.7 }) => (
@@ -46,13 +47,13 @@ export default function Home() {
           <div>
             <p className="hero-role">{h.role}</p>
             <h1>Jordi Planas</h1>
-            <p className="hero-lead">{h.lead}</p>
+            {h.lead.map((p) => <p className="hero-lead" key={p}>{bold(p)}</p>)}
             <div className="acts">
-              <Link to={to('/#contact')} className="btn btn-accent">{h.contactCta}</Link>
+              <Link to={to('/#contact')} className="btn btn-lg">{h.contactCta} <span className="btn-arrow" aria-hidden="true"><Arrow /></span></Link>
             </div>
           </div>
           <div className="hero-deck">
-            <div className="tabs" role="group" aria-label={h.tabs.join(' / ')}>
+            <div className="tabs" data-tab={tab} role="group" aria-label={h.tabs.join(' / ')}>
               {h.tabs.map((label, i) => (
                 <button key={label} type="button" aria-pressed={tab === i} onClick={() => setTab(i)}>{label}</button>
               ))}
@@ -60,55 +61,16 @@ export default function Home() {
             <Deck key={tab} items={deck} lang={lang} />
           </div>
         </div>
-      </section>
-
-      <section id="about" className="block" data-snap>
-        <div className="container">
-          <SectionTitle title={h.about} />
-          <div className="about-grid">
-            <div className="about-lead" data-reveal style={{ '--i': 1 }}>
-              <h3 className="about-headline">{h.headline}</h3>
-              <div className="about-body">
-                <p>{h.p1}</p>
-                <ul className="stats">
-                  {h.stats.map(([n, l]) => <li key={l}><span className="stat-n">{n}</span><span className="stat-l">{l}</span></li>)}
-                </ul>
-              </div>
-              <div className="about-illu"><img src="/illustrations/hamster.svg" alt="" width="635" height="853" /></div>
-            </div>
-            <div data-reveal style={{ '--i': 2 }}>
-              <p className="side-label">{h.focusLabel}</p>
-              <ul className="focus-cards">
-                {h.focus.map(([ic, title, desc]) => (
-                  <li className="fcard" key={ic}>
-                    <span className="fcard-ic"><Icon paths={icons[ic]} /></span>
-                    <div><span className="fcard-h">{title}</span><span className="fcard-d">{desc}</span></div>
-                  </li>
-                ))}
-              </ul>
-              <p className="side-label">{h.stackLabel}</p>
-              <ul className="tool-cards">
-                {stack.map(([name, file]) => (
-                  <li className="tcard" key={file}>
-                    <img src={`/icons/${file}.svg`} alt={name} width="26" height="26" loading="lazy" />
-                    <span>{name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="games" className="block" data-snap>
-        <div className="container"><SectionTitle title={t.games.title} more={t.all} to={to('/games')} /></div>
-        <div data-reveal style={{ '--i': 1 }}><Carousel items={ofKind('game')} lang={lang} /></div>
-      </section>
-
-      <section id="projects" className="block" data-snap>
-        <div className="container">
-          <SectionTitle title={t.projects.title} more={t.all} to={to('/projects')} />
-          <ProjectList items={ofKind('project')} lang={lang} capped />
+        {/* ponytail: CSS-only marquee. The list is repeated 4x and the track slides -50%, so the loop
+            point is always off-screen even on wide viewports; copies 2-4 are hidden from screen readers. */}
+        <div className="marquee" role="region" aria-label={h.stackLabel}>
+          <ul className="marquee-track">
+            {[0, 1, 2, 3].flatMap((k) => stack.map(([name, file]) => (
+              <li key={k + file} aria-hidden={k > 0 || undefined}>
+                <img src={`/icons/${file}.svg`} alt="" width="28" height="28" />{name}
+              </li>
+            )))}
+          </ul>
         </div>
       </section>
 
@@ -120,14 +82,23 @@ export default function Home() {
               <li className="tl-item" key={e.title} data-reveal style={{ '--i': i }}>
                 <div className="tl-year">{e.year}</div>
                 <div className="tl-body panel">
-                  <div className="tl-top"><h3>{e.title}</h3><p className="role">{e.role}</p></div>
+                  <div className="tl-top"><h3>{e.role}</h3><p className="role">{e.title}</p></div>
                   <ul className="achievements">{e.points.map((p) => <li key={p}>{bold(p)}</li>)}</ul>
-                  <ul className="tl-tags">{e.tags.map((x) => <li className="tag" key={x}>{x}</li>)}</ul>
                 </div>
               </li>
             ))}
           </ol>
         </div>
+      </section>
+
+      <section id="games" className="block" data-snap>
+        <div className="container"><SectionTitle title={t.games.title} /></div>
+        <div data-reveal style={{ '--i': 1 }}><Carousel items={ofKind('game')} lang={lang} /></div>
+      </section>
+
+      <section id="projects" className="block" data-snap>
+        <div className="container"><SectionTitle title={t.projects.title} /></div>
+        <AppRail items={ofKind('project')} lang={lang} />
       </section>
 
       <section id="contact" className="block" data-snap>
@@ -160,7 +131,7 @@ export default function Home() {
               <span>{c.message}</span>
               <textarea name="message" rows="5" required placeholder={c.placeholder} />
             </label>
-            <button className="btn btn-accent" type="submit">{c.send}</button>
+            <button className="btn" type="submit">{c.send}</button>
             <p className="contact-note">{c.note} <a href={`mailto:${email}`}>{email}</a></p>
           </form>
         </div>

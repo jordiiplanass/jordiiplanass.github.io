@@ -10,9 +10,9 @@ export default function NotFound() {
       <h1 className="sec-title">Esta página no <em>existe</em></h1>
       <p className="lead">El enlace está roto o la página se movió. <span lang="en">This page doesn't exist.</span></p>
       <div className="acts">
-        <Link to={localePath(lang)} className="btn btn-accent">Ir al inicio</Link>
-        <Link to={localePath(lang, '/games')} className="btn">Games</Link>
-        <Link to={localePath(lang, '/projects')} className="btn">Projects</Link>
+        <Link to={localePath(lang)} className="btn">Ir al inicio</Link>
+        <Link to={localePath(lang, '/games')} className="btn">Juegos</Link>
+        <Link to={localePath(lang, '/projects')} className="btn">Aplicaciones</Link>
       </div>
     </section>
   )

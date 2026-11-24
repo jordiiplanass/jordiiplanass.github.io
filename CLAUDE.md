@@ -19,7 +19,7 @@ src/
   data/
     index.js         punto único de import: export { projects } from './projects.js'
     projects.js      6 proyectos (4 juegos + 2 proyectos) con contenido ES/EN; su comentario inicial es el contrato de datos
-    home.js          contenido de la home por idioma (hero: role, lead, contactCta, tabs; about, stats, herramientas, experiencia, contact) + `email` y `social` (sección de contacto y footer)
+    home.js          contenido de la home por idioma (hero: role, lead, contactCta, tabs; experiencia, contact) + `stack` (banda de herramientas bajo el hero, logo en public/icons) + `email` y `social` (sección de contacto y footer)
   lib/
     media.js         getCover(slug), getGallery(slug) — imágenes de src/media vía import.meta.glob
     projects.js      ofKind('game'|'project') — filtrado y orden por año desc (estable)
@@ -27,7 +27,7 @@ src/
   components/        Layout (skip link, Nav, main, Footer, scroll y reveal), Nav, Footer,
                      SectionTitle {title:[normal, coral], more?, to?, as?}, ProjectList {items, lang, capped?},
                      Carousel {items, lang} (coverflow infinito de juegos: home y /games),
-                     Deck {items:[{slug,title,year,cover,href}], lang} (mazo deslizable del hero; pestañas Games / App Development en Home)
+                     Deck {items:[{slug,title,year,cover,href}], lang} (mazo deslizable del hero; pestañas Juegos / Aplicaciones en Home)
   pages/             Home, Listing {kind}, Detail {kind}, NotFound
   media/<slug>/      cover/ (primera imagen = portada) y gallery/ (orden por nombre)
 public/              cv.pdf, icon.png, icons/ (logos herramientas), illustrations/hamster.svg
@@ -44,11 +44,12 @@ public/              cv.pdf, icon.png, icons/ (logos herramientas), illustration
 `langOf(pathname)`, `useLang()`, `localePath(lang, '/games')` → `/en/games`, `togglePath(pathname)` (misma página en el otro idioma; slugs/rutas desconocidas → home del otro idioma), `useTitle(title)`, `ui(lang)`.
 
 ## Diseño (resumen)
-Colores: acento `#f45d48`, fondo `#feefe8`, tinta `#222525`, títulos `#232323`, mute `#6c6f6f`, línea `#e7d6cc`, panel `#fffffe`. Fuentes Fontshare: Cabinet Grotesk (títulos) y General Sans (texto). Contenedor 1100px con 24px de padding. Breakpoints: 480 / 640 / 720 (menú hamburguesa) / 760 / 860.
+Paleta jade: acento `#288760` (solo texto grande), acento-ink `#1f6b4f` (texto pequeño y botones rellenos), tinte `#b7e5ba`, fondo `#eef3ef` con cuadrícula blueprint de 48px casi invisible, tinta `#14261f`, títulos `#10221b`, mute `#52645b`, línea `#d5e1d8`, panel `#fbfdfb` (header y tarjetas). Botones: un solo estilo relleno (`.btn`). Fuentes Fontshare: Cabinet Grotesk (títulos) y General Sans (texto). Contenedor 1100px con 24px de padding. Breakpoints: 480 / 640 / 720 (menú hamburguesa) / 760 / 860.
 
 ## Decisiones deliberadas (`ponytail:` en el código)
 - Snap vertical de la home con CSS `scroll-snap` nativo (≥860px) en lugar de Lenis.
 - Coverflow sin librería: la lista se repite hasta ≥8 cartas para que el salto de un lado a otro ocurra fuera de la vista (±2 visibles).
+- Banda de herramientas (marquee) solo CSS: la lista se repite 4× y la pista se desplaza −50%; copias 2–4 con `aria-hidden`. Con `prefers-reduced-motion` queda estática y centrada.
 - Mazo del hero sin librería: pointer events + transforms; sin física, solo umbral del 30% del ancho.
 - Formulario de contacto (#contact, al final de la home) por `mailto:`: abre la app de correo del visitante; sin backend ni servicio externo. Cambiar el `onSubmit` por un servicio (Formspree, Web3Forms, Worker + Resend) si hace falta enviar sin app de correo.
 - Imágenes cargadas con glob eager (~35 archivos); revisar si crecen a cientos.
@@ -58,7 +59,7 @@ Colores: acento `#f45d48`, fondo `#feefe8`, tinta `#222525`, títulos `#232323`,
 - **Despliegue**: no configurado. GitHub Pages necesita `base` en Vite si no es la raíz del dominio y un fallback SPA (copiar `index.html` a `404.html`) o cambiar a HashRouter.
 - **LinkedIn**: se usa `jordi-planas-martinez-9b390232b`; el repo original actual usa `jordiplanasdev`. Confirmar cuál vale.
 - Resúmenes de juegos (tarjetas) derivados del texto de cada página, no del original.
-- "← Games"/"← Projects" se quedan en inglés en las páginas ES (fiel al original).
+- "← Games" se queda en inglés en las páginas ES (fiel al original); las apps usan "← Aplicaciones" / "← Applications". La ruta sigue siendo `/projects`.
 
 ## Forma de trabajar del usuario
 - Estilo de código "ponytail": la solución más simple que funcione, reutilizar, sin abstracciones ni dependencias innecesarias.

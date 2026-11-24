@@ -11,7 +11,7 @@
  * PER LANGUAGE (es / en)
  *   title      card/listing title and <title>
  *   summary    card summary (games: no card text exists in the blueprint, derived from page copy; projects: verbatim row text)
- *   backLabel  text of the back link ('← Games' / '← Projects', verbatim; the blueprint leaves it English on ES pages)
+ *   backLabel  text of the back link ('← Games' / '← Aplicaciones' / '← Applications')
  *   nextLabel  label of the button linking to `next` (games with next != null)
  *   endLabel   (Nachito only) label of the final button that links back to the games list (used when next === null)
  *   header     { h1?, accent?, titleLines?, eyebrow?, subtitle?, lead?, showYear?, showTags? }
@@ -80,7 +80,7 @@ export const projects = [
   },
 
   {
-    slug: 'fragments-of-the-abyss', kind: 'game', year: 2024,
+    slug: 'fragments-of-the-abyss', kind: 'game', year: 2025,
     tags: ['Unity', 'C#', 'Atmospheric', 'Systems'],
     cardTags: ['Unity', 'C#', 'Atmospheric'],
     next: 'chrono-fish', layout: 'default',
@@ -88,7 +88,7 @@ export const projects = [
       title: 'Fragments of the Abyss',
       summary: 'Aventura atmosférica de exploración en las profundidades.',
       backLabel: '← Games', nextLabel: 'Siguiente: Chrono Fish →',
-      header: { eyebrow: '2024 · Game' },
+      header: { eyebrow: '2025 · Game' },
       blocks: [
         { type: 'video', youtube: 'Xc5Z1nYzrCE', title: 'Tráiler de Fragments of the Abyss', ariaLabel: 'Reproducir Tráiler de Fragments of the Abyss' },
         { type: 'columns', items: [
@@ -102,7 +102,7 @@ export const projects = [
       title: 'Fragments of the Abyss',
       summary: 'An atmospheric exploration adventure into the deep.',
       backLabel: '← Games', nextLabel: 'Next: Chrono Fish →',
-      header: { eyebrow: '2024 · Game' },
+      header: { eyebrow: '2025 · Game' },
       blocks: [
         { type: 'video', youtube: 'Xc5Z1nYzrCE', title: 'Fragments of the Abyss trailer', ariaLabel: 'Play Fragments of the Abyss trailer' },
         { type: 'columns', items: [
@@ -115,7 +115,7 @@ export const projects = [
   },
 
   {
-    slug: 'chrono-fish', kind: 'game', year: 2023,
+    slug: 'chrono-fish', kind: 'game', year: 2024,
     tags: ['Unity', 'C#', 'Time Mechanic', 'Puzzle'],
     cardTags: ['Unity', 'C#', 'Time Mechanic'],
     next: 'nachito-el-nacho', layout: 'sidebar',
@@ -126,7 +126,7 @@ export const projects = [
       header: { titleLines: ['Chrono', 'Fish'] },
       blocks: [
         { type: 'stats', items: [
-          { label: 'Año', value: '2023' }, { label: 'Motor', value: 'Unity' },
+          { label: 'Año', value: '2024' }, { label: 'Motor', value: 'Unity' },
           { label: 'Género', value: 'Puzzle temporal' }, { label: 'Rol', value: 'Programación' } ] },
         { type: 'intro', text: 'Puzzle construido alrededor de una mecánica de tiempo: el jugador manipula el flujo temporal para avanzar.' },
         { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish — gameplay', ariaLabel: 'Reproducir Chrono Fish — gameplay' },
@@ -141,7 +141,7 @@ export const projects = [
       header: { titleLines: ['Chrono', 'Fish'] },
       blocks: [
         { type: 'stats', items: [
-          { label: 'Year', value: '2023' }, { label: 'Engine', value: 'Unity' },
+          { label: 'Year', value: '2024' }, { label: 'Engine', value: 'Unity' },
           { label: 'Genre', value: 'Time puzzle' }, { label: 'Role', value: 'Programming' } ] },
         { type: 'intro', text: 'A puzzle built around a time mechanic: the player manipulates the flow of time to progress.' },
         { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish — gameplay', ariaLabel: 'Play Chrono Fish — gameplay' },
@@ -197,7 +197,7 @@ export const projects = [
     es: {
       title: 'LiveOps Unity',
       summary: 'Herramienta de LiveOps para proyectos pequeños: panel en React, Firebase Realtime Database y un cliente de Unity que aplica los cambios sin recompilar.',
-      backLabel: '← Projects',
+      backLabel: '← Aplicaciones',
       header: {
         eyebrow: 'Proyecto aplicado · 2026', accent: 'Unity',
         lead: 'Las herramientas de LiveOps del mercado te sobran de funciones o te atan a una plataforma cerrada, y en un proyecto pequeño eso se paga en integración y en factura. Esto va al revés: un panel web propio, Firebase Realtime Database como capa de datos y un cliente de Unity que recoge los cambios en caliente.' },
@@ -238,7 +238,7 @@ export const projects = [
     en: {
       title: 'LiveOps Unity',
       summary: 'A LiveOps tool for small projects: a React panel, Firebase Realtime Database and a Unity client that picks up changes without recompiling.',
-      backLabel: '← Projects',
+      backLabel: '← Applications',
       header: {
         eyebrow: 'Applied project · 2026', accent: 'Unity',
         lead: 'Off-the-shelf LiveOps tools either give you far more than you need or lock you into a closed platform, and on a small project you pay for that in integration work and in invoices. This one goes the other way: a panel I own, Firebase Realtime Database as the data layer, and a Unity client that picks up changes while the game is running.' },
@@ -286,7 +286,7 @@ export const projects = [
     es: {
       title: 'Primeros Auxilios (VR)',
       summary: 'Simulación en Meta Quest 3 para practicar un torniquete bajo estrés agudo. Prácticas en Proyecto Respira.',
-      backLabel: '← Projects',
+      backLabel: '← Aplicaciones',
       header: {
         h1: 'Primeros Auxilios VR', accent: 'VR', eyebrow: 'Prácticas · Proyecto Respira',
         lead: 'Proyecto Respira da formación presencial en primeros auxilios. Querían que sus alumnos pudieran practicar la colocación de un torniquete con la presión de una urgencia de verdad, así que montamos la escena en Meta Quest 3. Fue la primera vez que la empresa se metía en XR.' },
@@ -321,7 +321,7 @@ export const projects = [
     en: {
       title: 'First Aid (VR)',
       summary: 'A Meta Quest 3 simulation for practising a tourniquet under acute stress. Internship at Proyecto Respira.',
-      backLabel: '← Projects',
+      backLabel: '← Applications',
       header: {
         h1: 'First Aid VR', accent: 'VR', eyebrow: 'Internship · Proyecto Respira',
         lead: "Proyecto Respira runs in-person first aid training. They wanted their students to be able to practise applying a tourniquet with the pressure of a real emergency, so we built the scene on Meta Quest 3. It was the company's first move into XR." },

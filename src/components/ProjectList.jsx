@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { getCover } from '../lib/media.js'
 import { localePath, ui } from '../i18n.js'
+import Arrow from './Arrow.jsx'
 
 export const initials = (title) => title.replace(/[^A-Za-zÀ-ÿ ]/g, '').split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('')
 
@@ -22,7 +23,7 @@ export default function ProjectList({ items, lang, capped }) {
                 <div className="proj-top"><h3>{title}</h3><span className="proj-year">{p.year}</span></div>
                 {summary && <p className="proj-sum">{summary}</p>}
                 <ul className="tags">{(p.cardTags ?? p.tags).map((t) => <li key={t}>{t}</li>)}</ul>
-                <span className="proj-go">{ui(lang).view}<i aria-hidden="true">→</i></span>
+                <span className="proj-go">{ui(lang).view}<i aria-hidden="true"><Arrow /></i></span>
               </div>
             </Link>
           </li>

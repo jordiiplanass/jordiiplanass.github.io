@@ -146,8 +146,8 @@ function Page({ p, kind, slug }) {
           {render(blocks)}
         </>
       )}
-      {next && nextLabel && <Link className="btn btn-accent d-end" to={localePath(lang, `/games/${next.slug}`)}>{nextLabel}</Link>}
-      {!next && endLabel && <Link className="btn btn-accent d-end" to={localePath(lang, '/games')}>{endLabel}</Link>}
+      {next && nextLabel && <Link className="btn d-end" to={localePath(lang, `/games/${next.slug}`)}>{nextLabel}</Link>}
+      {!next && endLabel && <Link className="btn d-end" to={localePath(lang, '/games')}>{endLabel}</Link>}
     </article>
   )
 }

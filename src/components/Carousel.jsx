@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Arrow from './Arrow.jsx'
 import { getCover } from '../lib/media.js'
 import { localePath, ui } from '../i18n.js'
 
@@ -48,8 +49,8 @@ export default function Carousel({ items, lang }) {
       </ul>
       <p className="cf-title" aria-live="polite"><strong>{cur[lang].title}</strong> <span>{cur.year}</span></p>
       <div className="cf-ctl">
-        <button type="button" onClick={() => step(-1)} aria-label={t.prev}>←</button>
-        <button type="button" onClick={() => step(1)} aria-label={t.next}>→</button>
+        <button type="button" onClick={() => step(-1)} aria-label={t.prev}><Arrow dir="left" chevron /></button>
+        <button type="button" onClick={() => step(1)} aria-label={t.next}><Arrow chevron /></button>
       </div>
     </div>
   )

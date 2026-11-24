@@ -22,13 +22,17 @@ export default function Nav() {
               </svg>
             </summary>
             <nav className="links" onClick={(e) => e.target.closest('a') && (e.currentTarget.closest('details').open = false)}>
+              <Link to={to('/#experience')}>{t.nav.experience}</Link>
               <Link to={to('/games')} className={active('/games')}>{t.nav.games}</Link>
               <Link to={to('/projects')} className={active('/projects')}>{t.nav.projects}</Link>
-              <Link to={to('/#experience')}>{t.nav.experience}</Link>
-              <a href="/cv.pdf" download="Jordi_Planas_CV.pdf" className="cv">{t.cv}</a>
+              <Link to={to('/#contact')} className="nav-cta">{t.contact}</Link>
             </nav>
           </details>
-          <Link to={togglePath(pathname)} className="lang-toggle">{t.toggle}</Link>
+          {/* ES | EN toggle: the whole pill is one link to the same page in the other language.
+              Nav persists across routes, so the ::before pill slides between sides via data-lang. */}
+          <Link to={togglePath(pathname)} className="lang-toggle" data-lang={lang} hrefLang={lang === 'es' ? 'en' : 'es'} aria-label={t.language}>
+            {['es', 'en'].map((l) => <span key={l} className={l === lang ? 'on' : undefined} aria-hidden="true">{l.toUpperCase()}</span>)}
+          </Link>
         </div>
       </div>
     </header>

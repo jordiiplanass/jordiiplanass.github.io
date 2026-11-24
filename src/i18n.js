@@ -24,18 +24,18 @@ export const useTitle = (title) => useEffect(() => { document.title = title }, [
 
 const UI = {
   es: {
-    nav: { games: 'Juegos', projects: 'Proyectos', experience: 'Experiencia' },
-    menu: 'Menú', toggle: 'EN', cv: 'CV ↓',
+    nav: { games: 'Juegos', projects: 'Aplicaciones', experience: 'Experiencia' },
+    menu: 'Menú', language: 'Idioma: español. Cambiar a inglés', contact: 'Contactar',
     all: 'Todos →', view: 'Ver proyecto', prev: 'Anterior', next: 'Siguiente', skip: 'Saltar al contenido',
     games: { title: ['Mis ', 'juegos'], intro: 'Proyectos de videojuego en los que he programado los sistemas.', doc: 'Juegos - Jordi Planas' },
-    projects: { title: ['Otros ', 'proyectos'], intro: 'Otros proyectos: VR, herramientas y desarrollo más allá de los juegos.', doc: 'Proyectos - Jordi Planas' },
+    projects: { title: ['Mis ', 'aplicaciones'], intro: 'Aplicaciones, herramientas y VR: desarrollo más allá de los juegos.', doc: 'Aplicaciones - Jordi Planas' },
   },
   en: {
-    nav: { games: 'Games', projects: 'Projects', experience: 'Experience' },
-    menu: 'Menu', toggle: 'ES', cv: 'CV ↓',
+    nav: { games: 'Games', projects: 'Applications', experience: 'Experience' },
+    menu: 'Menu', language: 'Language: English. Switch to Spanish', contact: 'Contact',
     all: 'All →', view: 'View project', prev: 'Previous', next: 'Next', skip: 'Skip to content',
     games: { title: ['My ', 'Games'], intro: 'Game projects where I programmed the systems.', doc: 'Games - Jordi Planas' },
-    projects: { title: ['Other ', 'Projects'], intro: 'Other projects: VR, tools, and development beyond games.', doc: 'Projects - Jordi Planas' },
+    projects: { title: ['My ', 'Applications'], intro: 'Apps, tools and VR: development beyond games.', doc: 'Applications - Jordi Planas' },
   },
 }
 export const ui = (lang) => UI[lang]
