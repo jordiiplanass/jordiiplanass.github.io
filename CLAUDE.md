@@ -19,7 +19,7 @@ src/
   data/
     index.js         punto único de import: export { projects } from './projects.js'
     projects.js      6 proyectos (4 juegos + 2 proyectos) con contenido ES/EN; su comentario inicial es el contrato de datos
-    home.js          contenido de la home por idioma (hero: role, lead, tabs; about, stats, herramientas, experiencia, CV) + `social` (enlaces de contacto, hero y footer)
+    home.js          contenido de la home por idioma (hero: role, lead, contactCta, tabs; about, stats, herramientas, experiencia, contact) + `email` y `social` (sección de contacto y footer)
   lib/
     media.js         getCover(slug), getGallery(slug) — imágenes de src/media vía import.meta.glob
     projects.js      ofKind('game'|'project') — filtrado y orden por año desc (estable)
@@ -50,6 +50,7 @@ Colores: acento `#f45d48`, fondo `#feefe8`, tinta `#222525`, títulos `#232323`,
 - Snap vertical de la home con CSS `scroll-snap` nativo (≥860px) en lugar de Lenis.
 - Coverflow sin librería: la lista se repite hasta ≥8 cartas para que el salto de un lado a otro ocurra fuera de la vista (±2 visibles).
 - Mazo del hero sin librería: pointer events + transforms; sin física, solo umbral del 30% del ancho.
+- Formulario de contacto (#contact, al final de la home) por `mailto:`: abre la app de correo del visitante; sin backend ni servicio externo. Cambiar el `onSubmit` por un servicio (Formspree, Web3Forms, Worker + Resend) si hace falta enviar sin app de correo.
 - Imágenes cargadas con glob eager (~35 archivos); revisar si crecen a cientos.
 - Animaciones de reveal desactivadas con `prefers-reduced-motion`.
 

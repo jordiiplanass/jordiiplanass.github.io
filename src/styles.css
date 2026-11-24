@@ -65,7 +65,7 @@ main:focus { outline: none; }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
 
 .btn {
-  display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; font-weight: 600;
   padding: 12px 22px; border-radius: 999px; border: 1px solid var(--ink);
   transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.16s ease-out;
 }
@@ -162,12 +162,7 @@ main:focus { outline: none; }
 .hero-role { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 2.6vw, 34px); line-height: 1.1; color: var(--accent-ink); }
 .hero h1 { font-size: clamp(48px, 7vw, 88px); margin-top: 8px; }
 .hero-lead { margin-top: 20px; max-width: 34em; font-size: clamp(16px, 1.4vw, 19px); }
-.hero-stats { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 20px; color: var(--mute); }
-.hero-stats span { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--accent-dim); }
 .hero .acts { margin-top: 24px; }
-.hero-contact { display: flex; flex-wrap: wrap; gap: 0 20px; margin-top: 12px; }
-.hero-contact a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; }
-.hero-contact a:hover { color: var(--accent-ink); text-decoration-color: var(--accent); }
 .hero-deck { width: min(100%, 340px); margin-left: auto; }
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -269,13 +264,26 @@ main:focus { outline: none; }
 .achievements strong { color: var(--ink); font-weight: 600; }
 .tl-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
 
-/* Home: CV card */
-.cv-card { display: flex; align-items: center; gap: 28px; padding: 32px 36px; }
-.cv-ic { flex: none; color: var(--accent); line-height: 0; }
-.cv-ic svg { width: 42px; height: 42px; display: block; }
-.cv-main { flex: 1; }
-.cv-card h3 { font-size: clamp(22px, 3vw, 32px); margin-bottom: 6px; }
-.cv-card p { color: var(--mute); max-width: 52ch; }
+/* Home: contact (links on top, mailto form below) */
+.contact-intro { margin: -12px 0 20px; color: var(--mute); }
+.contact-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.contact-links svg { width: 18px; height: 18px; }
+.contact-form { display: grid; gap: 20px; max-width: 760px; margin-top: 28px; padding: clamp(20px, 4vw, 32px); }
+.contact-form h3 { font-size: clamp(22px, 3vw, 28px); }
+.contact-form fieldset { border: 0; padding: 0; }
+.contact-form legend, .field > span { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips input { position: absolute; opacity: 0; pointer-events: none; }
+.chips span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; color: var(--ink); cursor: pointer; transition: border-color 0.2s, background 0.2s, color 0.2s; }
+.chips span:hover { border-color: var(--ink); }
+.chips input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.chips input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 3px; }
+.field textarea { display: block; width: 100%; min-height: 140px; padding: 12px 14px; resize: vertical; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); font: 16px/1.5 var(--font-body); color: var(--ink); }
+.field textarea::placeholder { color: var(--mute); }
+.field textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-color: transparent; }
+.contact-form .btn { justify-self: start; }
+.contact-note { font-size: 13px; color: var(--mute); }
+.contact-note a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 760px) {
   .about-grid { grid-template-columns: 1fr; gap: 28px; }
@@ -285,7 +293,6 @@ main:focus { outline: none; }
   .timeline::before, .tl-item::before { display: none; }
   .tl-item { grid-template-columns: 1fr; gap: 8px; }
   .tl-year { padding-top: 0; }
-  .cv-card { flex-direction: column; align-items: flex-start; gap: 18px; }
 }
 
 /* Project rows */

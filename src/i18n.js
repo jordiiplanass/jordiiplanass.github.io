@@ -25,14 +25,14 @@ export const useTitle = (title) => useEffect(() => { document.title = title }, [
 const UI = {
   es: {
     nav: { games: 'Juegos', projects: 'Proyectos', experience: 'Experiencia' },
-    menu: 'Menú', toggle: 'EN', cv: 'CV ↓', downloadCv: 'Descargar CV ↓', seeGames: 'Ver mis juegos',
+    menu: 'Menú', toggle: 'EN', cv: 'CV ↓',
     all: 'Todos →', view: 'Ver proyecto', prev: 'Anterior', next: 'Siguiente', skip: 'Saltar al contenido',
     games: { title: ['Mis ', 'juegos'], intro: 'Proyectos de videojuego en los que he programado los sistemas.', doc: 'Juegos - Jordi Planas' },
     projects: { title: ['Otros ', 'proyectos'], intro: 'Otros proyectos: VR, herramientas y desarrollo más allá de los juegos.', doc: 'Proyectos - Jordi Planas' },
   },
   en: {
     nav: { games: 'Games', projects: 'Projects', experience: 'Experience' },
-    menu: 'Menu', toggle: 'ES', cv: 'CV ↓', downloadCv: 'Download CV ↓', seeGames: 'See my games',
+    menu: 'Menu', toggle: 'ES', cv: 'CV ↓',
     all: 'All →', view: 'View project', prev: 'Previous', next: 'Next', skip: 'Skip to content',
     games: { title: ['My ', 'Games'], intro: 'Game projects where I programmed the systems.', doc: 'Games - Jordi Planas' },
     projects: { title: ['Other ', 'Projects'], intro: 'Other projects: VR, tools, and development beyond games.', doc: 'Projects - Jordi Planas' },
