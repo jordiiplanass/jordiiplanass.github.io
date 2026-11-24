@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { home, stack, icons } from '../data/home.js'
+import { home, stack, icons, social } from '../data/home.js'
 import { ofKind } from '../lib/projects.js'
+import { getCover } from '../lib/media.js'
 import { useLang, useTitle, localePath, ui } from '../i18n.js'
 import SectionTitle from '../components/SectionTitle.jsx'
 import Carousel from '../components/Carousel.jsx'
+import Deck from '../components/Deck.jsx'
 import ProjectList from '../components/ProjectList.jsx'
 import { bold } from '../lib/bold.jsx'
 
@@ -14,43 +16,15 @@ const Icon = ({ paths, width = 1.7 }) => (
   </svg>
 )
 
-// Types the name, then the lead; instant under reduced motion. phase: name | lead | done
-function useTyped(name, lead) {
-  const [n, setN] = useState('')
-  const [l, setL] = useState('')
-  const [phase, setPhase] = useState('name')
-  useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setN(name); setL(lead); setPhase('done')
-      return
-    }
-    setN(''); setL(''); setPhase('name')
-    let id
-    const type = (text, set, min, max, done) => {
-      let i = 0
-      const step = () => {
-        if (i >= text.length) return done()
-        set(text.slice(0, ++i))
-        id = setTimeout(step, min + Math.random() * (max - min))
-      }
-      step()
-    }
-    id = setTimeout(() => type(name, setN, 70, 120, () => {
-      setPhase('lead')
-      id = setTimeout(() => type(lead, setL, 14, 28, () => setPhase('done')), 140)
-    }), 260)
-    return () => clearTimeout(id)
-  }, [name, lead])
-  return [n, l, phase]
-}
-
+// Hero deck tabs, in the order of home[lang].tabs.
+const DECKS = ['game', 'project']
 
 export default function Home() {
   const lang = useLang()
   const h = home[lang]
   const t = ui(lang)
   const to = (p) => localePath(lang, p)
-  const [typedName, typedLead, phase] = useTyped(h.name, h.lead)
+  const [tab, setTab] = useState(0)
   useTitle(h.doc)
 
   // ponytail: native CSS scroll-snap on <html> (>=860px, see styles.css) instead of Lenis section-jacking.
@@ -59,30 +33,39 @@ export default function Home() {
     return () => document.documentElement.classList.remove('snap')
   }, [])
 
+  const deck = ofKind(DECKS[tab]).map((p) => ({
+    slug: p.slug, title: p[lang].title, year: p.year, cover: getCover(p.slug),
+    href: to(`/${p.kind === 'game' ? 'games' : 'projects'}/${p.slug}`),
+  }))
+
   return (
     <>
       <section className="hero" data-snap>
         <div className="container hero-grid">
           <div>
-            <p className="eyebrow" data-reveal>{h.eyebrow}</p>
-            <h1 aria-label="Jordi Planas">
-              <span aria-hidden="true">
-                {typedName.split('\n').map((line, i) => <span key={i}>{i > 0 && <br />}{line}</span>)}
-              </span>
-              {phase === 'name' && <span className="caret" aria-hidden="true" />}
-            </h1>
-          </div>
-          <div className="hero-right">
-            <p className="lead" aria-label={h.lead}>
-              <span className="lead-ghost" aria-hidden="true">{h.lead}</span>
-              <span className="lead-live" aria-hidden="true">
-                {typedLead}{phase === 'lead' && <span className="caret lead-caret" />}
-              </span>
-            </p>
-            <div className="cta">
+            <p className="hero-role">{h.role}</p>
+            <h1>Jordi Planas</h1>
+            <p className="hero-lead">{h.lead}</p>
+            <ul className="hero-stats">
+              {h.stats.map(([n, l]) => <li key={l}><span>{n}</span> {l}</li>)}
+            </ul>
+            <div className="acts">
               <Link to={to('/games')} className="btn btn-accent">{t.seeGames}</Link>
               <a href="/cv.pdf" download="Jordi_Planas_CV.pdf" className="btn">{t.downloadCv}</a>
             </div>
+            <ul className="hero-contact">
+              {social.map(([label, href]) => (
+                <li key={label}><a href={href} {...(href.startsWith('http') && { target: '_blank', rel: 'noopener' })}>{label}</a></li>
+              ))}
+            </ul>
+          </div>
+          <div className="hero-deck">
+            <div className="tabs" role="group" aria-label={h.tabs.join(' / ')}>
+              {h.tabs.map((label, i) => (
+                <button key={label} type="button" aria-pressed={tab === i} onClick={() => setTab(i)}>{label}</button>
+              ))}
+            </div>
+            <Deck key={tab} items={deck} lang={lang} />
           </div>
         </div>
       </section>
@@ -99,7 +82,7 @@ export default function Home() {
                   {h.stats.map(([n, l]) => <li key={l}><span className="stat-n">{n}</span><span className="stat-l">{l}</span></li>)}
                 </ul>
               </div>
-              <div className="about-illu"><img src="/illustrations/hamster.svg" alt="" /></div>
+              <div className="about-illu"><img src="/illustrations/hamster.svg" alt="" width="635" height="853" /></div>
             </div>
             <div data-reveal style={{ '--i': 2 }}>
               <p className="side-label">{h.focusLabel}</p>

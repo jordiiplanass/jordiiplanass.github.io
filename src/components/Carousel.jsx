@@ -1,73 +1,55 @@
-import { useEffect, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getCover } from '../lib/media.js'
-import { initials } from './ProjectList.jsx'
 import { localePath, ui } from '../i18n.js'
 
-// items: projects (kind 'game'). Native scroll-snap scroller; cards scale/fade by distance from centre.
-// ponytail: no 3x infinite loop and no pointer drag (wheel/touch/buttons only); add if the list grows.
-export default function Carousel({ items, lang, centerSlug = 'pipo-the-penguin' }) {
-  const ref = useRef()
+// items: projects (kind 'game'). Infinite coverflow: the active card is centred and flat, neighbours on both
+// sides are turned and pushed back. The list is repeated to ≥8 cards so a card only wraps from one side to the
+// other while it is beyond ±2 (invisible). Buttons, ←/→ keys, swipe, or a click on a side card move it.
+export default function Carousel({ items, lang }) {
   const t = ui(lang)
+  const n = items.length
+  const list = Array.from({ length: Math.ceil(8 / n) }, () => items).flat()
+  const m = list.length
+  const half = Math.floor(m / 2)
+  const [active, setActive] = useState(0) // unbounded; wrapped with modulo
+  const start = useRef(null)
+  const cur = items[((active % n) + n) % n]
+  const step = (d) => setActive((a) => a + d)
 
-  useEffect(() => {
-    const box = ref.current
-    const slides = [...box.querySelectorAll('.slide')]
-    if (!slides.length) return
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-    const update = () => {
-      if (reduce) return
-      const b = box.getBoundingClientRect()
-      const cx = b.left + b.width / 2
-      for (const s of slides) {
-        const r = s.getBoundingClientRect()
-        const d = Math.min(Math.abs(cx - (r.left + r.width / 2)) / (b.width / 2), 1)
-        s.firstChild.style.setProperty('--s', 1 - d * 0.16)
-        s.firstChild.style.setProperty('--o', 1 - d * 0.55)
-      }
-    }
-    const mid = slides.find((s) => s.dataset.slug === centerSlug) ?? slides[0]
-    box.scrollLeft = mid.offsetLeft - (box.clientWidth - mid.offsetWidth) / 2
-    update()
-    let raf
-    const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update) }
-    box.addEventListener('scroll', onScroll, { passive: true })
-    addEventListener('resize', onScroll)
-    return () => { cancelAnimationFrame(raf); removeEventListener('resize', onScroll) }
-  }, [items, centerSlug])
-
-  const step = (dir) => {
-    const [a, b] = ref.current.querySelectorAll('.slide')
-    ref.current.scrollBy({ left: dir * (b ? b.offsetLeft - a.offsetLeft : a.offsetWidth), behavior: 'smooth' })
+  const onKey = (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1) }
+    if (e.key === 'ArrowRight') { e.preventDefault(); step(1) }
+  }
+  const up = (e) => {
+    if (start.current == null) return
+    const d = e.clientX - start.current
+    start.current = null
+    if (Math.abs(d) > 40) step(d < 0 ? 1 : -1)
   }
 
   return (
-    <div>
-      <div className="carousel" ref={ref}>
-        <div className="track">
-          {items.map((g) => {
-            const { title } = g[lang]
-            const cover = getCover(g.slug)
-            return (
-              <Link className="slide" key={g.slug} data-slug={g.slug} to={localePath(lang, `/games/${g.slug}`)} draggable={false}>
-                <div className="card">
-                  <div className="thumb">
-                    {cover ? <img src={cover} alt={title} loading="lazy" draggable={false} /> : <span className="mono">{initials(title)}</span>}
-                    <div className="shade" aria-hidden="true" />
-                    <div className="capt">
-                      <div className="row"><h3>{title}</h3><span className="year">{g.year}</span></div>
-                      <ul className="tags">{(g.cardTags ?? g.tags).slice(0, 3).map((x) => <li key={x}>{x}</li>)}</ul>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-      </div>
-      <div className="ctrls">
-        <button className="arrow" aria-label={t.prev} onClick={() => step(-1)}>←</button>
-        <button className="arrow" aria-label={t.next} onClick={() => step(1)}>→</button>
+    <div className="cf" tabIndex={0} role="group" aria-roledescription="carousel" aria-label={t.games.title.join('')} onKeyDown={onKey}
+      onPointerDown={(e) => { start.current = e.clientX }} onPointerUp={up} onPointerCancel={() => { start.current = null }}>
+      <ul className="cf-stage">
+        {list.map((g, i) => {
+          const o = ((((i - active + half) % m) + m) % m) - half
+          const a = Math.abs(o)
+          const { title } = g[lang]
+          const img = <img src={getCover(g.slug)} alt={o === 0 ? title : ''} width="600" height="800" draggable={false} />
+          return (
+            <li key={i} className={'cf-card' + (a > 2 ? ' cf-far' : '')} style={{ '--o': o, '--s': Math.sign(o), '--a': a }} aria-hidden={o !== 0 || undefined}>
+              {o === 0
+                ? <Link to={localePath(lang, `/games/${g.slug}`)} draggable={false}>{img}</Link>
+                : <button type="button" tabIndex={-1} onClick={() => step(o)}>{img}</button>}
+            </li>
+          )
+        })}
+      </ul>
+      <p className="cf-title" aria-live="polite"><strong>{cur[lang].title}</strong> <span>{cur.year}</span></p>
+      <div className="cf-ctl">
+        <button type="button" onClick={() => step(-1)} aria-label={t.prev}>←</button>
+        <button type="button" onClick={() => step(1)} aria-label={t.next}>→</button>
       </div>
     </div>
   )

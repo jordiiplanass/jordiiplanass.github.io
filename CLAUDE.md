@@ -19,13 +19,15 @@ src/
   data/
     index.js         punto único de import: export { projects } from './projects.js'
     projects.js      6 proyectos (4 juegos + 2 proyectos) con contenido ES/EN; su comentario inicial es el contrato de datos
-    home.js          contenido de la home por idioma (hero, about, stats, herramientas, experiencia, CV)
+    home.js          contenido de la home por idioma (hero: role, lead, tabs; about, stats, herramientas, experiencia, CV) + `social` (enlaces de contacto, hero y footer)
   lib/
     media.js         getCover(slug), getGallery(slug) — imágenes de src/media vía import.meta.glob
     projects.js      ofKind('game'|'project') — filtrado y orden por año desc (estable)
     bold.jsx         bold('a **b**') → <strong> en los segmentos marcados
   components/        Layout (skip link, Nav, main, Footer, scroll y reveal), Nav, Footer,
-                     SectionTitle {title:[normal, coral], more?, to?, as?}, Carousel {items, lang}, ProjectList {items, lang, capped?}
+                     SectionTitle {title:[normal, coral], more?, to?, as?}, ProjectList {items, lang, capped?},
+                     Carousel {items, lang} (coverflow infinito de juegos: home y /games),
+                     Deck {items:[{slug,title,year,cover,href}], lang} (mazo deslizable del hero; pestañas Games / App Development en Home)
   pages/             Home, Listing {kind}, Detail {kind}, NotFound
   media/<slug>/      cover/ (primera imagen = portada) y gallery/ (orden por nombre)
 public/              cv.pdf, icon.png, icons/ (logos herramientas), illustrations/hamster.svg
@@ -46,7 +48,8 @@ Colores: acento `#f45d48`, fondo `#feefe8`, tinta `#222525`, títulos `#232323`,
 
 ## Decisiones deliberadas (`ponytail:` en el código)
 - Snap vertical de la home con CSS `scroll-snap` nativo (≥860px) en lugar de Lenis.
-- Carrusel con scroll nativo + scroll-snap; sin loop infinito ni arrastre con ratón.
+- Coverflow sin librería: la lista se repite hasta ≥8 cartas para que el salto de un lado a otro ocurra fuera de la vista (±2 visibles).
+- Mazo del hero sin librería: pointer events + transforms; sin física, solo umbral del 30% del ancho.
 - Imágenes cargadas con glob eager (~35 archivos); revisar si crecen a cientos.
 - Animaciones de reveal desactivadas con `prefers-reduced-motion`.
 

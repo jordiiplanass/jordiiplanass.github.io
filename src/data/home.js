@@ -12,12 +12,19 @@ export const icons = {
   file: ['M14 3 6 3 6 21 18 21 18 7 14 3Z', 'M14 3 14 7 18 7', 'M12 10 12 16', 'M9 13 12 16 15 13'],
 }
 
+// Contact links (hero + footer).
+export const social = [
+  ['GitHub', 'https://github.com/jordiiplanass'],
+  ['LinkedIn', 'https://www.linkedin.com/in/jordi-planas-martinez-9b390232b/'],
+  ['Email', 'mailto:jordiiplanass@gmail.com'],
+]
+
 export const home = {
   es: {
     doc: 'Jordi Planas - Game Programmer',
-    eyebrow: 'Game Programmer',
-    name: 'Jordi\nPlanas',
-    lead: 'Programo sistemas para videojuegos y me gusta tomar la iniciativa: del prototipo al cierre del proyecto, cuidando el equipo y que las cosas salgan.',
+    role: 'Programador de videojuegos',
+    lead: 'Programo gameplay y sistemas en Unity y C#. Dev principal en Proyecto Respira; hoy enseño Unity a jóvenes desarrolladores.',
+    tabs: ['Games', 'App Development'], // hero deck: games / personal projects
     about: ['Sobre ', 'mí'],
     headline: 'Diseño y programo los sistemas que dan forma a las experiencias, cuidando toda la pipeline de desarrollo.',
     p1: 'Desarrollador con foco en videojuegos. Me implico en cada proyecto en el que entro y me meto donde haga falta: gameplay, sistemas, herramientas internas o lo que toque para sacarlo adelante.',
@@ -60,9 +67,9 @@ export const home = {
   },
   en: {
     doc: 'Jordi Planas - Game Programmer',
-    eyebrow: 'Game Programmer',
-    name: 'Jordi\nPlanas',
-    lead: 'I build game systems and like to take initiative: from prototype to ship, caring for the team and making things happen.',
+    role: 'Game Programmer',
+    lead: 'I program gameplay and systems in Unity and C#. Lead dev on Proyecto Respira; now teaching Unity to young developers.',
+    tabs: ['Games', 'App Development'],
     about: ['About ', 'me'],
     headline: 'I design and build the systems that give experiences their shape, owning the whole development pipeline.',
     p1: "Developer with a focus on games. I get properly involved in every project I join and dig in wherever I'm needed: gameplay, systems, internal tools, or whatever it takes to get the thing shipped.",

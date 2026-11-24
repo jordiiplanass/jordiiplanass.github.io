@@ -56,7 +56,7 @@ function Block({ b, slug }) {
       return (
         <div className="d-intro">
           <p>{b.text}</p>
-          {b.aside && <aside className="panel"><h3>{b.aside.label}</h3><p>{b.aside.text}</p></aside>}
+          {b.aside && <aside className="panel"><h2>{b.aside.label}</h2><p>{b.aside.text}</p></aside>}
         </div>
       )
     case 'heading': return <h2>{b.text}</h2>
