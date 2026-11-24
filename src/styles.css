@@ -363,9 +363,13 @@ main:focus { outline: none; }
 .cf-far { opacity: 0; pointer-events: none; }
 .cf-card a, .cf-card button { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
 .cf-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-.cf-title { margin: 12px 0 14px; text-align: center; font-family: var(--font-display); color: var(--head); }
-.cf-title strong { font-size: 20px; }
-.cf-title span { margin-left: 6px; font-size: 14px; color: var(--mute); }
+.cf-title { position: relative; margin: -44px 0 14px; text-align: center; font-family: var(--font-display); color: var(--head); }
+.cf-title p { margin: 0; }
+.cf-role { font-family: var(--font-text, inherit); font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+.cf-game { margin-top: 8px !important; line-height: 1.1; }
+.cf-game strong { font-size: 30px; font-weight: 800; }
+.cf-game span { margin-left: 10px; font-size: 16px; color: var(--mute); }
+.cf-about { min-height: 2.9em; max-width: 60ch; margin: 6px auto 0 !important; font-family: var(--font-text, inherit); font-size: 15px; line-height: 1.45; color: var(--mute); }
 @media (min-width: 640px) { .cf { --w: min(36vw, 400px, 38vh); } }
 
 @media (prefers-reduced-motion: reduce) {

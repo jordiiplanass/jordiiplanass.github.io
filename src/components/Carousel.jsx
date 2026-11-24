@@ -47,7 +47,11 @@ export default function Carousel({ items, lang }) {
           )
         })}
       </ul>
-      <p className="cf-title" aria-live="polite"><strong>{cur[lang].title}</strong> <span>{cur.year}</span></p>
+      <div className="cf-title" aria-live="polite">
+        <p className="cf-role">{cur[lang].meta.role}</p>
+        <p className="cf-game"><strong>{cur[lang].title}</strong> <span>{cur.year}</span></p>
+        <p className="cf-about">{cur[lang].meta.about}</p>
+      </div>
       <div className="cf-ctl">
         <button type="button" onClick={() => step(-1)} aria-label={t.prev}><Arrow dir="left" chevron /></button>
         <button type="button" onClick={() => step(1)} aria-label={t.next}><Arrow chevron /></button>

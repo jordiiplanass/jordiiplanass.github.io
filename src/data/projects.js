@@ -10,6 +10,7 @@
  *
  * PER LANGUAGE (es / en)
  *   title      card/listing title and <title>
+ *   meta       (games) { role, about } shown under the carousel title
  *   summary    card summary (games: no card text exists in the blueprint, derived from page copy; projects: verbatim row text)
  *   backLabel  text of the back link ('← Games' / '← Aplicaciones' / '← Applications')
  *   nextLabel  label of the button linking to `next` (games with next != null)
@@ -54,6 +55,7 @@ export const projects = [
     es: {
       title: 'Pipo the Penguin',
       summary: 'Plataformas 3D protagonizadas por Pipo, un pingüino que se desliza sobre el hielo.',
+      meta: { about: '¡Domina las habilidades de Pipo para superar nivel tras nivel en este plataformas 3D!', role: 'Programador de sistemas y UI' },
       backLabel: '← Games', nextLabel: 'Siguiente: Fragments of the Abyss →',
       header: { showYear: true, showTags: true },
       blocks: [
@@ -67,6 +69,7 @@ export const projects = [
     en: {
       title: 'Pipo the Penguin',
       summary: 'A 3D platformer starring Pipo, a penguin who slides across the ice.',
+      meta: { about: "Master Pipo's abilities to beat level after level in this 3D platformer!", role: 'Systems and UI programmer' },
       backLabel: '← Games', nextLabel: 'Next: Fragments of the Abyss →',
       header: { showYear: true, showTags: true },
       blocks: [
@@ -87,6 +90,7 @@ export const projects = [
     es: {
       title: 'Fragments of the Abyss',
       summary: 'Aventura atmosférica de exploración en las profundidades.',
+      meta: { about: 'Survival horror de puzzles: resuelve enigmas y defiéndete con tu linterna y tu cámara.', role: 'Programador de gameplay y sistemas' },
       backLabel: '← Games', nextLabel: 'Siguiente: Chrono Fish →',
       header: { eyebrow: '2025 · Game' },
       blocks: [
@@ -101,6 +105,7 @@ export const projects = [
     en: {
       title: 'Fragments of the Abyss',
       summary: 'An atmospheric exploration adventure into the deep.',
+      meta: { about: 'Puzzle survival horror: solve riddles and fend off the dark with your flashlight and camera.', role: 'Gameplay and systems programmer' },
       backLabel: '← Games', nextLabel: 'Next: Chrono Fish →',
       header: { eyebrow: '2025 · Game' },
       blocks: [
@@ -122,6 +127,7 @@ export const projects = [
     es: {
       title: 'Chrono Fish',
       summary: 'Puzzle construido alrededor de una mecánica de tiempo: el jugador manipula el flujo temporal para avanzar.',
+      meta: { about: 'Dungeon crawler 2D de parrys.', role: 'Programador de gameplay' },
       backLabel: '← Games', nextLabel: 'Siguiente: Nachito el Nacho →',
       header: { titleLines: ['Chrono', 'Fish'] },
       blocks: [
@@ -137,6 +143,7 @@ export const projects = [
     en: {
       title: 'Chrono Fish',
       summary: 'A puzzle built around a time mechanic: the player manipulates the flow of time to progress.',
+      meta: { about: 'A 2D dungeon crawler built on parries.', role: 'Gameplay programmer' },
       backLabel: '← Games', nextLabel: 'Next: Nachito el Nacho →',
       header: { titleLines: ['Chrono', 'Fish'] },
       blocks: [
@@ -159,6 +166,7 @@ export const projects = [
     es: {
       title: 'Nachito el Nacho',
       summary: 'Plataformas 2D caricaturesco. Nachito se ha transformado en un nacho y la meta es volver a ser humano.',
+      meta: { about: 'Plataformas 2D caricaturesco: un nacho que se mueve con las habilidades de sus condimentos.', role: 'Programador y diseñador' },
       backLabel: '← Games', endLabel: '← Volver a Games',
       header: { subtitle: 'Plataformas 2D · 2023', showTags: true },
       blocks: [
@@ -174,6 +182,7 @@ export const projects = [
     en: {
       title: 'Nachito el Nacho',
       summary: 'A cartoonish 2D platformer. Nachito has been turned into a nacho and the goal is to become human again.',
+      meta: { about: 'A cartoonish 2D platformer: a nacho that moves using its condiments’ abilities.', role: 'Programmer and designer' },
       tags: ['Unity', 'C#', '2D Platformer', 'Movement'],
       backLabel: '← Games', endLabel: '← Back to Games',
       header: { subtitle: '2D platformer · 2023', showTags: true },
