@@ -42,6 +42,21 @@
  *           featured = first image spans all columns, remaining in 2 columns
  *     { type:'columns', items:[{ title, text?, list?, tags? }] } 2 equal columns (gap 36px), title = h2 22px, text #6c6f6f
  *     { type:'stats', items:[{ label, value }] }                 sidebar definition list (layout 'sidebar' only)
+ *   CASE STUDY BLOCKS
+ *     heading gains kicker?:'01'     mono number + short line above the h2; chapter look (top border, extra space)
+ *     text    now renders **bold**
+ *     { type:'facts', items:[{ label, value }] }                 horizontal definition strip (3 cols, 2 ≤640)
+ *     { type:'skills', groups:[{ label, items }] }               panel of labelled .tools chips; logo when toolIcons (home.js) has the name
+ *     { type:'metrics', items:[{ value, label, context }] }      4 big numbers (2 cols <=760px), reveal on scroll
+ *     { type:'layers', caption, rows:[{ label, items:[{ code, name, sub }] }],   architecture figure, rows top->bottom
+ *           side:{ label, items:[{ code, name, sub }] },         dashed column spanning all rows (below on mobile)
+ *           channels:{ label, items:[{ name, text }] } }         strip under the diagram
+ *     { type:'system', kicker, title, problem, solution, points:[**bold** ok], patterns:[tags],
+ *           metric?:{ value, label }, media:{ file?, alt, placeholder, source?:{ text, link, href }, contain?:bool (chart: no crop) }, flip?:bool,
+ *           labels:{ problem, solution } }                       media.file = path in src/media/<slug>/ (e.g. 'systems/x.png');
+ *                                                                missing file => dashed placeholder showing media.placeholder; flip = media right
+ *     { type:'catalog', items:[{ code, name, systems:[...] }] }  3-col cards (2 <=860, 1 <=640) with code badge + system list
+ *     { type:'table', columns:[...], rows:[[...]], caption? }    scrolls horizontally inside its own wrapper (min 640px)
  */
 
 const shots = (prefix, n, sep = ' ') => Array.from({ length: n }, (_, i) => `${prefix}${sep}${i + 1}`)
@@ -57,12 +72,136 @@ export const projects = [
       summary: 'Plataformas 3D protagonizadas por Pipo, un pingüino que se desliza sobre el hielo.',
       meta: { about: '¡Domina las habilidades de Pipo para superar nivel tras nivel en este plataformas 3D!', role: 'Programador de sistemas y UI' },
       backLabel: '← Games', nextLabel: 'Siguiente: Fragments of the Abyss →',
-      header: { showYear: true, showTags: true },
+      header: { showYear: true },
       blocks: [
         { type: 'intro',
-          text: 'Plataformas 3D protagonizadas por Pipo, un pingüino que se desliza sobre el hielo. El reto fue un sistema de movimiento que se sintiera resbaladizo pero controlable.',
-          aside: { label: 'Mi rol', text: 'Programación de gameplay y sistemas de movimiento.' } },
+          text: 'Plataformas 3D de velocidad protagonizado por Pipo, un pingüino que se desliza sobre el hielo. Diseñé la arquitectura y programé los sistemas que sostienen el juego: del pooling y el guardado a la cámara, la interfaz y la analítica de los playtests.',
+          aside: { label: 'Mi rol', text: 'Systems Programmer. Toda la capa de sistemas e interfaces; el controlador del personaje y las mecánicas de entorno son de otros dos programadores del equipo.' } },
+        { type: 'facts', items: [
+          { label: 'Rol', value: 'Systems Programmer' },
+          { label: 'Equipo', value: 'Hellframe Studios · 5 personas' },
+          { label: 'Motor', value: 'Unity 6 LTS · URP' },
+          { label: 'Plataforma', value: 'PC · Steam Deck' },
+          { label: 'Contexto', value: 'Trabajo de Fin de Grado · ENTI-UB' },
+          { label: 'Reconocimiento', value: '3 nominaciones · Mejor tráiler' },
+        ] },
+        { type: 'skills', groups: [
+          { label: 'Motor y lenguaje', items: ['Unity 6', 'URP', 'C#'] },
+          { label: 'Herramientas', items: ['Rider', 'Git', 'Jira', 'Unity Profiler', 'Lizard'] },
+          { label: 'Competencias', items: ['Arquitectura de sistemas', 'Patrones de diseño', 'Programación de UI', 'Sistemas de cámara', 'Optimización', 'Herramientas de editor', 'Analítica'] },
+        ] },
         { type: 'video', youtube: 'HsIRSft30w8', title: 'Gameplay de Pipo the Penguin', ariaLabel: 'Reproducir Gameplay de Pipo the Penguin' },
+
+        { type: 'heading', kicker: '01', text: 'En cifras' },
+        { type: 'text', text: 'Cada objetivo técnico se fijó al inicio con un umbral medible y se validó al final con herramientas: Lizard para la calidad del código y Unity Profiler sobre Steam Deck para el rendimiento.' },
+        { type: 'metrics', items: [
+          { value: '99,2 %', label: 'métodos con complejidad ≤ 10', context: 'Lizard · Boss Room: 98,9 %' },
+          { value: '0 B', label: 'basura generada por el pooling', context: 'antes: 4.800 B por fotograma' },
+          { value: '0,05 ms', label: 'coste de los sistemas por fotograma', context: 'p99: 0,20 ms · límite: 2 ms' },
+          { value: '90–147', label: 'FPS medios en Steam Deck', context: 'objetivo: 60 FPS' },
+        ] },
+
+        { type: 'heading', kicker: '02', text: 'Arquitectura' },
+        { type: 'text', text: 'Lo difícil no era cada sistema por separado, sino mantenerlos **desacoplados cuando tenían que hablar entre sí**: si un cambio se propaga en cadena, el proyecto deja de escalar. La regla fue usar siempre el mecanismo menos acoplado que resolviera el problema, sin pagar por un desacoplamiento que un equipo de cinco no necesitaba.' },
+        { type: 'layers',
+          caption: 'Seis familias de sistemas organizadas en capas. Las superiores escuchan a las inferiores; las inferiores no conocen a quien las consume.',
+          rows: [
+            { label: 'Presentación', items: [
+              { code: 'C', name: 'Interfaz', sub: 'HUD · Menús · Tienda · Diálogos' },
+              { code: 'D', name: 'Cámara y VFX', sub: 'FollowerCamera · Efectos' },
+              { code: 'E', name: 'Audio', sub: 'SFX · Música' },
+            ] },
+            { label: 'Gameplay', items: [{ code: 'B', name: 'Soporte de gameplay', sub: 'Guardado · Economía · Interacción · Personalización' }] },
+            { label: 'Núcleo', items: [{ code: 'A', name: 'Infraestructura', sub: 'Pooling · Escenas · Niveles · Input' }] },
+          ],
+          side: { label: 'Transversal', items: [{ code: 'F', name: 'Herramientas', sub: 'Analítica · Localización · Debug · Editor' }] },
+          channels: { label: '4 vías de comunicación', items: [
+            { name: 'Singleton', text: 'Solo para los gestores globales.' },
+            { name: 'Eventos (Observer)', text: 'Reaccionar sin conocer al emisor.' },
+            { name: 'ScriptableObjects', text: 'Datos editables sin tocar código.' },
+            { name: 'Referencia directa', text: 'Componentes que ya viven juntos.' },
+          ] } },
+
+        { type: 'heading', kicker: '03', text: 'Sistemas destacados' },
+        { type: 'system', labels: { problem: 'El reto', solution: 'La solución' },
+          kicker: 'Familia D · Cámara', title: 'Una cámara por zonas pensada para diseñadores',
+          problem: 'En un plataformas de velocidad el encuadre cambia en cada tramo: rampas, persecuciones hacia la cámara, cañones. Resolverlo con código, o repartido entre varias cámaras virtuales, ataba el diseño de niveles a la programación.',
+          solution: 'Una FollowerCamera propia que compone módulos independientes: seguimiento con zona muerta, anticipación del movimiento, temblor y transición. El diseñador coloca volúmenes en el editor; cada uno guarda la configuración de su zona y la cámara transita suavemente hacia ella cuando entra el jugador.',
+          points: [
+            '**Overrides selectivos**: una zona puede cambiar solo la anticipación y dejar intacto el resto.',
+            'Límites de seguimiento **por eje**, algo que Cinemachine no permite de forma equivalente.',
+            'Validada con un **test A/B frente a Cinemachine** en tres zonas reales del juego.',
+          ],
+          patterns: ['Composición', 'ScriptableObjects', 'Herramientas de editor'],
+          metric: { value: '1 componente', label: 'por zona, frente a cámara virtual, trigger y tres módulos en Cinemachine' },
+          media: { file: 'systems/camera.gif', alt: 'Transición de la cámara al entrar en una nueva zona', placeholder: 'GIF: transición de cámara en la primera rampa del onboarding, junto al volumen de zona en el editor' } },
+        { type: 'system', flip: true, labels: { problem: 'El reto', solution: 'La solución' },
+          kicker: 'Familia A · Núcleo', title: 'Pooling sin recolector de basura',
+          problem: 'Monedas que salen de un cofre, pisadas en la nieve, balas de cañón, partículas de recompensa: el juego crea y destruye objetos sin parar. Con Instantiate y Destroy, cada destrucción termina en un pico del recolector que el jugador percibe como un tirón.',
+          solution: 'Un PoolManager central con una API mínima, Spawn y Return por identificador, que precarga cada reserva al cargar la escena. Los sistemas piden y devuelven objetos sin saber cómo se gestionan; el audio reutiliza la misma idea con su reserva de fuentes de sonido.',
+          points: [
+            '**0 bytes** asignados y **0 recolecciones** durante la ráfaga de prueba.',
+            'Fotogramas por encima de 20 ms: de **110 a 37**.',
+            'Frame time en el percentil 99: de 23,7 a **21,9 ms**.',
+          ],
+          patterns: ['Object Pool', 'Singleton', 'Unity Profiler'],
+          metric: { value: '4.800 → 0 B', label: 'memoria asignada por fotograma durante una ráfaga' },
+          media: { file: 'systems/pooling.svg', alt: 'Gráfica de memoria asignada por fotograma: 4.800 B con Instantiate frente a 0 B con Object Pool', source: { text: 'Fuente: TFG, tabla 21 (apartado 8.2). Datos: Anexo 3, pool-benchmark-20260612 (600 fotogramas, Steam Deck).', link: 'Repositorio de datos', href: 'https://drive.google.com/drive/folders/1W3dqOHFEdEphT22Dhh1SATX_TDIlAT9-?usp=sharing' }, placeholder: 'Captura: Unity Profiler comparando Instantiate directo frente al pool (memoria asignada por fotograma)' } },
+        { type: 'system', labels: { problem: 'El reto', solution: 'La solución' },
+          kicker: 'Familia C · Interfaz', title: 'Una interfaz que solo escucha',
+          problem: 'Menús, pausa, HUD, ajustes, resultados, tienda y diálogos: muchas pantallas que cambian durante toda la producción. Si la interfaz contiene lógica de juego, cada ajuste de diseño rompe algo en otra parte.',
+          solution: 'La interfaz no decide nada: escucha los eventos del sistema que representa y se limita a mostrarlos. La navegación usa una pila de pantallas que funciona con mando desde el primer fotograma, y los ajustes siguen el patrón Strategy: añadir un control nuevo es implementar una interfaz, sin tocar el gestor.',
+          points: [
+            '**Vista previa de nivel** sobre cada pozo del hub, con el mejor tiempo, las monedas y la medalla.',
+            '**Tienda de cosméticos** con el pingüino renderizado en vivo.',
+            '**Diálogos** en ScriptableObjects que cambian de idioma en mitad de la conversación.',
+            '**Resultados con medallas** por umbrales de tiempo, inspirados en Mail Mole.',
+          ],
+          patterns: ['Observer', 'State', 'Strategy'],
+          metric: { value: '0 líneas', label: 'de código para añadir un diálogo: un ScriptableObject y un trigger' },
+          media: { file: 'systems/ui.gif', alt: 'Recorrido por el menú principal, los ajustes y la tienda', placeholder: 'GIF: recorrido por menú principal, ajustes y tienda con la vista previa del pingüino' } },
+        { type: 'system', flip: true, labels: { problem: 'El reto', solution: 'La solución' },
+          kicker: 'Familia F · Herramientas', title: 'Analítica para decidir con datos',
+          problem: 'Para ajustar la dificultad y la duración hacían falta datos reales: dónde muere el jugador, cuántos intentos necesita y qué monedas de oro se quedan sin recoger.',
+          solution: 'Tres capas independientes: obtenedores por tipo de evento que cada sistema llama con una línea, paquetes serializables con una cabecera común (usuario, sesión, build y plataforma) y un gestor que los escribe en CSV. Añadir un dato nuevo no exige tocar el almacenamiento.',
+          points: [
+            'Midió las **13 sesiones** de playtest externo: **15 minutos** de media, dentro del objetivo de 10 a 20.',
+            'Mostró que **7 de 13** jugadores no terminaban: el problema apuntaba a la dificultad, no a la duración.',
+            'Campos opcionales declarados con una **máscara de bits** en cada paquete.',
+          ],
+          patterns: ['DTO', 'Singleton', 'CSV'],
+          media: { file: 'systems/analytics.png', alt: 'Distribución del tiempo de sesión en los playtests', contain: true, source: { text: 'Fuente: TFG, figura 31 (apartado 7.2). Datos: Anexo 4, telemetría de las 13 sesiones de playtest (CSV).', link: 'Repositorio de datos', href: 'https://drive.google.com/drive/folders/1W3dqOHFEdEphT22Dhh1SATX_TDIlAT9-?usp=sharing' }, placeholder: 'Gráfico: distribución del tiempo de sesión de los playtests o mapa de muertes por nivel' } },
+
+        { type: 'heading', kicker: '04', text: 'Catálogo completo' },
+        { type: 'text', text: 'Todo lo que programé, agrupado por familia.' },
+        { type: 'catalog', items: [
+          { code: 'A', name: 'Núcleo', systems: ['Gestores globales', 'PoolManager', 'SceneManager con carga asíncrona', 'Ciclo de vida del nivel', 'Capa de input'] },
+          { code: 'B', name: 'Soporte de gameplay', systems: ['Guardado de progreso', 'Checkpoints', 'Economía de monedas', 'Tiempo con triggers', 'Interacción', 'Personalización'] },
+          { code: 'C', name: 'Interfaz', systems: ['HUD y cuenta atrás', 'Menú principal y pausa', 'Ajustes', 'Transiciones de pantalla', 'Resultados', 'Vista previa de nivel', 'Tienda', 'Diálogos'] },
+          { code: 'D', name: 'Cámara y VFX', systems: ['FollowerCamera', 'Volúmenes de zona', 'Agua y boyas', 'Sombras y see-through', 'Partículas y boids'] },
+          { code: 'E', name: 'Audio', systems: ['AudioPlayer con pool de fuentes', 'MusicPlayer con crossfade'] },
+          { code: 'F', name: 'Herramientas', systems: ['Analítica a CSV', 'Localización ES/EN', 'Debug', 'Utilidades', 'Herramientas de editor'] },
+        ] },
+
+        { type: 'heading', kicker: '05', text: 'Decisiones técnicas' },
+        { type: 'text', text: 'Cada patrón respondió a un problema concreto. Cuando la alternativa más formal no compensaba su coste para el tamaño del proyecto, la descarté.' },
+        { type: 'table', columns: ['Patrón', 'Dónde', 'Alternativa descartada', 'Motivo'], rows: [
+          ['Singleton', 'Gestores globales', 'Inyección de dependencias (VContainer)', 'Coste de infraestructura excesivo para el alcance'],
+          ['Observer', 'Economía, tiempo, interacción, UI', 'Referencias directas', 'Evita el acoplamiento en cadena'],
+          ['Object Pool', 'PoolManager, fuentes de audio', 'Instantiate / Destroy', 'Elimina los picos del recolector'],
+          ['Facade', 'Gestión de escenas', 'Llamadas directas a la API de Unity', 'Aísla a cada cliente de la carga asíncrona'],
+          ['State', 'Flujo de pantallas, ciclo del nivel', 'Transiciones dentro de cada pantalla', 'Reordenar pantallas sin tocar las demás'],
+          ['Strategy', 'Controles de ajustes', 'Comprobar tipos en el gestor', 'Añadir un control sin modificar el gestor'],
+        ] },
+
+        { type: 'heading', kicker: '06', text: 'Límites y siguientes pasos' },
+        { type: 'text', text: 'Los 10 avisos de complejidad que quedan están todos en herramientas de editor; ninguno en código que se ejecute durante la partida. Lo que cambiaría si el proyecto creciera:' },
+        { type: 'list', items: [
+          '**Inyección de dependencias**: sustituir los Singletons por un contenedor como VContainer para probar sistemas de forma aislada.',
+          '**Colisión de cámara**: el sistema propio no resuelve la oclusión con la geometría, algo que Cinemachine trae de serie.',
+          '**Deuda de nomenclatura** en la cámara, heredada de su primera versión basada en raíles.',
+        ] },
+
         { type: 'gallery', variant: 'cols-2', heading: 'Capturas', alts: shots('Captura de Pipo the Penguin', 4) },
       ],
     },
@@ -71,12 +210,135 @@ export const projects = [
       summary: 'A 3D platformer starring Pipo, a penguin who slides across the ice.',
       meta: { about: "Master Pipo's abilities to beat level after level in this 3D platformer!", role: 'Systems and UI programmer' },
       backLabel: '← Games', nextLabel: 'Next: Fragments of the Abyss →',
-      header: { showYear: true, showTags: true },
+      header: { showYear: true },
       blocks: [
         { type: 'intro',
-          text: 'A 3D platformer starring Pipo, a penguin who slides across the ice. The challenge was a movement system that felt slippery yet controllable.',
-          aside: { label: 'My role', text: 'Gameplay programming and movement systems.' } },
+          text: 'A speed-focused 3D platformer starring Pipo, a penguin who slides across the ice. I designed the architecture and programmed the systems that hold the game together: from pooling and saving to the camera, the interface and the playtest analytics.',
+          aside: { label: 'My role', text: 'Systems Programmer. The whole systems and interface layer; the character controller and environment mechanics belong to two other programmers on the team.' } },
+        { type: 'facts', items: [
+          { label: 'Role', value: 'Systems Programmer' },
+          { label: 'Team', value: 'Hellframe Studios · 5 people' },
+          { label: 'Engine', value: 'Unity 6 LTS · URP' },
+          { label: 'Platform', value: 'PC · Steam Deck' },
+          { label: 'Context', value: 'Final degree project · ENTI-UB' },
+          { label: 'Recognition', value: '3 nominations · Best trailer' },
+        ] },
+        { type: 'skills', groups: [
+          { label: 'Engine & language', items: ['Unity 6', 'URP', 'C#'] },
+          { label: 'Tools', items: ['Rider', 'Git', 'Jira', 'Unity Profiler', 'Lizard'] },
+          { label: 'Skills', items: ['Systems architecture', 'Design patterns', 'UI programming', 'Camera systems', 'Optimisation', 'Editor tooling', 'Analytics'] },
+        ] },
         { type: 'video', youtube: 'HsIRSft30w8', title: 'Pipo the Penguin gameplay', ariaLabel: 'Play Pipo the Penguin gameplay' },
+
+        { type: 'heading', kicker: '01', text: 'By the numbers' },
+        { type: 'text', text: 'Every technical goal was set up front with a measurable threshold and validated at the end with tools: Lizard for code quality and Unity Profiler on Steam Deck for performance.' },
+        { type: 'metrics', items: [
+          { value: '99.2%', label: 'methods at complexity ≤ 10', context: 'Lizard · Boss Room: 98.9%' },
+          { value: '0 B', label: 'garbage generated by pooling', context: 'before: 4,800 B per frame' },
+          { value: '0.05 ms', label: 'system cost per frame', context: 'p99: 0.20 ms · budget: 2 ms' },
+          { value: '90–147', label: 'average FPS on Steam Deck', context: 'target: 60 FPS' },
+        ] },
+
+        { type: 'heading', kicker: '02', text: 'Architecture' },
+        { type: 'text', text: 'The hard part was not each system on its own but **keeping them decoupled when they had to talk to each other**: once a change ripples through the codebase, the project stops scaling. The rule was to always use the least coupled mechanism that solved the problem, without paying for decoupling a team of five did not need.' },
+        { type: 'layers',
+          caption: 'Six system families arranged in layers. Upper layers listen to lower ones; lower layers never know who consumes them.',
+          rows: [
+            { label: 'Presentation', items: [
+              { code: 'C', name: 'Interface', sub: 'HUD · Menus · Shop · Dialogues' },
+              { code: 'D', name: 'Camera & VFX', sub: 'FollowerCamera · Effects' },
+              { code: 'E', name: 'Audio', sub: 'SFX · Music' },
+            ] },
+            { label: 'Gameplay', items: [{ code: 'B', name: 'Supporting gameplay', sub: 'Saving · Economy · Interaction · Customisation' }] },
+            { label: 'Core', items: [{ code: 'A', name: 'Infrastructure', sub: 'Pooling · Scenes · Levels · Input' }] },
+          ],
+          side: { label: 'Cross-cutting', items: [{ code: 'F', name: 'Tools', sub: 'Analytics · Localisation · Debug · Editor' }] },
+          channels: { label: '4 communication channels', items: [
+            { name: 'Singleton', text: 'Global managers only.' },
+            { name: 'Events (Observer)', text: 'React without knowing the sender.' },
+            { name: 'ScriptableObjects', text: 'Data editable without code.' },
+            { name: 'Direct reference', text: 'Components that already live together.' },
+          ] } },
+
+        { type: 'heading', kicker: '03', text: 'Featured systems' },
+        { type: 'system', labels: { problem: 'The challenge', solution: 'The solution' },
+          kicker: 'Family D · Camera', title: 'A zone-based camera built for designers',
+          problem: 'In a speed platformer the framing changes on every stretch: ramps, chases towards the camera, cannons. Solving it in code, or spread across several virtual cameras, tied level design to programming.',
+          solution: 'A custom FollowerCamera composed of independent modules: dead-zone follow, movement look-ahead, shake and transitions. Designers place volumes in the editor; each one stores its zone settings and the camera blends smoothly into them when the player enters.',
+          points: [
+            '**Selective overrides**: a zone can change only the look-ahead and leave everything else untouched.',
+            '**Per-axis** follow limits, which Cinemachine does not offer in an equivalent way.',
+            'Validated with an **A/B test against Cinemachine** in three real zones of the game.',
+          ],
+          patterns: ['Composition', 'ScriptableObjects', 'Editor tooling'],
+          metric: { value: '1 component', label: 'per zone, versus a virtual camera, a trigger and three modules in Cinemachine' },
+          media: { file: 'systems/camera.gif', alt: 'Camera transition when entering a new zone', placeholder: 'GIF: camera transition on the first onboarding ramp, next to the zone volume in the editor' } },
+        { type: 'system', flip: true, labels: { problem: 'The challenge', solution: 'The solution' },
+          kicker: 'Family A · Core', title: 'Pooling with zero garbage collection',
+          problem: 'Coins bursting out of chests, footprints in the snow, cannonballs, reward particles: the game creates and destroys objects constantly. With Instantiate and Destroy, every destruction ends up as a garbage collector spike the player feels as a hitch.',
+          solution: 'A central PoolManager with a minimal API, Spawn and Return by identifier, that preloads every pool when the scene loads. Systems request and return objects without knowing how they are managed; audio reuses the same idea with its pool of sound sources.',
+          points: [
+            '**0 bytes** allocated and **0 collections** during the stress burst.',
+            'Frames above 20 ms: from **110 to 37**.',
+            '99th-percentile frame time: from 23.7 to **21.9 ms**.',
+          ],
+          patterns: ['Object Pool', 'Singleton', 'Unity Profiler'],
+          metric: { value: '4,800 → 0 B', label: 'memory allocated per frame during a burst' },
+          media: { file: 'systems/pooling.svg', alt: 'Chart of memory allocated per frame: 4,800 B with Instantiate versus 0 B with Object Pool', source: { text: 'Source: thesis, table 21 (section 8.2). Data: Annex 3, pool-benchmark-20260612 (600 frames, Steam Deck).', link: 'Data repository', href: 'https://drive.google.com/drive/folders/1W3dqOHFEdEphT22Dhh1SATX_TDIlAT9-?usp=sharing' }, placeholder: 'Screenshot: Unity Profiler comparing direct Instantiate against the pool (memory allocated per frame)' } },
+        { type: 'system', labels: { problem: 'The challenge', solution: 'The solution' },
+          kicker: 'Family C · Interface', title: 'An interface that only listens',
+          problem: 'Menus, pause, HUD, settings, results, shop and dialogues: many screens that keep changing throughout production. If the interface holds game logic, every design tweak breaks something elsewhere.',
+          solution: 'The interface decides nothing: it listens to the events of the system it represents and just displays them. Navigation uses a screen stack that works with a gamepad from the first frame, and settings follow the Strategy pattern: adding a new control means implementing an interface, without touching the manager.',
+          points: [
+            '**Level preview** above each well in the hub, with best time, coins and medal.',
+            '**Cosmetics shop** with the penguin rendered live.',
+            '**Dialogues** in ScriptableObjects that switch language mid-conversation.',
+            '**Results with medals** by time thresholds, inspired by Mail Mole.',
+          ],
+          patterns: ['Observer', 'State', 'Strategy'],
+          metric: { value: '0 lines', label: 'of code to add a dialogue: one ScriptableObject and a trigger' },
+          media: { file: 'systems/ui.gif', alt: 'Walkthrough of the main menu, settings and shop', placeholder: 'GIF: walkthrough of the main menu, settings and shop with the penguin preview' } },
+        { type: 'system', flip: true, labels: { problem: 'The challenge', solution: 'The solution' },
+          kicker: 'Family F · Tools', title: 'Analytics to decide with data',
+          problem: 'Tuning difficulty and length needed real data: where players die, how many attempts they need and which gold coins are left behind.',
+          solution: 'Three independent layers: one obtainer per event type that each system calls in a single line, serialisable packets with a shared header (user, session, build and platform) and a manager that writes them to CSV. Adding a new data point never touches storage.',
+          points: [
+            'Measured the **13 external playtest sessions**: **15 minutes** on average, within the 10–20 target.',
+            'Revealed that **7 of 13** players did not finish: the issue pointed to difficulty, not length.',
+            'Optional fields declared with a **bit mask** on each packet.',
+          ],
+          patterns: ['DTO', 'Singleton', 'CSV'],
+          media: { file: 'systems/analytics.png', alt: 'Session length distribution across playtests', contain: true, source: { text: 'Source: thesis, figure 31 (section 7.2). Data: Annex 4, telemetry of the 13 playtest sessions (CSV).', link: 'Data repository', href: 'https://drive.google.com/drive/folders/1W3dqOHFEdEphT22Dhh1SATX_TDIlAT9-?usp=sharing' }, placeholder: 'Chart: playtest session length distribution or death map per level' } },
+
+        { type: 'heading', kicker: '04', text: 'Full catalogue' },
+        { type: 'text', text: 'Everything I programmed, grouped by family.' },
+        { type: 'catalog', items: [
+          { code: 'A', name: 'Core', systems: ['Global managers', 'PoolManager', 'SceneManager with async loading', 'Level lifecycle', 'Input layer'] },
+          { code: 'B', name: 'Supporting gameplay', systems: ['Progress saving', 'Checkpoints', 'Coin economy', 'Timed triggers', 'Interaction', 'Customisation'] },
+          { code: 'C', name: 'Interface', systems: ['HUD and countdown', 'Main and pause menus', 'Settings', 'Screen transitions', 'Results', 'Level preview', 'Shop', 'Dialogues'] },
+          { code: 'D', name: 'Camera & VFX', systems: ['FollowerCamera', 'Zone volumes', 'Water and buoys', 'Shadows and see-through', 'Particles and boids'] },
+          { code: 'E', name: 'Audio', systems: ['AudioPlayer with source pool', 'MusicPlayer with crossfade'] },
+          { code: 'F', name: 'Tools', systems: ['CSV analytics', 'ES/EN localisation', 'Debug', 'Utilities', 'Editor tools'] },
+        ] },
+
+        { type: 'heading', kicker: '05', text: 'Technical decisions' },
+        { type: 'text', text: 'Each pattern answered a concrete problem. When the more formal alternative did not pay off for the size of the project, I dropped it.' },
+        { type: 'table', columns: ['Pattern', 'Where', 'Discarded alternative', 'Reason'], rows: [
+          ['Singleton', 'Global managers', 'Dependency injection (VContainer)', 'Too much infrastructure for the scope'],
+          ['Observer', 'Economy, time, interaction, UI', 'Direct references', 'Avoids chain coupling'],
+          ['Object Pool', 'PoolManager, audio sources', 'Instantiate / Destroy', 'Removes garbage collector spikes'],
+          ['Facade', 'Scene management', 'Direct Unity API calls', 'Shields clients from async loading'],
+          ['State', 'Screen flow, level lifecycle', 'Transitions inside each screen', 'Reorder screens without touching the rest'],
+          ['Strategy', 'Settings controls', 'Type checks in the manager', 'Add a control without changing the manager'],
+        ] },
+
+        { type: 'heading', kicker: '06', text: 'Limits and next steps' },
+        { type: 'text', text: 'The 10 remaining complexity warnings all live in editor tools; none in code that runs during gameplay. What I would change if the project grew:' },
+        { type: 'list', items: [
+          '**Dependency injection**: replace the Singletons with a container such as VContainer to test systems in isolation.',
+          '**Camera collision**: the custom system does not handle occlusion with geometry, which Cinemachine provides out of the box.',
+          '**Naming debt** in the camera, inherited from its first rail-based version.',
+        ] },
         { type: 'gallery', variant: 'cols-2', heading: 'Screenshots', alts: shots('Pipo the Penguin screenshot', 4, '') },
       ],
     },

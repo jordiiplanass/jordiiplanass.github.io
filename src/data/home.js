@@ -6,7 +6,7 @@ export const stack = [
 ]
 
 // Tag → file in public/icons, for the tool chips on app cards (tags without a logo show as text only).
-export const toolIcons = { Unity: 'unity', 'Unity 6': 'unity', 'C#': 'csharp', Flutter: 'flutter', 'C++': 'cplusplus' }
+export const toolIcons = { Unity: 'unity', 'Unity 6': 'unity', 'C#': 'csharp', Flutter: 'flutter', 'C++': 'cplusplus', Rider: 'rider', Git: 'git', Jira: 'jira' }
 
 // SVG path data for the line icons (24x24 viewBox).
 export const icons = {

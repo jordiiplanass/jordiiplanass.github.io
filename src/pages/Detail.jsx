@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { projects } from '../data'
 import { useLang, useTitle, localePath } from '../i18n.js'
-import { getGallery } from '../lib/media.js'
+import { getGallery, getFile } from '../lib/media.js'
 import { bold } from '../lib/bold.jsx'
+import { toolIcons } from '../data/home.js'
 import NotFound from './NotFound.jsx'
 
 function Video({ b }) {
@@ -50,6 +51,69 @@ function Panel({ p }) {
 const Tags = ({ items }) => <ul className="d-tags">{items.map((x) => <li className="tag" key={x}>{x}</li>)}</ul>
 const List = ({ items }) => <ul className="list">{items.map((x) => <li key={x}>{bold(x)}</li>)}</ul>
 
+const Code = ({ children }) => <span className="code" aria-hidden="true">{children}</span>
+
+function Layers({ b }) {
+  const Fam = ({ f }) => (
+    <div className="d-fam">
+      <p><Code>{f.code}</Code><strong>{f.name}</strong></p>
+      <small>{f.sub}</small>
+    </div>
+  )
+  return (
+    <figure className="d-layers panel">
+      <div className="d-lay-grid">
+        <div className="d-lay-rows">
+          {b.rows.map((r) => (
+            <div className="d-lay-row" key={r.label}>
+              <span className="d-lab">{r.label}</span>
+              <div className="d-fams">{r.items.map((f) => <Fam key={f.code} f={f} />)}</div>
+            </div>
+          ))}
+        </div>
+        {b.side && (
+          <div className="d-lay-side">
+            <span className="d-lab">{b.side.label}</span>
+            {b.side.items.map((f) => <Fam key={f.code} f={f} />)}
+          </div>
+        )}
+      </div>
+      {b.channels && (
+        <div className="d-chan">
+          <span className="d-lab">{b.channels.label}</span>
+          <ul>{b.channels.items.map((c) => <li key={c.name}><strong>{c.name}</strong><span>{c.text}</span></li>)}</ul>
+        </div>
+      )}
+      {b.caption && <figcaption>{b.caption}</figcaption>}
+    </figure>
+  )
+}
+
+function System({ b, slug }) {
+  const url = b.media.file && getFile(slug, b.media.file)
+  return (
+    <section className={'d-system' + (b.flip ? ' flip' : '')}>
+      <div className="d-sys-media">
+        {url ? <img className={b.media.contain ? 'contain' : undefined} src={url} alt={b.media.alt} loading="lazy" /> : (
+          <div className="d-ph" role="img" aria-label={b.media.alt}><i aria-hidden="true" /><p>{b.media.placeholder}</p></div>
+        )}
+        {url && b.media.source && <p className="d-src">{b.media.source.text} <a href={b.media.source.href} target="_blank" rel="noopener noreferrer">{b.media.source.link}</a></p>}
+      </div>
+      <div className="d-sys-text">
+        <span className="d-lab ink">{b.kicker}</span>
+        <h3>{b.title}</h3>
+        <span className="d-lab">{b.labels.problem}</span>
+        <p className="mute">{b.problem}</p>
+        <span className="d-lab">{b.labels.solution}</span>
+        <p>{b.solution}</p>
+        {b.points && <List items={b.points} />}
+        {b.patterns && <Tags items={b.patterns} />}
+        {b.metric && <div className="d-sys-metric"><strong>{b.metric.value}</strong><span>{b.metric.label}</span></div>}
+      </div>
+    </section>
+  )
+}
+
 function Block({ b, slug }) {
   switch (b.type) {
     case 'intro':
@@ -59,8 +123,59 @@ function Block({ b, slug }) {
           {b.aside && <aside className="panel"><h2>{b.aside.label}</h2><p>{b.aside.text}</p></aside>}
         </div>
       )
-    case 'heading': return <h2>{b.text}</h2>
-    case 'text': return <p className={b.variant === 'lead' ? 'd-lead' : 'd-text'}>{b.text}</p>
+    case 'heading':
+      return b.kicker
+        ? <div className="d-sec"><span className="d-kicker">{b.kicker}</span><h2>{b.text}</h2></div>
+        : <h2>{b.text}</h2>
+    case 'text': return <p className={b.variant === 'lead' ? 'd-lead' : 'd-text'}>{bold(b.text)}</p>
+    case 'facts':
+      return <dl className="d-facts">{b.items.map((f) => <div key={f.label}><dt>{f.label}</dt><dd>{f.value}</dd></div>)}</dl>
+    case 'skills':
+      return (
+        <div className="d-skills panel">
+          {b.groups.map((g) => (
+            <div key={g.label}>
+              <p className="d-lab">{g.label}</p>
+              <ul className="tools">
+                {g.items.map((x) => <li key={x}>{toolIcons[x] && <img src={`/icons/${toolIcons[x]}.svg`} alt="" width="20" height="20" />}{x}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )
+    case 'metrics':
+      return (
+        <div className="d-metrics">
+          {b.items.map((m, i) => (
+            <div key={m.label} data-reveal style={{ '--i': i % 4 }}>
+              <strong>{m.value}</strong><span>{m.label}</span>{m.context && <small>{m.context}</small>}
+            </div>
+          ))}
+        </div>
+      )
+    case 'layers': return <Layers b={b} />
+    case 'system': return <System b={b} slug={slug} />
+    case 'catalog':
+      return (
+        <div className="d-catalog">
+          {b.items.map((c) => (
+            <div className="panel" key={c.code}>
+              <h3><Code>{c.code}</Code>{c.name}</h3>
+              <ul>{c.systems.map((s) => <li key={s}>{s}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      )
+    case 'table':
+      return (
+        <div className="d-table">
+          <table>
+            {b.caption && <caption>{b.caption}</caption>}
+            <thead><tr>{b.columns.map((c) => <th key={c} scope="col">{c}</th>)}</tr></thead>
+            <tbody>{b.rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody>
+          </table>
+        </div>
+      )
     case 'list': return <List items={b.items} />
     case 'tags': return <Tags items={b.items} />
     case 'panels': return <div className={'panels c' + b.cols}>{b.items.map((p, i) => <Panel key={i} p={p} />)}</div>
