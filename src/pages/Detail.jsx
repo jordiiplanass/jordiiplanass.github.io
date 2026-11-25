@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { projects } from '../data'
 import { useLang, useTitle, localePath } from '../i18n.js'
-import { getGallery, getFile } from '../lib/media.js'
+import { getGallery, getFile, getCover } from '../lib/media.js'
 import { bold } from '../lib/bold.jsx'
 import { toolIcons } from '../data/home.js'
 import NotFound from './NotFound.jsx'
@@ -18,6 +18,38 @@ function Video({ b }) {
       ) : (
         <button type="button" aria-label={b.ariaLabel} onClick={() => setOn(true)}>
           <img src={`https://img.youtube.com/vi/${b.youtube}/hqdefault.jpg`} alt="" loading="lazy" />
+          <span aria-hidden="true">▶</span>
+        </button>
+      )}
+    </div>
+  )
+}
+
+// Juego web embebido (itch.io): el iframe se pinta al viewport de itch (1300x620) y se escala al ancho
+// disponible, recortando los márgenes: el juego real (960x600) queda centrado en ese viewport.
+// No carga hasta pulsar, como el vídeo. Oculto en móvil (.game en styles.css).
+const VIEW_W = 1300, VIEW_H = 620, GAME_W = 960, GAME_H = 600
+function Game({ b, slug }) {
+  const [on, setOn] = useState(false)
+  const [scale, setScale] = useState(0.65)
+  const box = useRef(null)
+  const poster = getCover(slug)
+  useEffect(() => {
+    const el = box.current
+    const fit = () => setScale(el.clientWidth / GAME_W)
+    fit()
+    const ro = new ResizeObserver(fit)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  return (
+    <div className="vid game" ref={box} style={{ width: '100%', height: GAME_H * scale }}>
+      {on ? (
+        <iframe src={b.src} title={b.title} allow="fullscreen; autoplay; gamepad" allowFullScreen
+          style={{ width: VIEW_W, height: VIEW_H, left: (GAME_W - VIEW_W) / 2, transform: `scale(${scale})`, transformOrigin: `${(VIEW_W - GAME_W) / 2}px 0` }} />
+      ) : (
+        <button type="button" aria-label={b.ariaLabel} onClick={() => setOn(true)}>
+          {poster && <img src={poster} alt="" loading="lazy" />}
           <span aria-hidden="true">▶</span>
         </button>
       )}
@@ -192,6 +224,7 @@ function Block({ b, slug }) {
     case 'links':
       return <div className="d-links">{b.items.map((l) => <a className="btn" key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>)}</div>
     case 'video': return <Video b={b} />
+    case 'game': return <Game b={b} slug={slug} />
     case 'gallery': return <Gallery b={b} slug={slug} />
     case 'columns':
       return (

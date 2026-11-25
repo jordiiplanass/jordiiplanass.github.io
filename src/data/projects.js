@@ -37,7 +37,8 @@
  *     { type:'note', text, variant:'bordered'|'centered' }
  *           bordered = 2px left border #e7d6cc, padding-left 16px, 15px; centered = 15px, max 52ch, mt 20px
  *     { type:'video', youtube:'ID', title, ariaLabel }          click-to-load facade (play button aria-label = ariaLabel)
- *     { type:'video', placeholder:'text' }                      16:9 .panel with grey play glyph + text
+ *     { type:'game', src, title, ariaLabel }                    web game in an iframe (itch.io embed-upload, 1300x620 viewport scaled to fit), loads on click; poster = cover
+ *     { type:'video', placeholder:'text' }                    16:9 .panel with grey play glyph + text
  *     { type:'gallery', variant:'cols-2'|'cols-3'|'featured', heading?, alts:[...] }   one <img> per alt (index order)
  *           featured = first image spans all columns, remaining in 2 columns
  *     { type:'columns', items:[{ title, text?, list?, tags? }] } 2 equal columns (gap 36px), title = h2 22px, text #6c6f6f
@@ -467,38 +468,58 @@ export const projects = [
 
   {
     slug: 'chrono-fish', kind: 'game', year: 2024,
-    tags: ['Unity', 'C#', 'Time Mechanic', 'Puzzle'],
-    cardTags: ['Unity', 'C#', 'Time Mechanic'],
+    tags: ['Unity', 'C#', 'URP 2D Lighting', 'Dungeon Crawler'],
+    cardTags: ['Unity', 'C#', 'URP 2D Lighting'],
     next: 'nachito-el-nacho', layout: 'sidebar',
     es: {
       title: 'Chrono Fish',
-      summary: 'Puzzle construido alrededor de una mecánica de tiempo: el jugador manipula el flujo temporal para avanzar.',
-      meta: { about: 'Dungeon crawler 2D de parrys.', role: 'Programador de gameplay' },
+      summary: 'Dungeon crawler 2D en pixel art de estilo maya: un pez, una voltereta, un parry y una bossfight contra Kukulkan.',
+      meta: { about: 'Dungeon crawler 2D de parrys en una mazmorra maya.', role: 'Desarrollador' },
       backLabel: '← Games', nextLabel: 'Siguiente: Nachito el Nacho →',
       header: { titleLines: ['Chrono', 'Fish'] },
       blocks: [
         { type: 'stats', items: [
           { label: 'Año', value: '2024' }, { label: 'Motor', value: 'Unity' },
-          { label: 'Género', value: 'Puzzle temporal' }, { label: 'Rol', value: 'Programación' } ] },
-        { type: 'intro', text: 'Puzzle construido alrededor de una mecánica de tiempo: el jugador manipula el flujo temporal para avanzar.' },
+          { label: 'Género', value: 'Dungeon crawler 2D' }, { label: 'Rol', value: 'Desarrollador' },
+          { label: 'Equipo', value: '3 programadores y 1 artista' }, { label: 'Duración', value: '7 meses' } ] },
+        { type: 'intro', text: 'Dungeon crawler 2D en pixel art de estilo maya. Juegas como un pez que recorre una mazmorra hasta una bossfight final contra Kukulkan, con solo dos acciones: una voltereta y un parry.' },
         { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish: gameplay', ariaLabel: 'Reproducir Chrono Fish: gameplay' },
-        { type: 'tags', items: ['Unity', 'C#', 'Time Mechanic', 'Puzzle'] },
+        { type: 'tags', items: ['Unity', 'C#', 'URP 2D Lighting', 'Dungeon Crawler'] },
+        { type: 'heading', text: 'Mi rol' },
+        { type: 'text', text: 'Fui **desarrollador general** en un equipo de tres programadores y un artista, durante siete meses. Hice de todo un poco: **gameplay, interfaz** y el resto de sistemas que necesitaba el juego.' },
+        { type: 'heading', text: 'Dos acciones' },
+        { type: 'panels', cols: 2, items: [
+          { title: 'Voltereta', text: 'El movimiento evasivo del pez para esquivar ataques y recolocarte.' },
+          { title: 'Parry', text: 'La herramienta defensiva y ofensiva: bien medido, devuelve el golpe y abre al enemigo.' } ] },
+        { type: 'heading', text: 'Iluminación 2D con URP' },
+        { type: 'text', text: 'Lo más destacable técnicamente es la **iluminación 2D de URP en Unity**: luces sobre un entorno pixel art que dan profundidad y atmósfera a la mazmorra maya sin salir del 2D.' },
+        { type: 'links', items: [{ label: 'Jugar en itch.io', href: 'https://franky-style.itch.io/chrono-fish' }] },
         { type: 'gallery', variant: 'cols-2', heading: 'Galería', alts: shots('Captura de Chrono Fish', 4) },
       ],
     },
     en: {
       title: 'Chrono Fish',
-      summary: 'A puzzle built around a time mechanic: the player manipulates the flow of time to progress.',
-      meta: { about: 'A 2D dungeon crawler built on parries.', role: 'Gameplay programmer' },
+      summary: 'A Mayan-style pixel art 2D dungeon crawler: a fish, a roll, a parry and a boss fight against Kukulkan.',
+      meta: { about: 'A 2D parry-based dungeon crawler set in a Mayan dungeon.', role: 'Developer' },
       backLabel: '← Games', nextLabel: 'Next: Nachito el Nacho →',
       header: { titleLines: ['Chrono', 'Fish'] },
       blocks: [
         { type: 'stats', items: [
           { label: 'Year', value: '2024' }, { label: 'Engine', value: 'Unity' },
-          { label: 'Genre', value: 'Time puzzle' }, { label: 'Role', value: 'Programming' } ] },
-        { type: 'intro', text: 'A puzzle built around a time mechanic: the player manipulates the flow of time to progress.' },
+          { label: 'Genre', value: '2D dungeon crawler' }, { label: 'Role', value: 'Developer' },
+          { label: 'Team', value: '3 programmers and 1 artist' }, { label: 'Duration', value: '7 months' } ] },
+        { type: 'intro', text: 'A Mayan-style pixel art 2D dungeon crawler. You play as a fish making your way through a dungeon to a final boss fight against Kukulkan, with only two actions: a roll and a parry.' },
         { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish: gameplay', ariaLabel: 'Play Chrono Fish: gameplay' },
-        { type: 'tags', items: ['Unity', 'C#', 'Time Mechanic', 'Puzzle'] },
+        { type: 'tags', items: ['Unity', 'C#', 'URP 2D Lighting', 'Dungeon Crawler'] },
+        { type: 'heading', text: 'My role' },
+        { type: 'text', text: 'I was a **general developer** in a team of three programmers and one artist, over seven months. I did a bit of everything: **gameplay, UI** and the rest of the systems the game needed.' },
+        { type: 'heading', text: 'Two actions' },
+        { type: 'panels', cols: 2, items: [
+          { title: 'Roll', text: "The fish's evasive move to dodge attacks and reposition." },
+          { title: 'Parry', text: 'Both defence and offence: well timed, it returns the hit and opens up the enemy.' } ] },
+        { type: 'heading', text: '2D lighting with URP' },
+        { type: 'text', text: 'The highlight is the use of **Unity URP 2D lighting**: lights over a pixel art environment that give the Mayan dungeon depth and atmosphere without leaving 2D.' },
+        { type: 'links', items: [{ label: 'Play on itch.io', href: 'https://franky-style.itch.io/chrono-fish' }] },
         { type: 'gallery', variant: 'cols-2', heading: 'Gallery', alts: shots('Chrono Fish screenshot', 4, '') },
       ],
     },
@@ -517,12 +538,25 @@ export const projects = [
       header: { subtitle: 'Plataformas 2D · 2023', showTags: true },
       blocks: [
         { type: 'text', variant: 'lead', text: 'Plataformas 2D caricaturesco. Nachito se ha transformado en un nacho, y la única forma de moverse por el nivel es usar las habilidades de los condimentos que lleva encima. La meta es volver a ser humano.' },
+        { type: 'game', src: 'https://itch.io/embed-upload/20319793?color=eef3ef', title: 'Nachito el Nacho (jugable)', ariaLabel: 'Jugar a Nachito el Nacho' },
         { type: 'gallery', variant: 'featured', heading: 'Capturas', alts: shots('Captura de Nachito el Nacho', 5) },
+        { type: 'facts', items: [
+          { label: 'Rol', value: 'Programador y diseñador' },
+          { label: 'Equipo', value: '4 desarrolladores' },
+          { label: 'Duración', value: '3 meses' },
+          { label: 'Motor', value: 'Unity · C#' },
+          { label: 'Alcance', value: 'Vertical slice' },
+          { label: 'Contexto', value: 'Mi primer juego en equipo en Unity' },
+        ] },
         { type: 'heading', text: 'Los condimentos' },
-        { type: 'panels', cols: 2, items: [
-          { title: 'Guacamole', text: 'Dash: un impulso seco para cruzar huecos y salir de un apuro.' },
-          { title: 'Queso', text: 'Gancho: se engancha al escenario y te lanza donde no llegas de un salto.' } ] },
-        { type: 'note', variant: 'centered', text: 'Hay más condimentos, y cada uno cambia cómo te desplazas. Encadenarlos es el juego.' },
+        { type: 'panels', cols: 3, items: [
+          { title: 'Frijoles', text: 'Dash: un impulso seco para cruzar huecos y salir de un apuro.' },
+          { title: 'Guacamole', text: 'Paredes de guacamole por las que te deslizas despacio y desde las que puedes hacer un salto de pared.' },
+          { title: 'Queso', text: 'Gancho: se engancha a los aros de cebolla del escenario y te lanza donde no llegas de un salto.' } ] },
+        { type: 'note', variant: 'centered', text: 'Cada condimento cambia cómo te desplazas. Encadenarlos es el juego.' },
+        { type: 'heading', text: 'Mi parte' },
+        { type: 'text', text: 'Fue mi **primer juego en Unity hecho en equipo** y el primero que llevé hasta un **vertical slice**. En tres meses y con cuatro desarrolladores hice un poco de todo, tanto de programación como de diseño.' },
+        { type: 'links', items: [{ label: 'Jugar en itch.io', href: 'https://cramitus.itch.io/nachito-el-nacho' }] },
       ],
     },
     en: {
@@ -534,12 +568,25 @@ export const projects = [
       header: { subtitle: '2D platformer · 2023', showTags: true },
       blocks: [
         { type: 'text', variant: 'lead', text: 'A cartoonish 2D platformer. Nachito has been turned into a nacho, and the only way to get around a level is to use the abilities of the condiments he carries. The goal is to become human again.' },
+        { type: 'game', src: 'https://itch.io/embed-upload/20319793?color=eef3ef', title: 'Nachito el Nacho (playable)', ariaLabel: 'Play Nachito el Nacho' },
         { type: 'gallery', variant: 'featured', heading: 'Screenshots', alts: shots('Nachito el Nacho screenshot', 5, '') },
+        { type: 'facts', items: [
+          { label: 'Role', value: 'Programmer and designer' },
+          { label: 'Team', value: '4 developers' },
+          { label: 'Duration', value: '3 months' },
+          { label: 'Engine', value: 'Unity · C#' },
+          { label: 'Scope', value: 'Vertical slice' },
+          { label: 'Context', value: 'My first team game in Unity' },
+        ] },
         { type: 'heading', text: 'The condiments' },
-        { type: 'panels', cols: 2, items: [
-          { title: 'Guacamole', text: 'Dash: a sharp burst to clear gaps and get out of trouble.' },
-          { title: 'Cheese', text: "Grapple: latches onto the level and swings you where a jump won't reach." } ] },
-        { type: 'note', variant: 'centered', text: 'There are more condiments, each changing how you move. Chaining them is the game.' },
+        { type: 'panels', cols: 3, items: [
+          { title: 'Beans', text: 'Dash: a sharp burst to clear gaps and get out of trouble.' },
+          { title: 'Guacamole', text: 'Guacamole walls you slide down slowly and can wall jump from.' },
+          { title: 'Cheese', text: "Grapple: latches onto the onion rings in the level and swings you where a jump won't reach." } ] },
+        { type: 'note', variant: 'centered', text: 'Each condiment changes how you move. Chaining them is the game.' },
+        { type: 'heading', text: 'My part' },
+        { type: 'text', text: 'This was my **first team game in Unity** and the first one I took to a **vertical slice**. In three months, with four developers, I did a bit of everything across programming and design.' },
+        { type: 'links', items: [{ label: 'Play on itch.io', href: 'https://cramitus.itch.io/nachito-el-nacho' }] },
       ],
     },
   },
@@ -646,7 +693,6 @@ export const projects = [
         h1: 'Primeros Auxilios VR', accent: 'VR', eyebrow: 'Prácticas · Proyecto Respira',
         lead: 'Proyecto Respira da formación presencial en primeros auxilios. Querían que sus alumnos pudieran practicar la colocación de un torniquete con la presión de una urgencia de verdad, así que montamos la escena en Meta Quest 3. Fue la primera vez que la empresa se metía en XR.' },
       blocks: [
-        { type: 'video', placeholder: 'Vídeo próximamente: Demo VR de Primeros Auxilios' },
         { type: 'panels', cols: 4, items: [
           { label: 'Dispositivo', text: 'Meta Quest 3' },
           { label: 'Motor', text: 'Unity 6 · SDK de Meta' },
@@ -681,7 +727,6 @@ export const projects = [
         h1: 'First Aid VR', accent: 'VR', eyebrow: 'Internship · Proyecto Respira',
         lead: "Proyecto Respira runs in-person first aid training. They wanted their students to be able to practise applying a tourniquet with the pressure of a real emergency, so we built the scene on Meta Quest 3. It was the company's first move into XR." },
       blocks: [
-        { type: 'video', placeholder: 'Video coming soon: First Aid VR demo' },
         { type: 'panels', cols: 4, items: [
           { label: 'Device', text: 'Meta Quest 3' },
           { label: 'Engine', text: 'Unity 6 · Meta SDK' },

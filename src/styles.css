@@ -417,6 +417,7 @@ main:focus { outline: none; }
 .panel.card-spec h3 { font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-ink); }
 .card-spec p { color: var(--mute); }
 .vid { position: relative; aspect-ratio: 16 / 9; margin-top: 32px; border-radius: 12px; overflow: hidden; background: #000; }
+@media (max-width: 760px) { .vid.game { display: none; } } /* juego web: solo escritorio */
 .vid button, .vid iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; background: none; cursor: pointer; }
 .vid img { width: 100%; height: 100%; object-fit: cover; }
 .vid button::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); transition: background 0.2s; }
