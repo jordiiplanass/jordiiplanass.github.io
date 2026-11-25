@@ -79,6 +79,8 @@ main:focus { outline: none; }
 }
 .btn:active { transform: scale(0.97); }
 .btn:hover { background: var(--ink); border-color: var(--ink); color: var(--black); }
+.btn-ghost { background: transparent; color: var(--accent-ink); }
+.btn-ghost:hover { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--black); }
 .btn-lg { min-height: 52px; padding: 14px 30px; font-size: 17px; }
 .btn-arrow { transition: transform 0.2s var(--ease-reveal); }
 .btn:hover .btn-arrow { transform: translateX(4px); }
@@ -259,7 +261,7 @@ main:focus { outline: none; }
 .contact .sec-head { justify-content: center; }
 .contact-intro { margin: -12px 0 20px; color: var(--mute); }
 .contact-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.contact-links svg { width: 18px; height: 18px; }
+.btn svg, .contact-links svg { width: 18px; height: 18px; }
 .contact-form { display: grid; gap: 20px; max-width: 760px; margin: 28px auto 0; text-align: left; padding: clamp(20px, 4vw, 32px); }
 .contact-form h3 { font-size: clamp(22px, 3vw, 28px); }
 .contact-form fieldset { border: 0; padding: 0; }
@@ -274,7 +276,6 @@ main:focus { outline: none; }
 .field textarea::placeholder { color: var(--mute); }
 .field textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-color: transparent; }
 .contact-form .btn { justify-self: start; }
-.hero .acts { display: flex; flex-wrap: wrap; gap: 12px; }
 .contact-status { font-size: 14px; font-weight: 500; color: var(--accent-ink); }
 .contact-status.err { color: #b3261e; }
 .contact-note { font-size: 13px; color: var(--mute); }

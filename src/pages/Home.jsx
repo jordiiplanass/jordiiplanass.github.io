@@ -51,7 +51,7 @@ export default function Home() {
             {h.lead.map((p) => <p className="hero-lead" key={p}>{bold(p)}</p>)}
             <div className="acts">
               <Link to={to('/#contact')} className="btn btn-lg">{h.contactCta} <span className="btn-arrow" aria-hidden="true"><Arrow /></span></Link>
-              <a className="btn btn-lg" href="/cv.pdf" download="Jordi_Planas_CV.pdf"><Icon paths={icons.file} />CV</a>
+              <a className="btn btn-lg btn-ghost" href="/cv.pdf" download="Jordi_Planas_CV.pdf"><Icon paths={icons.file} />CV</a>
             </div>
           </div>
           <div className="hero-deck">
