@@ -26,6 +26,7 @@ export default function Nav() {
               <Link to={to('/games')} className={active('/games')}>{t.nav.games}</Link>
               <Link to={to('/projects')} className={active('/projects')}>{t.nav.projects}</Link>
               <Link to={to('/#contact')} className="nav-cta">{t.contact}</Link>
+              <a href="/cv.pdf" download="Jordi_Planas_CV.pdf" className="nav-cta nav-cv">CV</a>
             </nav>
           </details>
           {/* ES | EN toggle: the whole pill is one link to the same page in the other language.

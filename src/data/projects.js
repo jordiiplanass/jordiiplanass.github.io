@@ -687,7 +687,7 @@ export const projects = [
     next: null, layout: 'default',
     es: {
       title: 'Primeros Auxilios (VR)',
-      summary: 'Simulación en Meta Quest 3 para practicar un torniquete bajo estrés agudo. Prácticas en Proyecto Respira.',
+      summary: 'Simulación en Meta Quest 3 para practicar un torniquete con la presión de una emergencia real. Prácticas en Proyecto Respira.',
       backLabel: '← Aplicaciones',
       header: {
         h1: 'Primeros Auxilios VR', accent: 'VR', eyebrow: 'Prácticas · Proyecto Respira',

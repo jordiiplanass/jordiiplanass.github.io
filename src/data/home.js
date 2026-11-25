@@ -17,6 +17,8 @@ export const icons = {
 }
 
 export const email = 'jordiiplanass@gmail.com'
+// Web3Forms access key: se lee de .env (local, ignorado por git) o del secret VITE_FORM_KEY en GitHub Actions.
+export const formKey = import.meta.env.VITE_FORM_KEY
 
 // Contact links (contact section + footer): [label, href, icon key].
 export const social = [
@@ -70,7 +72,10 @@ export const home = {
       message: 'Mensaje',
       placeholder: 'Cuéntame en qué estás pensando…',
       send: 'Enviar mensaje',
-      note: 'Se abrirá tu app de correo con el mensaje listo. ¿No se abre? Escríbeme a',
+      sending: 'Enviando…',
+      ok: '¡Mensaje enviado! Te responderé pronto.',
+      err: 'No se pudo enviar. Inténtalo de nuevo o escríbeme directamente.',
+      note: '¿Prefieres el correo? Escríbeme a',
     },
   },
   en: {
@@ -117,7 +122,10 @@ export const home = {
       message: 'Message',
       placeholder: 'Tell me what you have in mind…',
       send: 'Send message',
-      note: 'Your email app will open with the message ready. Nothing opens? Write to me at',
+      sending: 'Sending…',
+      ok: 'Message sent! I will get back to you soon.',
+      err: 'Could not send. Try again or write to me directly.',
+      note: 'Prefer email? Write to me at',
     },
   },
 }

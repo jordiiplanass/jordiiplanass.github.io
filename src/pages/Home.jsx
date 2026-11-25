@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { home, stack, icons, social, email } from '../data/home.js'
+import { home, stack, icons, social, email, formKey } from '../data/home.js'
 import { ofKind } from '../lib/projects.js'
 import { getCover } from '../lib/media.js'
 import { useLang, useTitle, localePath, ui } from '../i18n.js'
@@ -27,6 +27,7 @@ export default function Home() {
   const t = ui(lang)
   const to = (p) => localePath(lang, p)
   const [tab, setTab] = useState(0)
+  const [status, setStatus] = useState('')
   useTitle(h.doc)
 
   // ponytail: native CSS scroll-snap on <html> (>=860px, see styles.css) instead of Lenis section-jacking.
@@ -111,12 +112,22 @@ export default function Home() {
             ))}
             <li><a className="btn" href="/cv.pdf" download="Jordi_Planas_CV.pdf"><Icon paths={icons.file} />CV</a></li>
           </ul>
-          {/* ponytail: mailto instead of a mail API; no backend or third-party account needed. Swap onSubmit for a
-              fetch to a form service (Formspree, Web3Forms, a Worker + Resend…) if visitors without a mail app matter. */}
-          <form className="contact-form panel" data-reveal style={{ '--i': 2 }} onSubmit={(e) => {
+          {/* ponytail: Web3Forms (free, no backend) delivers the message straight to the inbox tied to formKey. */}
+          <form className="contact-form panel" data-reveal style={{ '--i': 2 }} onSubmit={async (e) => {
             e.preventDefault()
-            const f = new FormData(e.currentTarget)
-            location.href = `mailto:${email}?subject=${encodeURIComponent(`[${f.get('reason')}] Portfolio`)}&body=${encodeURIComponent(f.get('message'))}`
+            const form = e.currentTarget
+            const f = new FormData(form)
+            setStatus('sending')
+            try {
+              const r = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify({ access_key: formKey, subject: `[${f.get('reason')}] Portfolio`, from_name: 'Portfolio', message: f.get('message') }),
+              })
+              if (!(await r.json()).success) throw new Error()
+              setStatus('ok')
+              form.reset()
+            } catch { setStatus('err') }
           }}>
             <h3>{c.form}</h3>
             <fieldset>
@@ -131,7 +142,8 @@ export default function Home() {
               <span>{c.message}</span>
               <textarea name="message" rows="5" required placeholder={c.placeholder} />
             </label>
-            <button className="btn" type="submit">{c.send}</button>
+            <button className="btn" type="submit" disabled={status === 'sending'}>{status === 'sending' ? c.sending : c.send}</button>
+            {(status === 'ok' || status === 'err') && <p className={`contact-status${status === 'err' ? ' err' : ''}`} role="status">{c[status]}</p>}
             <p className="contact-note">{c.note} <a href={`mailto:${email}`}>{email}</a></p>
           </form>
         </div>
