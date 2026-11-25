@@ -274,8 +274,7 @@ main:focus { outline: none; }
 .field textarea::placeholder { color: var(--mute); }
 .field textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-color: transparent; }
 .contact-form .btn { justify-self: start; }
-.links .nav-cv { background: transparent; color: var(--accent-ink); }
-.links .nav-cv:hover { background: var(--ink); color: var(--black); }
+.hero .acts { display: flex; flex-wrap: wrap; gap: 12px; }
 .contact-status { font-size: 14px; font-weight: 500; color: var(--accent-ink); }
 .contact-status.err { color: #b3261e; }
 .contact-note { font-size: 13px; color: var(--mute); }
