@@ -1,11 +1,11 @@
-# Portfolio Jordi Planas — Game Programmer
+# Portfolio Jordi Planas - Game Programmer
 
 Portfolio bilingüe (ES por defecto, EN bajo `/en`) en React. Reconstrucción del sitio Astro original (`D:\Repos\jordiiplanass.github.io`) a partir de un blueprint que ya se borró; el contenido vive ahora en `src/data/`.
 
 ## Comandos
-- `npm run dev` — servidor de desarrollo (Vite). Para el navegador integrado: `.claude/launch.json` → config `dev`.
-- `npm run build` — build a `dist/`. Debe pasar limpio tras cada cambio.
-- `npm run preview` — sirve `dist/`.
+- `npm run dev`: servidor de desarrollo (Vite). Para el navegador integrado: `.claude/launch.json` → config `dev`.
+- `npm run build`: build a `dist/`. Debe pasar limpio tras cada cambio.
+- `npm run preview`: sirve `dist/`.
 
 ## Stack
 Vite 7 + React 19 + react-router-dom 7 (BrowserRouter). JS plano (`.jsx`), sin TypeScript, sin librerías de estilos, animación ni estado. Un solo `src/styles.css` (tokens en `:root` + clases reutilizables). No añadir dependencias sin motivo claro.
@@ -21,8 +21,8 @@ src/
     projects.js      6 proyectos (4 juegos + 2 proyectos) con contenido ES/EN; su comentario inicial es el contrato de datos
     home.js          contenido de la home por idioma (hero: role, lead, contactCta, tabs; experiencia, contact) + `stack` (banda de herramientas bajo el hero, logo en public/icons) + `email` y `social` (sección de contacto y footer)
   lib/
-    media.js         getCover(slug), getGallery(slug) — imágenes de src/media vía import.meta.glob
-    projects.js      ofKind('game'|'project') — filtrado y orden por año desc (estable)
+    media.js         getCover(slug), getGallery(slug): imágenes de src/media vía import.meta.glob
+    projects.js      ofKind('game'|'project'): filtrado y orden por año desc (estable)
     bold.jsx         bold('a **b**') → <strong> en los segmentos marcados
   components/        Layout (skip link, Nav, main, Footer, scroll y reveal), Nav, Footer,
                      SectionTitle {title:[normal, coral], more?, to?, as?}, ProjectList {items, lang, capped?},
@@ -65,3 +65,6 @@ Paleta jade: acento `#288760` (solo texto grande), acento-ink `#1f6b4f` (texto p
 - Estilo de código "ponytail": la solución más simple que funcione, reutilizar, sin abstracciones ni dependencias innecesarias.
 - En tareas grandes: Opus orquesta y verifica; el código lo escriben agentes Sonnet.
 - Verificar siempre con `npm run build` y en el navegador (escritorio 1440 y móvil 375).
+
+## Norma absoluta de escritura
+- **Nunca usar el guion largo (—, em dash)** en ningún sitio del proyecto: ni en textos visibles, ni en títulos de pestaña, ni en código, comentarios, docs o respuestas. Usar en su lugar dos puntos, comas, paréntesis, punto y aparte o un guion normal con espacios (" - ").

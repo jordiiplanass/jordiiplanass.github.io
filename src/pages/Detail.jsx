@@ -209,7 +209,7 @@ export default function Detail({ kind }) {
 
 function Page({ p, kind, slug }) {
   const lang = useLang()
-  useTitle(`${p[lang].title} — Jordi Planas`)
+  useTitle(`${p[lang].title} - Jordi Planas`)
   const { title, header: h, blocks, backLabel, nextLabel, endLabel } = p[lang]
   const next = p.next && projects.find((x) => x.slug === p.next)
   const text = h.h1 ?? title

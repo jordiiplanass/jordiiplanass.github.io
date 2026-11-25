@@ -397,7 +397,7 @@ export const projects = [
           { label: 'Año', value: '2024' }, { label: 'Motor', value: 'Unity' },
           { label: 'Género', value: 'Puzzle temporal' }, { label: 'Rol', value: 'Programación' } ] },
         { type: 'intro', text: 'Puzzle construido alrededor de una mecánica de tiempo: el jugador manipula el flujo temporal para avanzar.' },
-        { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish — gameplay', ariaLabel: 'Reproducir Chrono Fish — gameplay' },
+        { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish: gameplay', ariaLabel: 'Reproducir Chrono Fish: gameplay' },
         { type: 'tags', items: ['Unity', 'C#', 'Time Mechanic', 'Puzzle'] },
         { type: 'gallery', variant: 'cols-2', heading: 'Galería', alts: shots('Captura de Chrono Fish', 4) },
       ],
@@ -413,7 +413,7 @@ export const projects = [
           { label: 'Year', value: '2024' }, { label: 'Engine', value: 'Unity' },
           { label: 'Genre', value: 'Time puzzle' }, { label: 'Role', value: 'Programming' } ] },
         { type: 'intro', text: 'A puzzle built around a time mechanic: the player manipulates the flow of time to progress.' },
-        { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish — gameplay', ariaLabel: 'Play Chrono Fish — gameplay' },
+        { type: 'video', youtube: 'g6t-Ix3g1V0', title: 'Chrono Fish: gameplay', ariaLabel: 'Play Chrono Fish: gameplay' },
         { type: 'tags', items: ['Unity', 'C#', 'Time Mechanic', 'Puzzle'] },
         { type: 'gallery', variant: 'cols-2', heading: 'Gallery', alts: shots('Chrono Fish screenshot', 4, '') },
       ],
@@ -562,7 +562,7 @@ export const projects = [
         h1: 'Primeros Auxilios VR', accent: 'VR', eyebrow: 'Prácticas · Proyecto Respira',
         lead: 'Proyecto Respira da formación presencial en primeros auxilios. Querían que sus alumnos pudieran practicar la colocación de un torniquete con la presión de una urgencia de verdad, así que montamos la escena en Meta Quest 3. Fue la primera vez que la empresa se metía en XR.' },
       blocks: [
-        { type: 'video', placeholder: 'Vídeo próximamente — Demo VR de Primeros Auxilios' },
+        { type: 'video', placeholder: 'Vídeo próximamente: Demo VR de Primeros Auxilios' },
         { type: 'panels', cols: 4, items: [
           { label: 'Dispositivo', text: 'Meta Quest 3' },
           { label: 'Motor', text: 'Unity 6 · SDK de Meta' },
@@ -597,7 +597,7 @@ export const projects = [
         h1: 'First Aid VR', accent: 'VR', eyebrow: 'Internship · Proyecto Respira',
         lead: "Proyecto Respira runs in-person first aid training. They wanted their students to be able to practise applying a tourniquet with the pressure of a real emergency, so we built the scene on Meta Quest 3. It was the company's first move into XR." },
       blocks: [
-        { type: 'video', placeholder: 'Video coming soon — First Aid VR demo' },
+        { type: 'video', placeholder: 'Video coming soon: First Aid VR demo' },
         { type: 'panels', cols: 4, items: [
           { label: 'Device', text: 'Meta Quest 3' },
           { label: 'Engine', text: 'Unity 6 · Meta SDK' },

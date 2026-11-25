@@ -3,7 +3,7 @@ import { useLang, useTitle, localePath } from '../i18n.js'
 
 export default function NotFound() {
   const lang = useLang()
-  useTitle('404 — Jordi Planas')
+  useTitle('404 - Jordi Planas')
   return (
     <section className="nf container">
       <p className="eyebrow">Error 404</p>
