@@ -124,8 +124,8 @@ function Block({ b, slug }) {
         </div>
       )
     case 'heading':
-      return b.kicker
-        ? <div className="d-sec"><span className="d-kicker">{b.kicker}</span><h2>{b.text}</h2></div>
+      return b.sec
+        ? <div className="d-sec"><h2>{b.text}</h2></div>
         : <h2>{b.text}</h2>
     case 'text': return <p className={b.variant === 'lead' ? 'd-lead' : 'd-text'}>{bold(b.text)}</p>
     case 'facts':
@@ -180,6 +180,17 @@ function Block({ b, slug }) {
     case 'tags': return <Tags items={b.items} />
     case 'panels': return <div className={'panels c' + b.cols}>{b.items.map((p, i) => <Panel key={i} p={p} />)}</div>
     case 'note': return <p className={b.variant === 'centered' ? 'note center' : 'note'}>{b.text}</p>
+    case 'figures':
+      return (
+        <div className="d-figs">
+          {b.items.map((f) => {
+            const url = getFile(slug, f.file)
+            return url && <figure key={f.file}><img src={url} alt={f.alt} loading="lazy" /><figcaption>{f.caption}</figcaption></figure>
+          })}
+        </div>
+      )
+    case 'links':
+      return <div className="d-links">{b.items.map((l) => <a className="btn" key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>)}</div>
     case 'video': return <Video b={b} />
     case 'gallery': return <Gallery b={b} slug={slug} />
     case 'columns':

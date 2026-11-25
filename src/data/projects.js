@@ -43,7 +43,7 @@
  *     { type:'columns', items:[{ title, text?, list?, tags? }] } 2 equal columns (gap 36px), title = h2 22px, text #6c6f6f
  *     { type:'stats', items:[{ label, value }] }                 sidebar definition list (layout 'sidebar' only)
  *   CASE STUDY BLOCKS
- *     heading gains kicker?:'01'     mono number + short line above the h2; chapter look (top border, extra space)
+ *     heading gains sec?:true        chapter look (top border, extra space), no number
  *     text    now renders **bold**
  *     { type:'facts', items:[{ label, value }] }                 horizontal definition strip (3 cols, 2 ≤640)
  *     { type:'skills', groups:[{ label, items }] }               panel of labelled .tools chips; logo when toolIcons (home.js) has the name
@@ -92,7 +92,7 @@ export const projects = [
         ] },
         { type: 'video', youtube: 'HsIRSft30w8', title: 'Gameplay de Pipo the Penguin', ariaLabel: 'Reproducir Gameplay de Pipo the Penguin' },
 
-        { type: 'heading', kicker: '01', text: 'En cifras' },
+        { type: 'heading', sec: true, text: 'En cifras' },
         { type: 'text', text: 'Cada objetivo técnico se fijó al inicio con un umbral medible y se validó al final con herramientas: Lizard para la calidad del código y Unity Profiler sobre Steam Deck para el rendimiento.' },
         { type: 'metrics', items: [
           { value: '99,2 %', label: 'métodos con complejidad ≤ 10', context: 'Lizard · Boss Room: 98,9 %' },
@@ -101,7 +101,7 @@ export const projects = [
           { value: '90–147', label: 'FPS medios en Steam Deck', context: 'objetivo: 60 FPS' },
         ] },
 
-        { type: 'heading', kicker: '02', text: 'Arquitectura' },
+        { type: 'heading', sec: true, text: 'Arquitectura' },
         { type: 'text', text: 'Lo difícil no era cada sistema por separado, sino mantenerlos **desacoplados cuando tenían que hablar entre sí**: si un cambio se propaga en cadena, el proyecto deja de escalar. La regla fue usar siempre el mecanismo menos acoplado que resolviera el problema, sin pagar por un desacoplamiento que un equipo de cinco no necesitaba.' },
         { type: 'layers',
           caption: 'Seis familias de sistemas organizadas en capas. Las superiores escuchan a las inferiores; las inferiores no conocen a quien las consume.',
@@ -122,7 +122,7 @@ export const projects = [
             { name: 'Referencia directa', text: 'Componentes que ya viven juntos.' },
           ] } },
 
-        { type: 'heading', kicker: '03', text: 'Sistemas destacados' },
+        { type: 'heading', sec: true, text: 'Sistemas destacados' },
         { type: 'system', labels: { problem: 'El reto', solution: 'La solución' },
           kicker: 'Familia D · Cámara', title: 'Una cámara por zonas pensada para diseñadores',
           problem: 'En un plataformas de velocidad el encuadre cambia en cada tramo: rampas, persecuciones hacia la cámara, cañones. Resolverlo con código, o repartido entre varias cámaras virtuales, ataba el diseño de niveles a la programación.',
@@ -172,7 +172,7 @@ export const projects = [
           patterns: ['DTO', 'Singleton', 'CSV'],
           media: { file: 'systems/analytics.png', alt: 'Distribución del tiempo de sesión en los playtests', contain: true, source: { text: 'Fuente: TFG, figura 31 (apartado 7.2). Datos: Anexo 4, telemetría de las 13 sesiones de playtest (CSV).', link: 'Repositorio de datos', href: 'https://drive.google.com/drive/folders/1W3dqOHFEdEphT22Dhh1SATX_TDIlAT9-?usp=sharing' }, placeholder: 'Gráfico: distribución del tiempo de sesión de los playtests o mapa de muertes por nivel' } },
 
-        { type: 'heading', kicker: '04', text: 'Catálogo completo' },
+        { type: 'heading', sec: true, text: 'Catálogo completo' },
         { type: 'text', text: 'Todo lo que programé, agrupado por familia.' },
         { type: 'catalog', items: [
           { code: 'A', name: 'Núcleo', systems: ['Gestores globales', 'PoolManager', 'SceneManager con carga asíncrona', 'Ciclo de vida del nivel', 'Capa de input'] },
@@ -183,7 +183,7 @@ export const projects = [
           { code: 'F', name: 'Herramientas', systems: ['Analítica a CSV', 'Localización ES/EN', 'Debug', 'Utilidades', 'Herramientas de editor'] },
         ] },
 
-        { type: 'heading', kicker: '05', text: 'Decisiones técnicas' },
+        { type: 'heading', sec: true, text: 'Decisiones técnicas' },
         { type: 'text', text: 'Cada patrón respondió a un problema concreto. Cuando la alternativa más formal no compensaba su coste para el tamaño del proyecto, la descarté.' },
         { type: 'table', columns: ['Patrón', 'Dónde', 'Alternativa descartada', 'Motivo'], rows: [
           ['Singleton', 'Gestores globales', 'Inyección de dependencias (VContainer)', 'Coste de infraestructura excesivo para el alcance'],
@@ -194,7 +194,7 @@ export const projects = [
           ['Strategy', 'Controles de ajustes', 'Comprobar tipos en el gestor', 'Añadir un control sin modificar el gestor'],
         ] },
 
-        { type: 'heading', kicker: '06', text: 'Límites y siguientes pasos' },
+        { type: 'heading', sec: true, text: 'Límites y siguientes pasos' },
         { type: 'text', text: 'Los 10 avisos de complejidad que quedan están todos en herramientas de editor; ninguno en código que se ejecute durante la partida. Lo que cambiaría si el proyecto creciera:' },
         { type: 'list', items: [
           '**Inyección de dependencias**: sustituir los Singletons por un contenedor como VContainer para probar sistemas de forma aislada.',
@@ -230,7 +230,7 @@ export const projects = [
         ] },
         { type: 'video', youtube: 'HsIRSft30w8', title: 'Pipo the Penguin gameplay', ariaLabel: 'Play Pipo the Penguin gameplay' },
 
-        { type: 'heading', kicker: '01', text: 'By the numbers' },
+        { type: 'heading', sec: true, text: 'By the numbers' },
         { type: 'text', text: 'Every technical goal was set up front with a measurable threshold and validated at the end with tools: Lizard for code quality and Unity Profiler on Steam Deck for performance.' },
         { type: 'metrics', items: [
           { value: '99.2%', label: 'methods at complexity ≤ 10', context: 'Lizard · Boss Room: 98.9%' },
@@ -239,7 +239,7 @@ export const projects = [
           { value: '90–147', label: 'average FPS on Steam Deck', context: 'target: 60 FPS' },
         ] },
 
-        { type: 'heading', kicker: '02', text: 'Architecture' },
+        { type: 'heading', sec: true, text: 'Architecture' },
         { type: 'text', text: 'The hard part was not each system on its own but **keeping them decoupled when they had to talk to each other**: once a change ripples through the codebase, the project stops scaling. The rule was to always use the least coupled mechanism that solved the problem, without paying for decoupling a team of five did not need.' },
         { type: 'layers',
           caption: 'Six system families arranged in layers. Upper layers listen to lower ones; lower layers never know who consumes them.',
@@ -260,7 +260,7 @@ export const projects = [
             { name: 'Direct reference', text: 'Components that already live together.' },
           ] } },
 
-        { type: 'heading', kicker: '03', text: 'Featured systems' },
+        { type: 'heading', sec: true, text: 'Featured systems' },
         { type: 'system', labels: { problem: 'The challenge', solution: 'The solution' },
           kicker: 'Family D · Camera', title: 'A zone-based camera built for designers',
           problem: 'In a speed platformer the framing changes on every stretch: ramps, chases towards the camera, cannons. Solving it in code, or spread across several virtual cameras, tied level design to programming.',
@@ -310,7 +310,7 @@ export const projects = [
           patterns: ['DTO', 'Singleton', 'CSV'],
           media: { file: 'systems/analytics.png', alt: 'Session length distribution across playtests', contain: true, source: { text: 'Source: thesis, figure 31 (section 7.2). Data: Annex 4, telemetry of the 13 playtest sessions (CSV).', link: 'Data repository', href: 'https://drive.google.com/drive/folders/1W3dqOHFEdEphT22Dhh1SATX_TDIlAT9-?usp=sharing' }, placeholder: 'Chart: playtest session length distribution or death map per level' } },
 
-        { type: 'heading', kicker: '04', text: 'Full catalogue' },
+        { type: 'heading', sec: true, text: 'Full catalogue' },
         { type: 'text', text: 'Everything I programmed, grouped by family.' },
         { type: 'catalog', items: [
           { code: 'A', name: 'Core', systems: ['Global managers', 'PoolManager', 'SceneManager with async loading', 'Level lifecycle', 'Input layer'] },
@@ -321,7 +321,7 @@ export const projects = [
           { code: 'F', name: 'Tools', systems: ['CSV analytics', 'ES/EN localisation', 'Debug', 'Utilities', 'Editor tools'] },
         ] },
 
-        { type: 'heading', kicker: '05', text: 'Technical decisions' },
+        { type: 'heading', sec: true, text: 'Technical decisions' },
         { type: 'text', text: 'Each pattern answered a concrete problem. When the more formal alternative did not pay off for the size of the project, I dropped it.' },
         { type: 'table', columns: ['Pattern', 'Where', 'Discarded alternative', 'Reason'], rows: [
           ['Singleton', 'Global managers', 'Dependency injection (VContainer)', 'Too much infrastructure for the scope'],
@@ -332,7 +332,7 @@ export const projects = [
           ['Strategy', 'Settings controls', 'Type checks in the manager', 'Add a control without changing the manager'],
         ] },
 
-        { type: 'heading', kicker: '06', text: 'Limits and next steps' },
+        { type: 'heading', sec: true, text: 'Limits and next steps' },
         { type: 'text', text: 'The 10 remaining complexity warnings all live in editor tools; none in code that runs during gameplay. What I would change if the project grew:' },
         { type: 'list', items: [
           '**Dependency injection**: replace the Singletons with a container such as VContainer to test systems in isolation.',
@@ -346,36 +346,120 @@ export const projects = [
 
   {
     slug: 'fragments-of-the-abyss', kind: 'game', year: 2025,
-    tags: ['Unity', 'C#', 'Atmospheric', 'Systems'],
-    cardTags: ['Unity', 'C#', 'Atmospheric'],
+    tags: ['Unreal Engine 5', 'C++', 'Survival Horror', 'Producción'],
+    cardTags: ['Unreal Engine 5', 'C++', 'Survival Horror'],
     next: 'chrono-fish', layout: 'default',
     es: {
       title: 'Fragments of the Abyss',
-      summary: 'Aventura atmosférica de exploración en las profundidades.',
-      meta: { about: 'Survival horror de puzzles: resuelve enigmas y defiéndete con tu linterna y tu cámara.', role: 'Programador de gameplay y sistemas' },
+      summary: 'Survival horror de puzzles en Unreal Engine 5 con linterna y cámara como defensa.',
+      meta: { about: 'Survival horror de puzzles: resuelve enigmas y defiéndete con tu linterna y tu cámara.', role: 'Productor y programador de gameplay' },
       backLabel: '← Games', nextLabel: 'Siguiente: Chrono Fish →',
-      header: { eyebrow: '2025 · Game' },
+      header: { showYear: true },
       blocks: [
-        { type: 'video', youtube: 'Xc5Z1nYzrCE', title: 'Tráiler de Fragments of the Abyss', ariaLabel: 'Reproducir Tráiler de Fragments of the Abyss' },
-        { type: 'columns', items: [
-          { title: 'Sobre el juego', text: 'Aventura atmosférica de exploración en las profundidades. El foco estuvo en la ambientación y en los sistemas que sostienen la sensación de descenso al abismo.' },
-          { title: 'Lo que hice', list: ['Sistemas de gameplay', 'Integración de mecánicas', 'Ajuste de la experiencia'], tags: ['Unity', 'C#', 'Atmospheric', 'Systems'] },
+        { type: 'intro',
+          text: 'Survival horror de puzzles en el que avanzas resolviendo enigmas y te defiendes con una linterna y una cámara. Fui productor principal: llevé el control de las tareas de todo el equipo y, además, formé parte del desarrollo del juego como programador de gameplay.',
+          aside: { label: 'Mi rol', text: 'Productor principal en un equipo de cuatro personas, con seguimiento de tareas en Jira y coordinación técnica hasta la release. También participé en el desarrollo como programador de gameplay.' } },
+        { type: 'facts', items: [
+          { label: 'Rol', value: 'Productor y programador de gameplay' },
+          { label: 'Equipo', value: 'Fritanga Studio · 4 personas' },
+          { label: 'Motor', value: 'Unreal Engine 5 · C++' },
+          { label: 'Metodología', value: 'Agile / Scrum · Jira' },
+          { label: 'Contexto', value: 'Tercer curso · ENTI-UB' },
+          { label: 'Reconocimiento', value: 'Game of the Year · 3 premios' },
         ] },
+        { type: 'skills', groups: [
+          { label: 'Motor y lenguaje', items: ['Unreal Engine', 'C++'] },
+          { label: 'Herramientas', items: ['Jira'] },
+          { label: 'Competencias', items: ['Producción ágil', 'Scrum', 'Coordinación técnica', 'Pipeline de builds', 'Programación de gameplay', 'Puzzles', 'Gestión de recursos'] },
+        ] },
+        { type: 'video', youtube: 'Xc5Z1nYzrCE', title: 'Tráiler de Fragments of the Abyss', ariaLabel: 'Reproducir Tráiler de Fragments of the Abyss' },
+
+        { type: 'heading', sec: true, text: 'Producción' },
+        { type: 'text', text: 'Mi mayor aportación fue la producción: **llevé el control de las tareas de todo el equipo**, organicé el trabajo en sprints y coordiné las decisiones técnicas para llevar el juego de un prototipo a una versión final.' },
+        { type: 'panels', cols: 3, items: [
+          { num: '01', title: 'Scrum con Jira', text: 'Planificación de sprints, calendario e iteración con un equipo de cuatro personas.' },
+          { num: '02', title: 'Decisiones técnicas', text: 'Coordinación de las decisiones técnicas y del pipeline de builds.' },
+          { num: '03', title: 'Del prototipo a la release', text: 'El juego pasó de un primer prototipo a una versión final publicada.' },
+        ] },
+
+        { type: 'heading', sec: true, text: 'Gameplay' },
+        { type: 'text', text: 'Formé parte del desarrollo del juego en **Unreal Engine 5 con C++**, en un trabajo compartido entre todo el equipo. El jugador avanza resolviendo puzzles y se defiende con una linterna y una cámara.' },
+        { type: 'list', items: [
+          '**Exploración** del entorno como base del avance.',
+          '**Puzzles** que el jugador resuelve para progresar.',
+          '**Gestión de recursos** para sobrevivir.',
+        ] },
+        { type: 'video', youtube: 'D1h6jwG-BSA', title: 'Gameplay de Fragments of the Abyss', ariaLabel: 'Reproducir Gameplay de Fragments of the Abyss' },
+
+        { type: 'heading', sec: true, text: 'Reconocimientos' },
+        { type: 'panels', cols: 3, items: [
+          { label: 'Demoday ENTI-UB 24-25', text: 'Game of the Year' },
+          { label: 'ENTI', text: 'Mejor juego de desarrollo de tercer curso' },
+          { label: 'BCN Game Fest', text: 'Mejor juego académico' },
+        ] },
+        { type: 'figures', items: [
+          { file: 'awards/trofeos.jpg', alt: 'Los dos trofeos de la Demoday ENTI-UB 24-25: Game of the Year y Mejor juego de Developer de tercer curso', caption: 'Los trofeos de la Demoday ENTI-UB 24-25.' },
+          { file: 'awards/equipo.jpg', alt: 'Cuatro integrantes del equipo posando con el trofeo en el escenario de la Demoday', caption: 'El equipo con el premio.' },
+          { file: 'awards/bcn-game-fest.webp', alt: 'El equipo de Fritanga Studio delante del cartel de Fragments of the Abyss en el BCN Game Fest', caption: 'El equipo en el BCN Game Fest.' },
+        ] },
+        { type: 'links', items: [{ label: 'Jugar en itch.io', href: 'https://reiven-9045.itch.io/fragment-of-the-abbys' }] },
         { type: 'gallery', variant: 'cols-3', heading: 'Galería', alts: shots('Captura de Fragments of the Abyss', 8) },
       ],
     },
     en: {
       title: 'Fragments of the Abyss',
-      summary: 'An atmospheric exploration adventure into the deep.',
-      meta: { about: 'Puzzle survival horror: solve riddles and fend off the dark with your flashlight and camera.', role: 'Gameplay and systems programmer' },
+      summary: 'A puzzle survival horror in Unreal Engine 5 with a flashlight and a camera as defence.',
+      meta: { about: 'Puzzle survival horror: solve riddles and fend off the dark with your flashlight and camera.', role: 'Producer and gameplay programmer' },
       backLabel: '← Games', nextLabel: 'Next: Chrono Fish →',
-      header: { eyebrow: '2025 · Game' },
+      header: { showYear: true },
       blocks: [
-        { type: 'video', youtube: 'Xc5Z1nYzrCE', title: 'Fragments of the Abyss trailer', ariaLabel: 'Play Fragments of the Abyss trailer' },
-        { type: 'columns', items: [
-          { title: 'About the game', text: 'An atmospheric exploration adventure into the deep. The focus was on the mood and the systems that sustain the feeling of descending into the abyss.' },
-          { title: 'What I did', list: ['Gameplay systems', 'Mechanics integration', 'Experience tuning'], tags: ['Unity', 'C#', 'Atmospheric', 'Systems'] },
+        { type: 'intro',
+          text: 'A puzzle survival horror where you progress by solving riddles and defend yourself with a flashlight and a camera. I was main producer: I kept track of the tasks of the whole team and also took part in development as a gameplay programmer.',
+          aside: { label: 'My role', text: 'Main producer in a team of four, tracking tasks in Jira and coordinating technical decisions through to release. I also took part in development as a gameplay programmer.' } },
+        { type: 'facts', items: [
+          { label: 'Role', value: 'Producer and gameplay programmer' },
+          { label: 'Team', value: 'Fritanga Studio · 4 people' },
+          { label: 'Engine', value: 'Unreal Engine 5 · C++' },
+          { label: 'Method', value: 'Agile / Scrum · Jira' },
+          { label: 'Context', value: 'Third year · ENTI-UB' },
+          { label: 'Recognition', value: 'Game of the Year · 3 awards' },
         ] },
+        { type: 'skills', groups: [
+          { label: 'Engine and language', items: ['Unreal Engine', 'C++'] },
+          { label: 'Tools', items: ['Jira'] },
+          { label: 'Skills', items: ['Agile production', 'Scrum', 'Technical coordination', 'Build pipeline', 'Gameplay programming', 'Puzzles', 'Resource management'] },
+        ] },
+        { type: 'video', youtube: 'Xc5Z1nYzrCE', title: 'Fragments of the Abyss trailer', ariaLabel: 'Play Fragments of the Abyss trailer' },
+
+        { type: 'heading', sec: true, text: 'Production' },
+        { type: 'text', text: 'My main contribution was production: **I kept track of the tasks of the whole team**, organised the work in sprints and coordinated technical decisions to take the game from a prototype to a final version.' },
+        { type: 'panels', cols: 3, items: [
+          { num: '01', title: 'Scrum with Jira', text: 'Sprint planning, scheduling and iteration with a team of four.' },
+          { num: '02', title: 'Technical decisions', text: 'Coordination of technical decisions and of the build pipeline.' },
+          { num: '03', title: 'Prototype to release', text: 'The game went from a first prototype to a published final version.' },
+        ] },
+
+        { type: 'heading', sec: true, text: 'Gameplay' },
+        { type: 'text', text: 'I took part in development in **Unreal Engine 5 with C++**, as shared work across the whole team. The player progresses by solving puzzles and defends themselves with a flashlight and a camera.' },
+        { type: 'list', items: [
+          '**Exploration** of the environment as the base of progress.',
+          '**Puzzles** the player solves to move forward.',
+          '**Resource management** to survive.',
+        ] },
+        { type: 'video', youtube: 'D1h6jwG-BSA', title: 'Fragments of the Abyss gameplay', ariaLabel: 'Play Fragments of the Abyss gameplay' },
+
+        { type: 'heading', sec: true, text: 'Recognition' },
+        { type: 'panels', cols: 3, items: [
+          { label: 'Demoday ENTI-UB 24-25', text: 'Game of the Year' },
+          { label: 'ENTI', text: 'Best third-year development game' },
+          { label: 'BCN Game Fest', text: 'Best academic game' },
+        ] },
+        { type: 'figures', items: [
+          { file: 'awards/trofeos.jpg', alt: 'The two Demoday ENTI-UB 24-25 trophies: Game of the Year and Best third-year Developer game', caption: 'The Demoday ENTI-UB 24-25 trophies.' },
+          { file: 'awards/equipo.jpg', alt: 'Four team members posing with the trophy on the Demoday stage', caption: 'The team with the award.' },
+          { file: 'awards/bcn-game-fest.webp', alt: 'The Fritanga Studio team in front of the Fragments of the Abyss poster at BCN Game Fest', caption: 'The team at BCN Game Fest.' },
+        ] },
+        { type: 'links', items: [{ label: 'Play on itch.io', href: 'https://reiven-9045.itch.io/fragment-of-the-abbys' }] },
         { type: 'gallery', variant: 'cols-3', heading: 'Gallery', alts: shots('Fragments of the Abyss screenshot', 8, '') },
       ],
     },
